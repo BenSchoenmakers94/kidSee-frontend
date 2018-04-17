@@ -12,6 +12,10 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'home',
+    component: UserListComponent
+  },
+  {
     path: 'users',
     component: UserListComponent
   },
