@@ -14,7 +14,7 @@ export class AuthService {
   private storage: Storage;
 
   constructor( private datastore: Datastore, public httpClient: HttpClient) {
-    this.storage = window.sessionStorage;
+    this.storage = window.localStorage;
     this.isAuthenticated();
     }
 

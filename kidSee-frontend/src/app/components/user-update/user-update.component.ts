@@ -12,7 +12,7 @@ import {User} from "../../models/user";
 })
 export class UserUpdateComponent implements OnInit {
   protected user: User;
-  protected birthdate: string;
+  protected birthdate: Date;
   private sub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) { }
@@ -26,16 +26,19 @@ export class UserUpdateComponent implements OnInit {
             this.user = user;
             this.birthdate = user.birthdate;
           } else {
-            this.router.navigate(['/users']);
+            this.backToIndex();
           }
         });
       }
     });
   }
 
+  private backToIndex(){
+    this.router.navigate(['/users']);
+  }
+
   saveChanges(){
     this.user.birthdate = new Date(this.birthdate);
-    this.user.save().subscribe();
-    this.router.navigate(['/users']);
+    this.user.save().subscribe(success => this.backToIndex());
   }
 }

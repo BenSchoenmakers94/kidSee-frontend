@@ -25,7 +25,7 @@ export class UserService {
 
   }
 
-  public createUser(user: any){
+  public createUser(user: any){    
     return this.datastore.createRecord(User, user).save();
   }
 

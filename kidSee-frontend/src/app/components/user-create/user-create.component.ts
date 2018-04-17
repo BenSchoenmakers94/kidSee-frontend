@@ -19,7 +19,7 @@ export class UserCreateComponent implements OnInit {
 
   save(form: NgForm){
     this.userService.createUser(form).subscribe(result => {
-      this.router.navigate(['/users'])
+      this.router.navigate(['/users']);
     })
   }
 
