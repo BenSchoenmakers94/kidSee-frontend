@@ -11,35 +11,31 @@ import { HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class AuthService {
   private currentUser: User;
+  private storage: Storage;
 
-  constructor(
-    private datastore: Datastore,
-    private httpClient: HttpClient,
-    private storage: Storage,
-  ) { this.isAuthenticated(); }
+  constructor( private datastore: Datastore, public httpClient: HttpClient) {
+    this.storage = window.sessionStorage;
+    this.isAuthenticated();
+    }
 
-  login(credentials) {
-    return Observable.create(observer => {
+  login(credentials): Promise<any> {
+    return new Promise((resolve, reject) => {
       this.httpClient.post(this.datastore.getBaseUrl() + '/tokens', credentials,
-        { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }) })
-        .subscribe(
-          (data) => {
-            this.storage.set('token', data['meta']['token']).then(token => {
-              this.setHeader(token);
-              this.storage.set('currentUser', data['meta']['id']).then(_ => {
-                this.fetchCurrentUser().then(_ => {
-                  observer.next(true);
-                  observer.complete();
-                });
-              });
-            });
-          },
-          (err) => {
-            observer.error();
-            observer.complete();
-          });
+      { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }) })
+      .subscribe(res => {
+        this.storage.setItem('currentUser', res['meta']['id']);
+        this.fetchCurrentUser().then(user => {
+          if (!user) {
+            reject('No user found with that username');
+          } else {
+            this.storage.setItem('token', res['meta']['token']);
+            this.setHeader(res['meta']['token']);
+            resolve(user);
+          }
+        });
+      });
     });
-  }
+   }
 
   setHeader(token) {
     this.datastore.headers = new Headers({ 'Authorization': 'Bearer ' + token});
@@ -47,42 +43,40 @@ export class AuthService {
 
   fetchCurrentUser() {
     return new Promise<any>((resolve) => {
-      if(this.currentUser) {
+      if (this.currentUser) {
         resolve(this.currentUser);
       }
-      return this.storage.get('currentUser').then(id => {
-        return this.datastore.findRecord(User, id).subscribe(
+      const currentUserIdInStorage = this.storage.getItem('currentUser');
+      if (currentUserIdInStorage) {
+        this.datastore.findRecord(User, currentUserIdInStorage).subscribe(
           (user) => {
             this.currentUser = user;
             resolve(user);
           },
-          (err) =>{
+          (err) => {
             resolve(null);
-          }
-        )
-      });
+          });
+        }
     });
   }
 
   logout() {
     this.currentUser = null;
     this.datastore.headers = null;
-    this.storage.remove('token');
-    this.storage.remove('currentUser');
+    this.storage.removeItem('token');
+    this.storage.removeItem('currentUser');
   }
 
   isAuthenticated() {
-    return this.storage.get('token').then(token => {
-      if(token) {
-        this.setHeader(token);
-        return this.fetchCurrentUser().then(user => {
-          return user != null;
-        });
-      }
-      else {
-        return false;
-      }
-    });
+    const tokenInStorage = this.storage.getItem('token');
+    if (tokenInStorage) {
+      this.setHeader(tokenInStorage);
+      return this.fetchCurrentUser().then(user => {
+        return user != null;
+      });
+    } else {
+      return false;
+    }
   }
 
   changePassword(password) {

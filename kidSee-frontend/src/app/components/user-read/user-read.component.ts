@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
-import { UserService } from "../../services/userService/user-serivce.service";
+import { UserService } from "../../services/userService/user-service.service";
 
 @Component({
   selector: 'app-user-read',

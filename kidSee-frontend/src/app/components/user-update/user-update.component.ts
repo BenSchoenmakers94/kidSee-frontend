@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
-import { UserService } from "../../services/userService/user-serivce.service";
+import { UserService } from "../../services/userService/user-service.service";
 import {NgForm} from "@angular/forms";
 import {User} from "../../models/user";
 
