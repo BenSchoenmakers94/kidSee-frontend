@@ -10,6 +10,10 @@ import { AppRoutingModule } from "./components/app-routing/app-routing.module";
 import { UserCreateComponent } from './components/user-create/user-create.component';
 import { UserUpdateComponent } from './components/user-update/user-update.component';
 import { UserReadComponent } from './components/user-read/user-read.component';
+import { UserService } from "./services/userService/user-serivce.service";
+import { FormsModule } from "@angular/forms";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { Datastore } from "./services/datastore";
 
 
 @NgModule({
@@ -30,6 +34,8 @@ import { UserReadComponent } from './components/user-read/user-read.component';
     MatCardModule,
     MatInputModule,
     MatListModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   entryComponents: [
     AppComponent,
@@ -39,7 +45,10 @@ import { UserReadComponent } from './components/user-read/user-read.component';
     UserUpdateComponent,
     UserReadComponent
   ],
-  providers: [],
+  providers: [
+    Datastore,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
