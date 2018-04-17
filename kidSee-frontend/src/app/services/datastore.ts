@@ -7,7 +7,7 @@ import { Post } from '../models/post';
 import { ContentType } from '../models/contentType';
 
 const config: DatastoreConfig = {
-  baseUrl: '174.138.7.193/api/',
+  baseUrl: 'http://174.138.7.193/api',
   models: {
     users: User,
     posts: Post,
