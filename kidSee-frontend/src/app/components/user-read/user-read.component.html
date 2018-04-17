@@ -1,12 +1,15 @@
 <mat-card>
-    <mat-card-header>{{user.name}}</mat-card-header>
+    <mat-card-header>{{user.username}}</mat-card-header>
     <mat-card-content>
-                <h3 mat-line>
-                    <a [routerLink]="['/user-update']">{{user.name}}</a>
-                </h3>
-        <mat-label>
-
-        </mat-label>
+        <h3 mat-line>
+            {{user.email}}
+        </h3>
+        <h3 mat-line>
+            {{user.birthdate}}
+        </h3>
+        <h3 mat-line>
+            {{user.postal_code}}
+        </h3>
     </mat-card-content>
 
 </mat-card>

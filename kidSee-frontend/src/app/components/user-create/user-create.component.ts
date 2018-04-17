@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { UserService } from "../../services/userService/user-serivce.service";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-user-create',
@@ -17,10 +17,10 @@ export class UserCreateComponent implements OnInit {
   ngOnInit() {
   }
 
-  // save(form: NgForm){
-  //   this.userService.createUser(form).subscribe(result => {
-  //     this.router.navigate(['/users'])
-  //   })
-  // }
+  save(form: NgForm){
+    this.userService.createUser(form).subscribe(result => {
+      this.router.navigate(['/users'])
+    })
+  }
 
 }

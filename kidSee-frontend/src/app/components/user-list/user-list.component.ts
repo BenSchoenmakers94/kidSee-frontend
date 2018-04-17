@@ -10,19 +10,20 @@ import {UserService} from "../../services/userService/user-serivce.service";
 })
 export class UserListComponent implements OnInit {
 
-  users;
+  users: any = [];
 
   constructor(private userService: UserService) {
-    this.userService.getUsers().subscribe(
-      users => {
-        users.getModels().forEach(user => {
-          this.users.push(user);
-        })
-      }
-    )
+
   }
 
   ngOnInit() {
+    this.userService.getUsers({}).subscribe(
+    users => {
+      users.getModels().forEach(user => {
+        this.users.push(user);
+      })
+    }
+  )
   }
 
 }
