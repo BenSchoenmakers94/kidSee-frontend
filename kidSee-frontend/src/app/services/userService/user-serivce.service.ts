@@ -13,7 +13,24 @@ export class UserService {
     return this.datastore.findAll(User, params);
   }
 
+  public getSpecificUser(id){
+    this.datastore.headers = new Headers({ 'Authorization': 'Bearer ' + "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJraWRzZWVfYXBpIiwiZXhwIjoxNTI2MzcxNTU1LCJpYXQiOjE1MjM5NTIzNTUsImlzcyI6ImtpZHNlZV9hcGkiLCJqdGkiOiI3MmVkNTExMy1jMWY3LTQ2ZDAtYmMzNC1mYTIyZGNhYmQ0YTIiLCJuYmYiOjE1MjM5NTIzNTQsInN1YiI6IjI1IiwidHlwIjoiYWNjZXNzIn0.8vjONwbF9UjZ_GANLPWeN7GcQ9yV9V2-7ZYoNRDOaUdZM3gU-W7TsGPIz02TaVIDDj9DQFJp4pqCmJ95PArNlg"});
+
+    return new Promise<any> ( (resolve) => {
+      return this.datastore.findRecord(User, id).subscribe(
+        (user) => {
+          resolve(user);
+        },
+        (err) =>{
+          resolve(null);
+        })
+    });
+
+  }
+
   public createUser(user: any){
+    this.datastore.headers = new Headers({ 'Authorization': 'Bearer ' + "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJraWRzZWVfYXBpIiwiZXhwIjoxNTI2MzcxNTU1LCJpYXQiOjE1MjM5NTIzNTUsImlzcyI6ImtpZHNlZV9hcGkiLCJqdGkiOiI3MmVkNTExMy1jMWY3LTQ2ZDAtYmMzNC1mYTIyZGNhYmQ0YTIiLCJuYmYiOjE1MjM5NTIzNTQsInN1YiI6IjI1IiwidHlwIjoiYWNjZXNzIn0.8vjONwbF9UjZ_GANLPWeN7GcQ9yV9V2-7ZYoNRDOaUdZM3gU-W7TsGPIz02TaVIDDj9DQFJp4pqCmJ95PArNlg"});
+
     return this.datastore.createRecord(User, user).save();
   }
 

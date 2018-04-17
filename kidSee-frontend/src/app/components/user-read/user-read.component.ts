@@ -9,7 +9,7 @@ import { UserService } from "../../services/userService/user-serivce.service";
   styleUrls: ['./user-read.component.css']
 })
 export class UserReadComponent implements OnInit {
-  user: any = {};
+  user: any;
   sub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) { }
@@ -18,7 +18,7 @@ export class UserReadComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       const id = params['id'];
       if (id) {
-        this.userService.getUsers(id).subscribe((user: any) => {
+        this.userService.getSpecificUser(id).then((user: any) => {
           if (user) {
             this.user = user;
           } else {
