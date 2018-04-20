@@ -1,0 +1,35 @@
+<mat-table #table [dataSource]="locations" matSort class="mat-cell">
+  <ng-container matColumnDef="Naam">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Naam</mat-header-cell>
+    <mat-cell *matCellDef="let row" >{{row.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="Omschrijving">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Omschrijving</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.description}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="Adres">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Adres</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.address}}</mat-cell>
+  </ng-container>
+
+  <!-- actions -->
+  <ng-container matColumnDef="Acties">
+    <mat-header-cell *matHeaderCellDef>
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let row; let i=index;">
+      <button mat-icon-button color="accent" (click)="startEdit(row)">
+        <mat-icon aria-label="Edit">edit</mat-icon>
+      </button>
+
+      <button mat-icon-button color="accent" (click)="remove(row)">
+        <mat-icon aria-label="Delete">delete </mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
