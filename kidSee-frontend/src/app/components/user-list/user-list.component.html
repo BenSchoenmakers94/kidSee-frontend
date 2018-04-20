@@ -3,11 +3,11 @@
     <mat-card-content>
         <mat-list>
             <button mat-raised-button color="primary" style="float: right" [routerLink]="['/users/create']">Add</button>
-            <mat-list-item *ngFor="let user of users">
+            <mat-list-item *ngFor="let user of users; let i = index;">
                 <h3 mat-line>
                     <a mat-button id="editUser" [routerLink]="['/users/edit', user.id]">{{user.username}}</a>
                     <a mat-button [routerLink]="['/users/view', user.id]"><i class="fas fa-arrow-right"></i></a>
-                    <a mat-button (click)="delete(user.id)"><i class="far fa-trash-alt"></i></a>
+                    <a mat-button (click)="delete(user.id, i)"><i class="far fa-trash-alt"></i></a>
 
                 </h3>
             </mat-list-item>

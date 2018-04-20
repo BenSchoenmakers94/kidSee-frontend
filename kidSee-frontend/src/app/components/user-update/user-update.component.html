@@ -10,6 +10,7 @@
                        required name="username" #username>
             </mat-form-field>
             <mat-form-field>
+                <span>{{user?.birthdate | date: 'dd/MM/yyyy'}}</span>
                 <input matInput type="date" placeholder="Birthdate" [ngModel]="birthdate"
                        required name="birthdate" #birthdate>
             </mat-form-field>

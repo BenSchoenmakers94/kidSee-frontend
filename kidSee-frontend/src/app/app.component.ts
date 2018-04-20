@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {Component } from '@angular/core';
 import { User } from "./models/user";
 import { AuthService } from "./services/auth.service";
 import { Router } from "@angular/router";
@@ -8,14 +8,11 @@ import { Router } from "@angular/router";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   title = 'KidSee CMS Platform';
   user: User;
 
   constructor(private authService: AuthService, private router: Router){
-  }
-
-  ngOnInit(){
     this.authService.fetchCurrentUser().then(user => this.user = user);
   }
 
