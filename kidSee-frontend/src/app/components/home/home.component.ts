@@ -4,6 +4,7 @@ import { Location } from './../../models/location';
 import { LocationService } from './../../services/location.service';
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
+import { CreateDialogComponent } from '../../dialogs/create-dialog/create-dialog.component';
 
 declare var google: any;
 
@@ -26,6 +27,8 @@ export class HomeComponent implements OnInit {
   locations: any[];
 
   constructor(private locationService: LocationService, private dialog: MatDialog) {
+    this.markers = [];
+    this.locations = [];
     this.mapOn = true;
     this.switchName = 'Lijst';
     this.receiveData();
@@ -45,40 +48,51 @@ export class HomeComponent implements OnInit {
         this.markers.push({
           lat: location.lat,
           lng: location.lon,
-          buildingNum: '',
-          streetName: '',
-          cityName: '',
-          postalCode: '',
           draggable: false
         });
       });
     });
   }
-  private clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || index}`);
+
+  private clickedMarker(marker: Marker) {
+    this.getLocationFromMarker(marker).then(resolve => {
+      const dialogRef = this.dialog.open(EditDialogComponent, {
+        data: resolve
+      });
+    }, reject => { });
+  }
+
+  private getLocationFromMarker(marker: Marker): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.locations.forEach(location => {
+        if (location.lat === marker.lat) {
+          if (location.lon === marker.lng) {
+            resolve(location);
+          }
+        }
+      });
+      reject(null);
+    });
   }
 
   private mapClicked($event: MouseEvent) {
-    console.log(this.markers);
     const newMarker = {
       lat: $event.coords.lat.toFixed(8),
       lng: $event.coords.lng.toFixed(8),
-      buildingNum: '',
-      streetName: '',
-      cityName: '',
-      postalCode: '',
+      label: 'NIEUW',
       draggable: false
     };
+    this.markers.push(newMarker);
     this.getGeoLocation(newMarker).then(newLocation => {
-      const dialogRef = this.dialog.open(EditDialogComponent, {
+      const dialogRef = this.dialog.open(CreateDialogComponent, {
         data: newLocation
       });
 
       dialogRef.afterClosed().subscribe(result => {
         if (result === 1) {
           this.locations.push(newLocation);
-          this.markers.push(newMarker);
-          console.log(this.markers);
+        } else {
+          this.markers.pop();
         }
       });
     }, reject => {
@@ -139,10 +153,10 @@ export class HomeComponent implements OnInit {
 interface Marker {
   lat: string;
   lng: string;
-  buildingNum: string;
-  streetName: string;
-  cityName: string;
-  postalCode: string;
+  buildingNum?: string;
+  streetName?: string;
+  cityName?: string;
+  postalCode?: string;
   label?: string;
   draggable: boolean;
 }

@@ -31,6 +31,12 @@ export class LocationListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
         this.locations.splice(this.locations.indexOf(location), 1);
+        const newLocations = this.locations;
+        this.locations = [];
+        newLocations.forEach(locationToAdd => {
+          this.locations.push(locationToAdd);
+        });
+        this.changeDetectorRefs.markForCheck();
         this.changeDetectorRefs.detectChanges();
         this.changeDetectorRefs.reattach();
       }

@@ -23,6 +23,19 @@ export class LocationService {
     }));
   }
 
+  updateLocation(locationToUpdate: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.datastore.findRecord(Location, locationToUpdate.id).subscribe((location: Location) => {
+        location.name = locationToUpdate.name,
+        location.lon = locationToUpdate.lon,
+        location.lat = locationToUpdate.lat,
+        location.description = locationToUpdate.description,
+        location.address = locationToUpdate.address;
+        location.save().subscribe();
+       });
+    });
+  }
+
   getLocations(): Promise<any> {
     return new Promise(((resolve, reject) => {
       this.datastore.findAll(Location, { }).subscribe(

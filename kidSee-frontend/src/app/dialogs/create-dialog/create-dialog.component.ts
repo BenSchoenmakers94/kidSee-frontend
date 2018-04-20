@@ -6,18 +6,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-edit-dialog',
-  templateUrl: './edit-dialog.component.html',
-  styleUrls: ['./edit-dialog.component.css']
+  selector: 'app-create-dialog',
+  templateUrl: './create-dialog.component.html',
+  styleUrls: ['./create-dialog.component.css']
 })
-export class EditDialogComponent implements OnInit {
+export class CreateDialogComponent implements OnInit {
   formControl = new FormControl('', [
     Validators.required
     // Validators.email,
   ]);
 
   ngOnInit(): void { }
-  constructor(public dialogRef: MatDialogRef<EditDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<CreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Location, public locationService: LocationService) { }
 
     getErrorMessage() {
@@ -33,6 +33,6 @@ export class EditDialogComponent implements OnInit {
     }
 
     stopEdit(): void {
-      this.locationService.updateLocation(this.data);
+      this.locationService.postLocations(this.data);
     }
   }
