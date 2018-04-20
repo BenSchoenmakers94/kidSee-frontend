@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     const password = this.passwordFormControl.value;
     this.authService.login({ 'identification': email, 'password': password })
     .then(resolve => {
-      this.router.navigate(['users']);
+      this.router.navigate(['home']);
     }, reject => {
       console.log(reject);
     });

@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Post } from '../models/post';
 import { ContentType } from '../models/contentType';
+import { Location } from '../models/location';
+import { Comment } from '../models/comment';
 
 const config: DatastoreConfig = {
   baseUrl: 'http://174.138.7.193/api',
@@ -13,7 +15,8 @@ const config: DatastoreConfig = {
     posts: Post,
     comments: Comment,
     postStatuses: PostStatus,
-    contentTypes: ContentType
+    contentTypes: ContentType,
+    locations: Location
   }
 };
 

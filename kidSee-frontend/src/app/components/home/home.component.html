@@ -1,0 +1,38 @@
+<mat-card>
+  <mat-card-title>
+    Locaties
+    <button mat-raised-button color="primary" class="switchBtn" (click)="switchToList()">{{switchName}}</button>
+  </mat-card-title>
+  <mat-card-content>
+    <div *ngIf="mapOn; else locationList" >
+        <agm-map
+        [latitude]="lat"
+        [longitude]="lng"
+        [zoom]="zoom"
+        [disableDefaultUI]="false"
+        [zoomControl]="true"
+        (mapClick)="mapClicked($event)">
+
+        <agm-marker
+            *ngFor="let m of markers; let i = index"
+            (markerClick)="clickedMarker(m.label, i)"
+            [latitude]="m.lat"
+            [longitude]="m.lng"
+            [label]="m.label"
+            [markerDraggable]="m.draggable"
+            (dragEnd)="markerDragEnd(m, $event)">
+
+          <agm-info-window>
+            <strong>PLACEHOLDER</strong>
+          </agm-info-window>
+
+        </agm-marker>
+      </agm-map>
+    </div>
+    <ng-template #locationList>
+      <app-location-list [locations]="locations">
+
+      </app-location-list>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

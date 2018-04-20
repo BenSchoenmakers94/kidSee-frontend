@@ -15,7 +15,6 @@ export class AuthService {
 
   constructor( private datastore: Datastore, public httpClient: HttpClient) {
     this.storage = window.localStorage;
-    this.isAuthenticated();
     }
 
   login(credentials): Promise<any> {
@@ -24,22 +23,18 @@ export class AuthService {
       { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }) })
       .subscribe(res => {
         this.storage.setItem('currentUser', res['meta']['id']);
+        this.storage.setItem('token', res['meta']['token']);
         this.fetchCurrentUser().then(user => {
           if (!user) {
+            this.datastore.headers = null;
             reject('No user found with that username');
           } else {
-            this.storage.setItem('token', res['meta']['token']);
-            this.setHeader(res['meta']['token']);
             resolve(user);
           }
         });
       });
     });
    }
-
-  setHeader(token) {
-    this.datastore.headers = new Headers({ 'Authorization': 'Bearer ' + token});
-  }
 
   fetchCurrentUser() {
     return new Promise<any>((resolve) => {
@@ -65,18 +60,6 @@ export class AuthService {
     this.datastore.headers = null;
     this.storage.removeItem('token');
     this.storage.removeItem('currentUser');
-  }
-
-  isAuthenticated() {
-    const tokenInStorage = this.storage.getItem('token');
-    if (tokenInStorage) {
-      this.setHeader(tokenInStorage);
-      return this.fetchCurrentUser().then(user => {
-        return user != null;
-      });
-    } else {
-      return false;
-    }
   }
 
   changePassword(password) {
