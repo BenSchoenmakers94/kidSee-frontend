@@ -24,12 +24,12 @@ export class AuthService {
       { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }) })
       .subscribe(res => {
         this.storage.setItem('currentUser', res['meta']['id']);
+        this.storage.setItem('token', res['meta']['token']);
+        this.setHeader(res['meta']['token']);
         this.fetchCurrentUser().then(user => {
           if (!user) {
             reject('No user found with that username');
           } else {
-            this.storage.setItem('token', res['meta']['token']);
-            this.setHeader(res['meta']['token']);
             resolve(user);
           }
         });

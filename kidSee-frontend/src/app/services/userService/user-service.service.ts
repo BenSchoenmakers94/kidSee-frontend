@@ -29,4 +29,8 @@ export class UserService {
     return this.datastore.createRecord(User, user).save();
   }
 
+  public deleteUser(id){
+    return this.datastore.deleteRecord(User, id);
+  }
+
 }

@@ -1,4 +1,5 @@
 <mat-card>
+    <a mat-button routerLink="/users"><i class="fas fa-arrow-left"></i></a>
     <form #userForm="ngForm" (ngSubmit)="saveChanges()">
         <mat-card-header>
             <mat-card-title><h2>Edit {{user?.username}}</h2></mat-card-title>

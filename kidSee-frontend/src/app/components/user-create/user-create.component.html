@@ -1,6 +1,8 @@
 <mat-card>
+    <a mat-button routerLink="/users"><i class="fas fa-arrow-left"></i></a>
     <form #userForm="ngForm" (ngSubmit)="save(userForm.value)">
         <mat-card-header>
+
             <mat-card-title><h2>Create user</h2></mat-card-title>
         </mat-card-header>
         <mat-card-content>

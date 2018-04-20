@@ -1,2 +1,10 @@
+
 <router-outlet>
+<mat-toolbar *ngIf="user">
+    <span>{{title}}</span>
+    <button mat-button></button>
+    <span class="fill-space"></span>
+    <span>{{user?.username}}</span>
+    <button class="logout" mat-raised-button color="primary" (click)="logout()">Logout</button>
+</mat-toolbar>
 </router-outlet>
