@@ -1,2 +1,12 @@
+
 <router-outlet>
+<mat-toolbar >
+    <button mat-button [routerLink]="['/home']">
+        <span>{{title}}</span>
+    </button>
+    <button mat-button [routerLink]="['/users']">Users</button>
+    <span class="fill-space"></span>
+    <!--<span>{{user?.username}}</span>-->
+    <button class="logout" mat-raised-button color="primary" (click)="logout()">Logout</button>
+</mat-toolbar>
 </router-outlet>

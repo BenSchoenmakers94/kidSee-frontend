@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Datastore } from "../../services/datastore";
-import { User } from "../../models/user";
 import {UserService} from "../../services/userService/user-service.service";
 
 @Component({
@@ -23,6 +21,10 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  delete(id, index){
+    this.userService.deleteUser(id).subscribe(() => this.users.splice(index, 1));
   }
 
 }

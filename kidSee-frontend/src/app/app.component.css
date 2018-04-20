@@ -1,1 +1,8 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.fill-space{
+    flex: 1 1 auto;
+}
+
+.logout{
+    margin-left: 1%;
+}

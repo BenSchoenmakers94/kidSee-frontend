@@ -31,7 +31,7 @@ const routes: Routes = [
   {
     path: 'users/view/:id',
     component: UserReadComponent
-  }
+  },
 ];
 
 @NgModule({
