@@ -5,6 +5,7 @@ import { LocationService } from './../../services/location.service';
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { CreateDialogComponent } from '../../dialogs/create-dialog/create-dialog.component';
+import { RadialMenuComponent } from '../../menus/radial-menu/radial-menu.component';
 
 declare var google: any;
 

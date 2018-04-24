@@ -57,6 +57,7 @@ import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { LocationListComponent } from './components/home/location-list/location-list.component';
 import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
 import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';
+import { RadialMenuComponent } from './menus/radial-menu/radial-menu.component';
 
 @NgModule({
   exports: [
@@ -109,7 +110,8 @@ export class AngularMaterialModule {}
     LocationListComponent,
     EditDialogComponent,
     RemoveDialogComponent,
-    CreateDialogComponent
+    CreateDialogComponent,
+    RadialMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -139,7 +141,8 @@ export class AngularMaterialModule {}
     LocationListComponent,
     EditDialogComponent,
     RemoveDialogComponent,
-    CreateDialogComponent
+    CreateDialogComponent,
+    RadialMenuComponent
   ],
   providers: [
     Datastore,
