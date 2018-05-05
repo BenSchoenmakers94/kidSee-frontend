@@ -1,9 +1,11 @@
+import { JsonApiModel } from 'angular2-jsonapi';
 import { Location } from './../../models/location';
 import { LocationService } from './../../services/location.service';
 import { Datastore } from './../../services/datastore';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
+import { AbstractObjectService } from '../../services/abstract-object.service';
 
 @Component({
   selector: 'app-create-dialog',
@@ -18,7 +20,7 @@ export class CreateDialogComponent implements OnInit {
 
   ngOnInit(): void { }
   constructor(public dialogRef: MatDialogRef<CreateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Location, public locationService: LocationService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, public abstractObjectService: AbstractObjectService) { }
 
     getErrorMessage() {
       return this.formControl.hasError('required') ? 'Required field' :
@@ -33,6 +35,7 @@ export class CreateDialogComponent implements OnInit {
     }
 
     stopEdit(): void {
-      this.locationService.postLocations(this.data);
+      const specificObjectService = this.abstractObjectService.getObject(this.data.modelConfig.type);
+      specificObjectService.postObject(this.data);
     }
   }

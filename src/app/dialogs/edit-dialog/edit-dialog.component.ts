@@ -1,5 +1,5 @@
-import { Location } from './../../models/location';
-import { LocationService } from './../../services/location.service';
+import { JsonApiModel } from 'angular2-jsonapi';
+import { AbstractObjectService } from './../../services/abstract-object.service';
 import { Datastore } from './../../services/datastore';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -18,7 +18,7 @@ export class EditDialogComponent implements OnInit {
 
   ngOnInit(): void { }
   constructor(public dialogRef: MatDialogRef<EditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Location, public locationService: LocationService) { }
+    @Inject(MAT_DIALOG_DATA) public data: JsonApiModel, public abstractObjectService: AbstractObjectService) { }
 
     getErrorMessage() {
       return this.formControl.hasError('required') ? 'Required field' :
@@ -33,6 +33,7 @@ export class EditDialogComponent implements OnInit {
     }
 
     stopEdit(): void {
-      this.locationService.updateLocation(this.data);
+      const specificObjectService = this.abstractObjectService.getObject(this.data.modelConfig.type);
+      specificObjectService.patchObject(this.data);
     }
   }

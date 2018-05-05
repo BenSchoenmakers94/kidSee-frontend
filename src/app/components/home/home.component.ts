@@ -1,3 +1,7 @@
+import { JsonApiModel } from 'angular2-jsonapi';
+import { Observable } from 'rxjs/Observable';
+import { ColumnAttribute } from './../../generics/column-attribute';
+import { AbstractObjectService } from './../../services/abstract-object.service';
 import { EditDialogComponent } from './../../dialogs/edit-dialog/edit-dialog.component';
 import { MatDialog } from '@angular/material';
 import { Location } from './../../models/location';
@@ -5,6 +9,7 @@ import { LocationService } from './../../services/location.service';
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { CreateDialogComponent } from '../../dialogs/create-dialog/create-dialog.component';
+import { BaseService } from '../../services/base/base.service';
 
 declare var google: any;
 
@@ -26,31 +31,58 @@ export class HomeComponent implements OnInit {
   markers: Marker[];
   locations: any[];
 
-  constructor(private locationService: LocationService, private dialog: MatDialog) {
+  specificObjectService: BaseService;
+  specificObjectName = 'locations';
+  columnAttributes: ColumnAttribute[];
+  actionsForTable: string[];
+
+  constructor(private abstractObjectService: AbstractObjectService, private dialog: MatDialog) {
+   }
+
+  ngOnInit(): void {
+    this.initTableInformation();
+    this.specificObjectService = this.abstractObjectService.getObject(this.specificObjectName);
     this.markers = [];
     this.locations = [];
+
     this.mapOn = true;
     this.switchName = 'Lijst';
     this.receiveData();
-   }
+  }
 
-  ngOnInit(): void { }
+  private initTableInformation() {
+    this.actionsForTable = [];
+    this.columnAttributes = [];
 
+    this.actionsForTable.push(...['edit', 'delete']);
 
-
+    this.columnAttributes.push({
+      columnName: 'Naam',
+      attributeName: 'name'
+    });
+    this.columnAttributes.push({
+      columnName: 'Beschrijving',
+      attributeName: 'description'
+    });
+    this.columnAttributes.push({
+      columnName: 'Adres',
+      attributeName: 'address'
+    });
+  }
 
   private receiveData() {
     this.markers = [];
-    this.locations = [];
-    this.locationService.getLocations().then(resolve => {
-      this.locations = resolve;
-      resolve.forEach(location => {
+    this.locations.length = 0;
+    this.specificObjectService.getObjects(null, null).subscribe({
+      next: locations =>
+      locations.forEach(location => {
+        this.locations.push(location);
         this.markers.push({
           lat: location.lat,
           lng: location.lon,
           draggable: false
         });
-      });
+      })
     });
   }
 
@@ -84,6 +116,8 @@ export class HomeComponent implements OnInit {
     };
     this.markers.push(newMarker);
     this.getGeoLocation(newMarker).then(newLocation => {
+      newLocation.modelConfig.type = 'locations';
+      newLocation['location-type'] = {data: null};
       const dialogRef = this.dialog.open(CreateDialogComponent, {
         data: newLocation
       });
@@ -98,10 +132,6 @@ export class HomeComponent implements OnInit {
     }, reject => {
       alert(reject);
     });
-  }
-
-  private markerDragEnd(m: Marker, $event: MouseEvent) {
-    console.log('dragEnd', m, $event);
   }
 
   private switchToList() {
@@ -138,7 +168,8 @@ export class HomeComponent implements OnInit {
                   lat: marker.lat,
                   description: '',
                   address: (marker.streetName + ' ' + marker.buildingNum +
-                  ', ' + marker.postalCode + ' ' + marker.cityName)
+                  ', ' + marker.postalCode + ' ' + marker.cityName),
+                  modelConfig: {}
                 });
               } else {
                 reject('No address available!');

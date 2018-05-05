@@ -1,15 +1,35 @@
+import { Observable } from 'rxjs/Observable';
 import { Location } from './../models/location';
 import { Datastore } from './datastore';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { JsonApiQueryData } from 'angular2-jsonapi';
+import { JsonApiQueryData, JsonApiModel } from 'angular2-jsonapi';
+import { BaseService } from './base/base.service';
 
 @Injectable()
-export class LocationService {
+export class LocationService extends BaseService {
+  constructor(private datastore: Datastore, private http: HttpClient) {
+    super();
+   }
 
-  constructor(private datastore: Datastore, private http: HttpClient) { }
+  getObjects(pageNumber?: number, pageSize?: number): Observable<JsonApiModel[]> {
+      return Observable.create((observer) => {
+        this.datastore.findAll(Location, {
+          page: pageNumber,
+          page_size: pageSize
+         }).subscribe(
+          (locations: JsonApiQueryData<Location>) => observer.next(locations.getModels())
+        );
+      });
+    }
 
-  postLocations(location: any): Promise<any> {
+  getObjectFromId(id: string): Observable<JsonApiModel> {
+    return new Observable((observer) => {
+      this.datastore.findRecord(Location, id).subscribe((location: Location) => observer.next(location));
+    });
+  }
+
+  postObject(location: any): Promise<any> {
     return new Promise(((resolve, reject) => {
       // tslint:disable-next-line:prefer-const
       let newLocation = this.datastore.createRecord(Location, {
@@ -23,7 +43,7 @@ export class LocationService {
     }));
   }
 
-  updateLocation(locationToUpdate: any): Promise<any> {
+  patchObject(locationToUpdate: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.datastore.findRecord(Location, locationToUpdate.id).subscribe((location: Location) => {
         location.name = locationToUpdate.name,
@@ -36,16 +56,7 @@ export class LocationService {
     });
   }
 
-  getLocations(): Promise<any> {
-    return new Promise(((resolve, reject) => {
-      this.datastore.findAll(Location, { }).subscribe(
-        (locations: JsonApiQueryData<Location>) => resolve(locations.getModels())
-      );
-    }));
+  deleteObject(id: string) {
+    this.datastore.deleteRecord(Location, id).subscribe();
   }
-
-  deleteLocation(location: Location) {
-    this.datastore.deleteRecord(Location, location.id).subscribe();
-  }
-
 }

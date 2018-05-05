@@ -19,16 +19,12 @@
             [latitude]="m.lat"
             [longitude]="m.lng"
             [label]="m.label"
-            [markerDraggable]="m.draggable"
-            (dragEnd)="markerDragEnd(m, $event)">
-
+            [markerDraggable]="m.draggable">
         </agm-marker>
       </agm-map>
     </div>
-    <ng-template #locationList>
-      <app-location-list [locations]="locations">
-
-      </app-location-list>
-    </ng-template>
+      <ng-template #locationList>
+        <app-data-table [objectType]="specificObjectName" [columnAttributes]="columnAttributes" [possibleActions]="actionsForTable"></app-data-table>
+      </ng-template>
   </mat-card-content>
 </mat-card>

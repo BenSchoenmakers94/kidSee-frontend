@@ -1,3 +1,4 @@
+import { AbstractObjectService } from './services/abstract-object.service';
 import { EditDialogComponent } from './dialogs/edit-dialog/edit-dialog.component';
 import { Datastore } from './services/datastore';
 import { AuthService } from './services/auth.service';
@@ -57,6 +58,7 @@ import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { LocationListComponent } from './components/home/location-list/location-list.component';
 import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
 import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';
+import { DataTableComponent } from './generics/data-table/data-table.component';
 
 @NgModule({
   exports: [
@@ -109,7 +111,8 @@ export class AngularMaterialModule {}
     LocationListComponent,
     EditDialogComponent,
     RemoveDialogComponent,
-    CreateDialogComponent
+    CreateDialogComponent,
+    DataTableComponent
   ],
   imports: [
     BrowserModule,
@@ -139,7 +142,8 @@ export class AngularMaterialModule {}
     LocationListComponent,
     EditDialogComponent,
     RemoveDialogComponent,
-    CreateDialogComponent
+    CreateDialogComponent,
+    DataTableComponent
   ],
   providers: [
     Datastore,
@@ -150,7 +154,8 @@ export class AngularMaterialModule {}
       useClass: TokenInterceptor,
       multi: true
     },
-    LocationService
+    LocationService,
+    AbstractObjectService
   ],
   bootstrap: [AppComponent]
 })

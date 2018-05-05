@@ -1,3 +1,5 @@
+import { JsonApiModel } from 'angular2-jsonapi';
+import { AbstractObjectService } from './../../services/abstract-object.service';
 import { LocationService } from './../../services/location.service';
 import { Location } from './../../models/location';
 import { Component, OnInit, Inject } from '@angular/core';
@@ -12,13 +14,15 @@ export class RemoveDialogComponent implements OnInit {
   ngOnInit(): void { }
 
   constructor(public dialogRef: MatDialogRef<RemoveDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public dataService: LocationService) { }
+    @Inject(MAT_DIALOG_DATA) public data: JsonApiModel, public abstractObjectService: AbstractObjectService) { }
 
   onNoClick(): void {
   this.dialogRef.close();
   }
 
   confirmDelete(): void {
-  this.dataService.deleteLocation(this.data);
+    console.log(this.data);
+    const specificObjectService = this.abstractObjectService.getObject(this.data.modelConfig.type);
+    specificObjectService.deleteObject(this.data.id);
   }
 }

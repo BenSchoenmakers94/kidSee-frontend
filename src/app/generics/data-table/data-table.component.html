@@ -1,0 +1,34 @@
+<mat-table #table [dataSource]="objectData" matSort class="mat-cell">
+
+  <div 
+    *ngFor="let column of displayedColumns; let i=index">
+    <ng-container 
+      *ngIf="i < displayedColumns.length - 1"
+      matColumnDef={{column}}>
+      <div >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
+        <mat-cell *matCellDef="let row" >{{getAttributeFromRow(row, column)}}</mat-cell>
+      </div>
+  </ng-container>
+
+  </div>
+  
+
+  <!-- actions -->
+  <ng-container matColumnDef="Actions">
+    <mat-header-cell *matHeaderCellDef>
+    </mat-header-cell>
+    
+    <mat-cell *matCellDef="let row">
+      <button 
+        *ngFor="let action of possibleActions" 
+        mat-icon-button color="accent" (click)="handleAction(action, row)">
+        <mat-icon aria-label=action>{{action}}</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator [length]="objectData?.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" ></mat-paginator>
