@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs/Observable';
-import { Location } from './../models/location';
-import { Datastore } from './datastore';
+import { Location } from '../../models/location';
+import { Datastore } from '../datastore';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JsonApiQueryData, JsonApiModel } from 'angular2-jsonapi';
-import { BaseService } from './base/base.service';
+import { BaseService } from '../base/base.service';
 
 @Injectable()
 export class LocationService extends BaseService {

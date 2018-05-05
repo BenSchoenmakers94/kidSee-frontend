@@ -1,4 +1,4 @@
-import { LocationService } from './location.service';
+import { LocationService } from './locationService/location.service';
 import { Injectable } from '@angular/core';
 import { BaseService } from './base/base.service';
 

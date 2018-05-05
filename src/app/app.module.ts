@@ -53,7 +53,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
 import { AgmCoreModule } from '@agm/core';
-import { LocationService } from './services/location.service';
+import { LocationService } from './services//locationService/location.service';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
 import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';

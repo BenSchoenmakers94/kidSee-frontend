@@ -1,6 +1,4 @@
 import { JsonApiModel } from 'angular2-jsonapi';
-import { Location } from './../../models/location';
-import { LocationService } from './../../services/location.service';
 import { Datastore } from './../../services/datastore';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';

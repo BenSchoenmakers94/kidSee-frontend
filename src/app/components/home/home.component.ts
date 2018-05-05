@@ -5,7 +5,6 @@ import { AbstractObjectService } from './../../services/abstract-object.service'
 import { EditDialogComponent } from './../../dialogs/edit-dialog/edit-dialog.component';
 import { MatDialog } from '@angular/material';
 import { Location } from './../../models/location';
-import { LocationService } from './../../services/location.service';
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { CreateDialogComponent } from '../../dialogs/create-dialog/create-dialog.component';
