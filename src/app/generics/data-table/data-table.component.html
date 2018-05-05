@@ -1,5 +1,12 @@
-<mat-table #table [dataSource]="objectData" matSort class="mat-cell">
+<div class="example-container mat-elevation-z8">
+  <div class="example-header">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+</div>
 
+<mat-table #table [dataSource]="objectData" matSort class="mat-cell mat-elevation-z8">
   <div 
     *ngFor="let column of displayedColumns; let i=index">
     <ng-container 

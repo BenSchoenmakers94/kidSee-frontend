@@ -5,7 +5,7 @@ import { ColumnAttribute } from './../column-attribute';
 import { RemoveDialogComponent } from '../../dialogs/remove-dialog/remove-dialog.component';
 import { EditDialogComponent } from '../../dialogs/edit-dialog/edit-dialog.component';
 import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatInput } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
 
@@ -22,14 +22,17 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatInput) filterInput: MatInput;
 
   objectData: any[];
+  objectDataLocalFiltered: any[];
   displayedColumns: string[];
   specificObjectService: BaseService;
   pageNumber: number;
   pageSize: number;
   pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
   maxObjectsLengthInStorage: number;
+  maxObjectsLengthInStorageCopy: number;
 
   constructor(public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -41,9 +44,9 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.pageSize = 10;
     this.displayedColumns = [];
     this.objectData = [];
+    this.objectDataLocalFiltered = [];
     this.initColumns();
     this.receiveAllData().then(result => {
-      this.maxObjectsLengthInStorage = result.length;
       this.checkForChanges(result);
     });
    }
@@ -58,22 +61,45 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
 
     this.paginator.page.subscribe(next => {
-      this.pageNumber = this.paginator._pageIndex + 1;
-      this.pageSize = this.paginator.pageSize;
-      this.receivePageData(this.pageNumber, this.pageSize).then(result => {
+      if (!this.filterInput.value) {
+        this.paginator.length = this.maxObjectsLengthInStorageCopy;
+        this.pageNumber = this.paginator._pageIndex + 1;
+        this.pageSize = this.paginator.pageSize;
+        this.receivePageData(this.pageNumber, this.pageSize).then(result => {
+        this.checkForChanges(
+        this.sortDataWith(
+        this.sort.direction,
+        this.sort.active,
+        result));
+      });
+      } else {
         this.checkForChanges(
           this.sortDataWith(
           this.sort.direction,
           this.sort.active,
-          result));
-      });
+          this.receiveLocalPageData(this.paginator.pageIndex + 1, this.paginator.pageSize)));
+      }
     });
+  }
+
+  receiveLocalPageData(pageNumber: number, pageSize: number): any[] {
+    const returnableObjects = this.objectDataLocalFiltered;
+    let startIndex = (pageNumber - 1) * pageSize;
+    if (startIndex < 0) {
+      startIndex = 0;
+    }
+    const endIndex = pageNumber * pageSize;
+    const test = returnableObjects.slice(startIndex, endIndex);
+    return test;
   }
 
   receiveAllData(): Promise<JsonApiModel[]> {
     return new Promise(resolve => {
       this.specificObjectService.getAllObjects().subscribe({
-        next: objects => resolve(objects)
+        next: objects => {
+          resolve(objects);
+          this.maxObjectsLengthInStorageCopy = objects.length;
+        }
       });
     });
   }
@@ -93,7 +119,27 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.displayedColumns.push('Actions');
   }
 
-  getAttributeFromRow(object: any, column: string) {
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.receiveAllData().then(result => {
+      const approvedObjects = result.filter(object => this.compareValues(object, filterValue));
+      this.paginator.length = approvedObjects.length;
+      this.paginator.pageIndex = 0;
+      this.objectDataLocalFiltered = approvedObjects;
+      this.checkForChanges(approvedObjects.slice(0, this.paginator.pageSize));
+    });
+  }
+
+  compareValues(object: any, lowerCasedValue: string): boolean {
+    for (let index = 0; index < this.columnAttributes.length; index++) {
+      const value = this.getAttributeFromRow(object, this.columnAttributes[index].columnName);
+      if (value.toLowerCase().includes(lowerCasedValue)) {
+        return true;
+      }
+    }
+  }
+
+  getAttributeFromRow(object: any, column: string): string {
     for (let index = 0; index < this.columnAttributes.length; index++) {
       if (this.columnAttributes[index].columnName === column) {
         return object[this.columnAttributes[index].attributeName];
