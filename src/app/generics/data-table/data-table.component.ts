@@ -5,7 +5,7 @@ import { ColumnAttribute } from './../column-attribute';
 import { RemoveDialogComponent } from '../../dialogs/remove-dialog/remove-dialog.component';
 import { EditDialogComponent } from '../../dialogs/edit-dialog/edit-dialog.component';
 import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
 
@@ -21,6 +21,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   @Input() possibleActions: string[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   objectData: any[];
   displayedColumns: string[];
@@ -47,12 +48,24 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
    }
 
-   ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe({
+      next: sort => this.checkForChanges(
+        this.sortDataWith(
+          this.sort.direction,
+          this.sort.active,
+          this.objectData))
+    });
+
     this.paginator.page.subscribe(next => {
       this.pageNumber = this.paginator._pageIndex + 1;
       this.pageSize = this.paginator.pageSize;
-      this.receivePageData().then(result => {
-        this.checkForChanges(result);
+      this.receivePageData(this.pageNumber, this.pageSize).then(result => {
+        this.checkForChanges(
+          this.sortDataWith(
+          this.sort.direction,
+          this.sort.active,
+          result));
       });
     });
   }
@@ -65,9 +78,9 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  receivePageData(): Promise<JsonApiModel[]> {
+  receivePageData(pageNumber: number, pageSize: number): Promise<JsonApiModel[]> {
     return new Promise(resolve => {
-      this.specificObjectService.getObjectsPage(this.pageNumber, this.pageSize).subscribe({
+      this.specificObjectService.getObjectsPage(pageNumber, pageSize).subscribe({
         next: objects => resolve(objects)
       });
     });
@@ -156,5 +169,28 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   checkForChanges(objectData) {
     this.renewList(objectData);
     this.changeDetectorRefs.detectChanges();
+  }
+
+  sortDataWith(direction: string, columnToSort: string, objects: any[]): any[] {
+    let sortableProperty: string;
+    for (let index = 0; index < this.columnAttributes.length; index++) {
+      if (this.columnAttributes[index].columnName === columnToSort) {
+        sortableProperty = this.columnAttributes[index].attributeName;
+        break;
+      }
+    }
+
+    objects.sort((objectA: any, objectB: any) => {
+      return this.compare(
+        objectA,
+        objectB,
+        sortableProperty,
+        (direction !== 'asc'));
+    });
+    return objects;
+  }
+
+  compare(objectA: any, objectB: any, sortableProperty: string, isNotAsc: boolean): number {
+    return (objectA[sortableProperty] < objectB[sortableProperty] ? -1 : 1) * (isNotAsc ? -1 : 1);
   }
 }
