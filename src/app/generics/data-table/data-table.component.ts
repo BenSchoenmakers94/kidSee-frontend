@@ -24,15 +24,15 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatInput) filterInput: MatInput;
 
-  objectData: any[];
-  objectDataLocalFiltered: any[];
-  displayedColumns: string[];
-  specificObjectService: BaseService;
-  pageNumber: number;
-  pageSize: number;
-  pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
-  maxObjectsLengthInStorage: number;
-  maxObjectsLengthInStorageCopy: number;
+  private objectData: any[];
+  private objectDataLocalFiltered: any[];
+  private displayedColumns: string[];
+  private specificObjectService: BaseService;
+  private pageNumber: number;
+  private pageSize: number;
+  private pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
+  private maxObjectsLengthInStorage: number;
+  private maxObjectsLengthInStorageCopy: number;
 
   constructor(public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -82,7 +82,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  receiveLocalPageData(pageNumber: number, pageSize: number): any[] {
+  private receiveLocalPageData(pageNumber: number, pageSize: number): any[] {
     const returnableObjects = this.objectDataLocalFiltered;
     let startIndex = (pageNumber - 1) * pageSize;
     if (startIndex < 0) {
@@ -93,7 +93,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     return test;
   }
 
-  receiveAllData(): Promise<JsonApiModel[]> {
+  private receiveAllData(): Promise<JsonApiModel[]> {
     return new Promise(resolve => {
       this.specificObjectService.getAllObjects().subscribe({
         next: objects => {
@@ -104,7 +104,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  receivePageData(pageNumber: number, pageSize: number): Promise<JsonApiModel[]> {
+  private receivePageData(pageNumber: number, pageSize: number): Promise<JsonApiModel[]> {
     return new Promise(resolve => {
       this.specificObjectService.getObjectsPage(pageNumber, pageSize).subscribe({
         next: objects => resolve(objects)
@@ -112,14 +112,14 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  initColumns() {
+  private initColumns() {
     this.columnAttributes.forEach(columnAttribute => {
       this.displayedColumns.push(columnAttribute.columnName);
     });
     this.displayedColumns.push('Actions');
   }
 
-  applyFilter(filterValue: string) {
+  private applyFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
     this.receiveAllData().then(result => {
       const approvedObjects = result.filter(object => this.compareValues(object, filterValue));
@@ -130,7 +130,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  compareValues(object: any, lowerCasedValue: string): boolean {
+  private compareValues(object: any, lowerCasedValue: string): boolean {
     for (let index = 0; index < this.columnAttributes.length; index++) {
       const value = this.getAttributeFromRow(object, this.columnAttributes[index].columnName);
       if (value.toLowerCase().includes(lowerCasedValue)) {
@@ -139,7 +139,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  getAttributeFromRow(object: any, column: string): string {
+  private getAttributeFromRow(object: any, column: string): string {
     for (let index = 0; index < this.columnAttributes.length; index++) {
       if (this.columnAttributes[index].columnName === column) {
         return object[this.columnAttributes[index].attributeName];
@@ -147,7 +147,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     }
   }
 
-  handleAction(actionToDo: string, object: any) {
+  private handleAction(actionToDo: string, object: any) {
     switch (actionToDo) {
       case 'create': {
         this.createObject(object);
@@ -165,13 +165,13 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
 
-  createObject(objectToCreate: any) {
+  private createObject(objectToCreate: any) {
     const dialogRef = this.dialog.open(CreateDialogComponent, {
       data: objectToCreate //TODO - Update table
     });
   }
 
-  startEdit(objectToEdit: any) {
+  private startEdit(objectToEdit: any) {
     const tempObjectClone = _.cloneDeep(objectToEdit);
     const dialogRef = this.dialog.open(EditDialogComponent, {
       data: tempObjectClone
@@ -184,7 +184,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  remove(objectToRemove: any) {
+  private remove(objectToRemove: any) {
     const dialogRef = this.dialog.open(RemoveDialogComponent, {
       data: objectToRemove
     });
@@ -196,7 +196,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  returnObjectState(oldObject: any, newObject: any) {
+  private returnObjectState(oldObject: any, newObject: any) {
     const newKeys = Object.keys(newObject);
     for (let index = 0; index < newKeys.length; index++) {
       oldObject[newKeys[index]] = newObject[newKeys[index]];
@@ -204,7 +204,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
 
-  renewList(objectDataToRenew: any[]) {
+  private renewList(objectDataToRenew: any[]) {
     const tempObjectData = objectDataToRenew;
     this.objectData = [];
       tempObjectData.forEach(objectToAdd => {
@@ -212,12 +212,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
       });
   }
 
-  checkForChanges(objectData) {
+  private checkForChanges(objectData) {
     this.renewList(objectData);
     this.changeDetectorRefs.detectChanges();
   }
 
-  sortDataWith(direction: string, columnToSort: string, objects: any[]): any[] {
+  private sortDataWith(direction: string, columnToSort: string, objects: any[]): any[] {
     let sortableProperty: string;
     for (let index = 0; index < this.columnAttributes.length; index++) {
       if (this.columnAttributes[index].columnName === columnToSort) {
@@ -236,7 +236,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     return objects;
   }
 
-  compare(objectA: any, objectB: any, sortableProperty: string, isNotAsc: boolean): number {
+  private compare(objectA: any, objectB: any, sortableProperty: string, isNotAsc: boolean): number {
     return (objectA[sortableProperty] < objectB[sortableProperty] ? -1 : 1) * (isNotAsc ? -1 : 1);
   }
 }
