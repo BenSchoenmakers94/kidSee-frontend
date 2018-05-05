@@ -55,7 +55,6 @@ import { HomeComponent } from './components/home/home.component';
 import { AgmCoreModule } from '@agm/core';
 import { LocationService } from './services/location.service';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
-import { LocationListComponent } from './components/home/location-list/location-list.component';
 import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
 import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';
 import { DataTableComponent } from './generics/data-table/data-table.component';
@@ -108,7 +107,6 @@ export class AngularMaterialModule {}
     UserUpdateComponent,
     UserReadComponent,
     HomeComponent,
-    LocationListComponent,
     EditDialogComponent,
     RemoveDialogComponent,
     CreateDialogComponent,
@@ -139,7 +137,6 @@ export class AngularMaterialModule {}
     UserCreateComponent,
     UserUpdateComponent,
     UserReadComponent,
-    LocationListComponent,
     EditDialogComponent,
     RemoveDialogComponent,
     CreateDialogComponent,
