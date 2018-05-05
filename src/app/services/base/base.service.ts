@@ -6,7 +6,9 @@ import { Injectable } from '@angular/core';
 export abstract class BaseService {
     constructor() { }
 
-    abstract getObjects(pageNumber: number, pageSize: number): Observable<JsonApiModel[]>;
+    abstract getAllObjects(): Observable<JsonApiModel[]>;
+
+    abstract getObjectsPage(pageNumber: number, pageSize: number): Observable<JsonApiModel[]>;
 
     abstract getObjectFromId(id: string): Observable<JsonApiModel>;
 

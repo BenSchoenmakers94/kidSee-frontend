@@ -8,11 +8,20 @@ import { BaseService } from './base/base.service';
 
 @Injectable()
 export class LocationService extends BaseService {
+
   constructor(private datastore: Datastore, private http: HttpClient) {
     super();
    }
 
-  getObjects(pageNumber?: number, pageSize?: number): Observable<JsonApiModel[]> {
+  getAllObjects(): Observable<JsonApiModel[]> {
+    return Observable.create((observer) => {
+      this.datastore.findAll(Location, { }).subscribe(
+        (locations: JsonApiQueryData<Location>) => observer.next(locations.getModels())
+      );
+    });
+  }
+
+  getObjectsPage(pageNumber?: number, pageSize?: number): Observable<JsonApiModel[]> {
       return Observable.create((observer) => {
         this.datastore.findAll(Location, {
           page: pageNumber,

@@ -4,8 +4,8 @@ import { CreateDialogComponent } from './../../dialogs/create-dialog/create-dial
 import { ColumnAttribute } from './../column-attribute';
 import { RemoveDialogComponent } from '../../dialogs/remove-dialog/remove-dialog.component';
 import { EditDialogComponent } from '../../dialogs/edit-dialog/edit-dialog.component';
-import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, ViewChild } from '@angular/core';
+import { MatDialog, MatPaginator } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
 
@@ -15,10 +15,12 @@ import { BaseService } from '../../services/base/base.service';
   styleUrls: ['./data-table.component.css']
 })
 
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements AfterViewInit, OnInit {
   @Input() objectType: string;
   @Input() columnAttributes: ColumnAttribute[];
   @Input() possibleActions: string[];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   objectData: any[];
   displayedColumns: string[];
@@ -26,6 +28,7 @@ export class DataTableComponent implements OnInit {
   pageNumber: number;
   pageSize: number;
   pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
+  maxObjectsLengthInStorage: number;
 
   constructor(public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -38,14 +41,33 @@ export class DataTableComponent implements OnInit {
     this.displayedColumns = [];
     this.objectData = [];
     this.initColumns();
-    this.receiveData().then(result => {
+    this.receiveAllData().then(result => {
+      this.maxObjectsLengthInStorage = result.length;
       this.checkForChanges(result);
     });
    }
 
-  receiveData(): Promise<JsonApiModel[]> {
+   ngAfterViewInit(): void {
+    this.paginator.page.subscribe(next => {
+      this.pageNumber = this.paginator._pageIndex + 1;
+      this.pageSize = this.paginator.pageSize;
+      this.receivePageData().then(result => {
+        this.checkForChanges(result);
+      });
+    });
+  }
+
+  receiveAllData(): Promise<JsonApiModel[]> {
     return new Promise(resolve => {
-      this.specificObjectService.getObjects(this.pageNumber, this.pageSize).subscribe({
+      this.specificObjectService.getAllObjects().subscribe({
+        next: objects => resolve(objects)
+      });
+    });
+  }
+
+  receivePageData(): Promise<JsonApiModel[]> {
+    return new Promise(resolve => {
+      this.specificObjectService.getObjectsPage(this.pageNumber, this.pageSize).subscribe({
         next: objects => resolve(objects)
       });
     });

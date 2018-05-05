@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
   private receiveData() {
     this.markers = [];
     this.locations.length = 0;
-    this.specificObjectService.getObjects(null, null).subscribe({
+    this.specificObjectService.getAllObjects().subscribe({
       next: locations =>
       locations.forEach(location => {
         this.locations.push(location);
