@@ -2,10 +2,10 @@ import { HomeComponent } from './../home/home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserListComponent } from '../user-list/user-list.component';
-import { UserCreateComponent } from "../user-create/user-create.component";
+import { UserCreateComponent } from "../user-list/user-create/user-create.component";
 import { LoginComponent } from "../login/login.component";
-import { UserUpdateComponent } from "../user-update/user-update.component";
-import { UserReadComponent } from "../user-read/user-read.component";
+import { UserUpdateComponent } from "../user-list/user-update/user-update.component";
+import { UserReadComponent } from "../user-list/user-read/user-read.component";
 
 const routes: Routes = [
   {

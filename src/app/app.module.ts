@@ -44,9 +44,9 @@ import {
 import { AppComponent } from './app.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { AppRoutingModule } from './components/app-routing/app-routing.module';
-import { UserCreateComponent } from './components/user-create/user-create.component';
-import { UserUpdateComponent } from './components/user-update/user-update.component';
-import { UserReadComponent } from './components/user-read/user-read.component';
+import { UserCreateComponent } from './components/user-list/user-create/user-create.component';
+import { UserUpdateComponent } from './components/user-list/user-update/user-update.component';
+import { UserReadComponent } from './components/user-list/user-read/user-read.component';
 import { UserService } from './services/userService/user-service.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';

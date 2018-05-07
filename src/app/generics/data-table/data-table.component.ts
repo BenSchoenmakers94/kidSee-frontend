@@ -47,6 +47,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.objectDataLocalFiltered = [];
     this.initColumns();
     this.receiveAllData().then(result => {
+      this.maxObjectsLengthInStorage = result.length;
       this.checkForChanges(result);
     });
    }
@@ -133,7 +134,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private compareValues(object: any, lowerCasedValue: string): boolean {
     for (let index = 0; index < this.columnAttributes.length; index++) {
       const value = this.getAttributeFromRow(object, this.columnAttributes[index].columnName);
-      if (value.toLowerCase().includes(lowerCasedValue)) {
+      if (value.toString().toLowerCase().includes(lowerCasedValue)) {
         return true;
       }
     }
