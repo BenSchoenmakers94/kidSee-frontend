@@ -8,6 +8,8 @@ import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, A
 import { MatDialog, MatPaginator, MatSort, MatInput } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
+import { UserEditDialogComponent } from "../../dialogs/useredit-dialog/useredit-dialog.component";
+import { UserRemoveDialogComponent } from "../../dialogs/userremove-dialog/userremove-dialog.component";
 
 @Component({
   selector: 'app-data-table',
@@ -174,9 +176,16 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private startEdit(objectToEdit: any) {
     const tempObjectClone = _.cloneDeep(objectToEdit);
-    const dialogRef = this.dialog.open(EditDialogComponent, {
-      data: tempObjectClone
-    });
+    //TODO: delete this if when modular dialogs are available
+    if(tempObjectClone.username != null) {
+      const dialogRef = this.dialog.open(UserEditDialogComponent, {
+        data: tempObjectClone
+      });
+    }else {
+      const dialogRef = this.dialog.open(EditDialogComponent, {
+        data: tempObjectClone
+      });
+    }
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
         this.returnObjectState(objectToEdit, tempObjectClone);
@@ -186,9 +195,18 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
   private remove(objectToRemove: any) {
-    const dialogRef = this.dialog.open(RemoveDialogComponent, {
-      data: objectToRemove
-    });
+
+    //TODO: delete this if when modular dialogs are available
+    if(objectToRemove.username != null) {
+      const dialogRef = this.dialog.open(UserRemoveDialogComponent, {
+        data: objectToRemove
+      });
+    }
+    else {
+      const dialogRef = this.dialog.open(RemoveDialogComponent, {
+        data: objectToRemove
+      });
+    }
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
         this.objectData.splice(this.objectData.indexOf(objectToRemove), 1);

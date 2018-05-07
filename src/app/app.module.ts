@@ -44,9 +44,6 @@ import {
 import { AppComponent } from './app.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { AppRoutingModule } from './components/app-routing/app-routing.module';
-import { UserCreateComponent } from './components/user-list/user-create/user-create.component';
-import { UserUpdateComponent } from './components/user-list/user-update/user-update.component';
-import { UserReadComponent } from './components/user-list/user-read/user-read.component';
 import { UserService } from './services/userService/user-service.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -58,6 +55,9 @@ import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
 import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';
 import { DataTableComponent } from './generics/data-table/data-table.component';
+import { UserEditDialogComponent } from "./dialogs/useredit-dialog/useredit-dialog.component";
+import { UserCreateDialogComponent } from "./dialogs/usercreate-dialog/usercreate-dialog.component";
+import { UserRemoveDialogComponent } from "./dialogs/userremove-dialog/userremove-dialog.component";
 
 @NgModule({
   exports: [
@@ -103,14 +103,14 @@ export class AngularMaterialModule {}
     AppComponent,
     LoginComponent,
     UserListComponent,
-    UserCreateComponent,
-    UserUpdateComponent,
-    UserReadComponent,
     HomeComponent,
     EditDialogComponent,
     RemoveDialogComponent,
     CreateDialogComponent,
-    DataTableComponent
+    DataTableComponent,
+    UserEditDialogComponent,
+    UserCreateDialogComponent,
+    UserRemoveDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -134,13 +134,13 @@ export class AngularMaterialModule {}
     AppComponent,
     LoginComponent,
     UserListComponent,
-    UserCreateComponent,
-    UserUpdateComponent,
-    UserReadComponent,
     EditDialogComponent,
     RemoveDialogComponent,
     CreateDialogComponent,
-    DataTableComponent
+    DataTableComponent,
+    UserEditDialogComponent,
+    UserCreateDialogComponent,
+    UserRemoveDialogComponent
   ],
   providers: [
     Datastore,
