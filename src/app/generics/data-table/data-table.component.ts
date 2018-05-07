@@ -177,12 +177,13 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private startEdit(objectToEdit: any) {
     const tempObjectClone = _.cloneDeep(objectToEdit);
     //TODO: delete this if when modular dialogs are available
+    var dialogRef;
     if(tempObjectClone.username != null) {
-      const dialogRef = this.dialog.open(UserEditDialogComponent, {
+      dialogRef = this.dialog.open(UserEditDialogComponent, {
         data: tempObjectClone
       });
     }else {
-      const dialogRef = this.dialog.open(EditDialogComponent, {
+      dialogRef = this.dialog.open(EditDialogComponent, {
         data: tempObjectClone
       });
     }
@@ -197,13 +198,14 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private remove(objectToRemove: any) {
 
     //TODO: delete this if when modular dialogs are available
+    var dialogRef;
     if(objectToRemove.username != null) {
-      const dialogRef = this.dialog.open(UserRemoveDialogComponent, {
+      dialogRef = this.dialog.open(UserRemoveDialogComponent, {
         data: objectToRemove
       });
     }
     else {
-      const dialogRef = this.dialog.open(RemoveDialogComponent, {
+      dialogRef = this.dialog.open(RemoveDialogComponent, {
         data: objectToRemove
       });
     }
