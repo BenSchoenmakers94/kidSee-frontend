@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseService } from "../../services/base/base.service";
 import { ColumnAttribute } from "../../generics/column-attribute";
-import {AbstractObjectService} from "../../services/abstract-object.service";
+import { AbstractObjectService } from "../../services/abstract-object.service";
 
 @Component({
   selector: 'app-user-list',

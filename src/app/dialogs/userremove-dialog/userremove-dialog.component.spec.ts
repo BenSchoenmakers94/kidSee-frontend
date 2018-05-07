@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RemoveDialogComponent } from './remove-dialog.component';
+import { UserRemoveDialogComponent } from './userremove-dialog.component';
 
-describe('RemoveDialogComponent', () => {
-  let component: RemoveDialogComponent;
-  let fixture: ComponentFixture<RemoveDialogComponent>;
+describe('UserRemoveDialogComponent', () => {
+  let component: UserRemoveDialogComponent;
+  let fixture: ComponentFixture<UserRemoveDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RemoveDialogComponent ]
+      declarations: [ UserRemoveDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RemoveDialogComponent);
+    fixture = TestBed.createComponent(UserRemoveDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

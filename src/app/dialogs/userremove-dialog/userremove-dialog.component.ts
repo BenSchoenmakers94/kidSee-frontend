@@ -5,13 +5,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-remove-dialog',
-  templateUrl: './remove-dialog.component.html',
-  styleUrls: ['./remove-dialog.component.css']
+  templateUrl: './userremove-dialog.component.html',
+  styleUrls: ['./userremove-dialog.component.css']
 })
-export class RemoveDialogComponent implements OnInit {
+export class UserRemoveDialogComponent implements OnInit {
   ngOnInit(): void { }
 
-  constructor(public dialogRef: MatDialogRef<RemoveDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<UserRemoveDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: JsonApiModel, public abstractObjectService: AbstractObjectService) { }
 
   onNoClick(): void {

@@ -7,17 +7,17 @@ import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-dialog',
-  templateUrl: './edit-dialog.component.html',
-  styleUrls: ['./edit-dialog.component.css']
+  templateUrl: './useredit-dialog.component.html',
+  styleUrls: ['./useredit-dialog.component.css']
 })
-export class EditDialogComponent implements OnInit {
+export class UserEditDialogComponent implements OnInit {
   formControl = new FormControl('', [
     Validators.required
     // Validators.email,
   ]);
 
   ngOnInit(): void { }
-  constructor(public dialogRef: MatDialogRef<EditDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<UserEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: JsonApiModel, public abstractObjectService: AbstractObjectService) { }
 
     getErrorMessage() {

@@ -1,25 +1,25 @@
 <div class="container">
-  <h3 mat-dialog-title>Locatie wijzigen:</h3>
+  <h3 mat-dialog-title>User wijzigen:</h3>
 
   <form class="mat-dialog-content" (ngSubmit)="submit()" #formControl="ngForm">
 
     <div class="form">
       <mat-form-field color="accent">
-        <input matInput #input class="form-control" placeholder="Name" [(ngModel)]="data.name" name="name" required >
+        <input matInput #input class="form-control" placeholder="Username" [(ngModel)]="data.username" name="username" required >
         <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
     </div>
 
     <div class="form">
       <mat-form-field color="accent">
-        <textarea matInput #inputstate class="form-control" placeholder="Description" [(ngModel)]="data.description" name="description" required ></textarea>
+        <textarea matInput #inputstate class="form-control" placeholder="Postcode" [(ngModel)]="data.postal_code" name="postal_code" required ></textarea>
         <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
     </div>
 
     <div class="form">
       <mat-form-field color="accent">
-        <textarea matInput #inputstate class="form-control" placeholder="Address" [(ngModel)]="data.address" name="address" required ></textarea>
+        <textarea matInput #inputstate class="form-control" placeholder="geboortedatum" [(ngModel)]="data.birthdate" name="birthdate" required ></textarea>
         <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
     </div>
