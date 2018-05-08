@@ -109,15 +109,14 @@ export class HomeComponent implements OnInit {
 
   private mapClicked($event: MouseEvent) {
     const newMarker = {
-      lat: $event.coords.lat.toFixed(8),
-      lng: $event.coords.lng.toFixed(8),
+      lat: $event.coords.lat,
+      lng: $event.coords.lng,
       label: 'NIEUW',
       draggable: false
     };
     this.markers.push(newMarker);
     this.getGeoLocation(newMarker).then(newLocation => {
       newLocation.modelConfig.type = 'locations';
-      newLocation.locationType = { id: 777};
       const dialogRef = this.dialog.open(CreateDialogComponent, {
         data: newLocation
       });
@@ -182,8 +181,8 @@ export class HomeComponent implements OnInit {
 }
 
 interface Marker {
-  lat: string;
-  lng: string;
+  lat: number;
+  lng: number;
   buildingNum?: string;
   streetName?: string;
   cityName?: string;
