@@ -1,5 +1,6 @@
+import { LocationType } from './../../models/locationType';
+import { Location } from './../../models/location';
 import { Observable } from 'rxjs/Observable';
-import { Location } from '../../models/location';
 import { Datastore } from '../datastore';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -38,17 +39,21 @@ export class LocationService extends BaseService {
     });
   }
 
-  postObject(location: any): Promise<any> {
+  postObject(location: Location): Promise<any> {
     return new Promise(((resolve, reject) => {
       // tslint:disable-next-line:prefer-const
-      let newLocation = this.datastore.createRecord(Location, {
-        'name': location.name,
-        'lon': location.lon,
-        'lat': location.lat,
-        'description': location.description,
-        'address': location.address
-      });
-      newLocation.save().subscribe();
+      let newLocationType = this.datastore.findRecord(LocationType, '1').subscribe( // wordt onderwater nog niets mee gedaan
+        (locationType: LocationType) => {
+          const newLocation = this.datastore.createRecord(Location, {
+            'name': location.name,
+            'lon': location.lon,
+            'lat': location.lat,
+            'description': location.description,
+            'address': location.address,
+            'location-type': locationType
+          });
+          newLocation.save().subscribe();
+        });
     }));
   }
 
@@ -60,6 +65,7 @@ export class LocationService extends BaseService {
         location.lat = locationToUpdate.lat,
         location.description = locationToUpdate.description,
         location.address = locationToUpdate.address;
+        location.locationType = locationToUpdate.locationType;
         location.save().subscribe();
        });
     });

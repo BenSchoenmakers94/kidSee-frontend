@@ -1,3 +1,4 @@
+import { LocationType } from './../../models/locationType';
 import { JsonApiModel } from 'angular2-jsonapi';
 import { Observable } from 'rxjs/Observable';
 import { ColumnAttribute } from './../../generics/column-attribute';
@@ -116,7 +117,7 @@ export class HomeComponent implements OnInit {
     this.markers.push(newMarker);
     this.getGeoLocation(newMarker).then(newLocation => {
       newLocation.modelConfig.type = 'locations';
-      newLocation['location-type'] = {data: null};
+      newLocation.locationType = { id: 777};
       const dialogRef = this.dialog.open(CreateDialogComponent, {
         data: newLocation
       });
