@@ -7,17 +7,17 @@ import { AbstractObjectService } from '../../services/abstract-object.service';
 
 @Component({
   selector: 'app-create-dialog',
-  templateUrl: './create-dialog.component.html',
-  styleUrls: ['./create-dialog.component.css']
+  templateUrl: './usercreate-dialog.component.html',
+  styleUrls: ['./usercreate-dialog.component.css']
 })
-export class CreateDialogComponent implements OnInit {
+export class UserCreateDialogComponent implements OnInit {
   formControl = new FormControl('', [
     Validators.required
     // Validators.email,
   ]);
 
   ngOnInit(): void { }
-  constructor(public dialogRef: MatDialogRef<CreateDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<UserCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public abstractObjectService: AbstractObjectService) { }
 
     getErrorMessage() {
