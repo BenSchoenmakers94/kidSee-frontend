@@ -80,6 +80,7 @@ export class HomeComponent implements OnInit {
         this.markers.push({
           lat: location.lat,
           lng: location.lon,
+          iconUrl: '../../../assets/imgs/coins.png',
           draggable: false
         });
       })
@@ -94,7 +95,7 @@ export class HomeComponent implements OnInit {
     }, reject => { });
   }
 
-  private getLocationFromMarker(marker: Marker): Promise<any> {
+  public getLocationFromMarker(marker: Marker): Promise<any> {
     return new Promise((resolve, reject) => {
       this.locations.forEach(location => {
         if (location.lat === marker.lat) {
@@ -111,7 +112,7 @@ export class HomeComponent implements OnInit {
     const newMarker = {
       lat: $event.coords.lat,
       lng: $event.coords.lng,
-      label: 'NIEUW',
+      iconUrl: '../../../assets/imgs/Coins.png',
       draggable: false
     };
     this.markers.push(newMarker);
@@ -189,4 +190,6 @@ interface Marker {
   postalCode?: string;
   label?: string;
   draggable: boolean;
+  iconUrl: string;
+  visible?: boolean;
 }
