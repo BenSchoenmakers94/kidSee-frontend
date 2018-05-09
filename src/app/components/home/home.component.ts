@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit {
     const newMarker = {
       lat: $event.coords.lat,
       lng: $event.coords.lng,
-      iconUrl: '../../../assets/imgs/Coins.png',
+      iconUrl: '../../../assets/imgs/coins.png',
       draggable: false
     };
     this.markers.push(newMarker);
