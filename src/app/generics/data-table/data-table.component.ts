@@ -8,8 +8,8 @@ import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, A
 import { MatDialog, MatPaginator, MatSort, MatInput } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
-import { UserEditDialogComponent } from "../../dialogs/useredit-dialog/useredit-dialog.component";
-import { UserRemoveDialogComponent } from "../../dialogs/userremove-dialog/userremove-dialog.component";
+import { UserEditDialogComponent } from '../../dialogs/useredit-dialog/useredit-dialog.component';
+import { UserRemoveDialogComponent } from '../../dialogs/userremove-dialog/userremove-dialog.component';
 
 @Component({
   selector: 'app-data-table',
@@ -26,15 +26,16 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatInput) filterInput: MatInput;
 
-  private objectData: any[];
+  public objectData: any[];
   private objectDataLocalFiltered: any[];
-  private displayedColumns: string[];
+  public displayedColumns: string[];
   private specificObjectService: BaseService;
-  private pageNumber: number;
-  private pageSize: number;
-  private pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
-  private maxObjectsLengthInStorage: number;
+  public pageNumber: number;
+  public pageSize: number;
+  public pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
+  public maxObjectsLengthInStorage: number;
   private maxObjectsLengthInStorageCopy: number;
+  public objectAttributes: string[];
 
   constructor(public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -47,8 +48,8 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.displayedColumns = [];
     this.objectData = [];
     this.objectDataLocalFiltered = [];
-    this.initColumns();
     this.receiveAllData().then(result => {
+      this.initColumns(result[8]);
       this.maxObjectsLengthInStorage = result.length;
       this.checkForChanges(result);
     });
@@ -115,7 +116,8 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private initColumns() {
+  private initColumns(object: JsonApiModel) {
+    console.log(object.getAttributeNames());
     this.columnAttributes.forEach(columnAttribute => {
       this.displayedColumns.push(columnAttribute.columnName);
     });
@@ -177,12 +179,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private startEdit(objectToEdit: any) {
     const tempObjectClone = _.cloneDeep(objectToEdit);
     //TODO: delete this if when modular dialogs are available
-    var dialogRef;
-    if(tempObjectClone.username != null) {
+    let dialogRef;
+    if (tempObjectClone.username != null) {
       dialogRef = this.dialog.open(UserEditDialogComponent, {
         data: tempObjectClone
       });
-    }else {
+    } else {
       dialogRef = this.dialog.open(EditDialogComponent, {
         data: tempObjectClone
       });
@@ -198,13 +200,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private remove(objectToRemove: any) {
 
     //TODO: delete this if when modular dialogs are available
-    var dialogRef;
-    if(objectToRemove.username != null) {
+    let dialogRef;
+    if (objectToRemove.username != null) {
       dialogRef = this.dialog.open(UserRemoveDialogComponent, {
         data: objectToRemove
       });
-    }
-    else {
+    } else {
       dialogRef = this.dialog.open(RemoveDialogComponent, {
         data: objectToRemove
       });

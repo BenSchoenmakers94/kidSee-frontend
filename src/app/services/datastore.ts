@@ -1,3 +1,5 @@
+import { Theme } from './../models/theme';
+import { LocationType } from './../models/locationType';
 import { PostStatus } from './../models/postStatus';
 import { Injectable } from '@angular/core';
 import { JsonApiDatastoreConfig, JsonApiDatastore, DatastoreConfig } from 'angular2-jsonapi';
@@ -16,7 +18,9 @@ const config: DatastoreConfig = {
     comments: Comment,
     postStatuses: PostStatus,
     contentTypes: ContentType,
-    locations: Location
+    locations: Location,
+    'location-types': LocationType,
+    'themes': Theme
   }
 };
 

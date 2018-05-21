@@ -1,4 +1,3 @@
-import { LocationType } from './../../models/locationType';
 import { JsonApiModel } from 'angular2-jsonapi';
 import { Observable } from 'rxjs/Observable';
 import { ColumnAttribute } from './../../generics/column-attribute';
