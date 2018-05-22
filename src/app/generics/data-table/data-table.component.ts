@@ -1,4 +1,3 @@
-import { JsonApiModel } from 'angular2-jsonapi';
 import { AbstractObjectService } from './../../services/abstract-object.service';
 import { CreateDialogComponent } from './../../dialogs/create-dialog/create-dialog.component';
 import { ColumnAttribute } from './../column-attribute';
@@ -10,6 +9,7 @@ import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
 import { UserEditDialogComponent } from '../../dialogs/useredit-dialog/useredit-dialog.component';
 import { UserRemoveDialogComponent } from '../../dialogs/userremove-dialog/userremove-dialog.component';
+import { BaseModel } from '../../models/baseModel';
 
 @Component({
   selector: 'app-data-table',
@@ -37,7 +37,8 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private maxObjectsLengthInStorageCopy: number;
   public objectAttributes: string[];
 
-  constructor(public dialog: MatDialog,
+  constructor(
+    public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
     private abstractObjectService: AbstractObjectService) { }
 
@@ -70,12 +71,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         this.pageNumber = this.paginator._pageIndex + 1;
         this.pageSize = this.paginator.pageSize;
         this.receivePageData(this.pageNumber, this.pageSize).then(result => {
-        this.checkForChanges(
-        this.sortDataWith(
-        this.sort.direction,
-        this.sort.active,
-        result));
-      });
+          this.checkForChanges(
+          this.sortDataWith(
+          this.sort.direction,
+          this.sort.active,
+          result));
+        });
       } else {
         this.checkForChanges(
           this.sortDataWith(
@@ -93,11 +94,11 @@ export class DataTableComponent implements AfterViewInit, OnInit {
       startIndex = 0;
     }
     const endIndex = pageNumber * pageSize;
-    const test = returnableObjects.slice(startIndex, endIndex);
-    return test;
+    const localPageData = returnableObjects.slice(startIndex, endIndex);
+    return localPageData;
   }
 
-  private receiveAllData(): Promise<JsonApiModel[]> {
+  private receiveAllData(): Promise<BaseModel[]> {
     return new Promise(resolve => {
       this.specificObjectService.getAllObjects().subscribe({
         next: objects => {
@@ -108,7 +109,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private receivePageData(pageNumber: number, pageSize: number): Promise<JsonApiModel[]> {
+  private receivePageData(pageNumber: number, pageSize: number): Promise<BaseModel[]> {
     return new Promise(resolve => {
       this.specificObjectService.getObjectsPage(pageNumber, pageSize).subscribe({
         next: objects => resolve(objects)
@@ -116,11 +117,11 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private initColumns(object: JsonApiModel) {
-    console.log(object.getAttributeNames());
-    this.columnAttributes.forEach(columnAttribute => {
-      this.displayedColumns.push(columnAttribute.columnName);
-    });
+  private initColumns(object: BaseModel) {
+    const attributeNames = object.getAttributeNames();
+    for (let index = 0; index < attributeNames.length; index++) {
+      this.displayedColumns.push(attributeNames[index]);
+    }
     this.displayedColumns.push('Actions');
   }
 
@@ -135,21 +136,18 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private compareValues(object: any, lowerCasedValue: string): boolean {
-    for (let index = 0; index < this.columnAttributes.length; index++) {
-      const value = this.getAttributeFromRow(object, this.columnAttributes[index].columnName);
-      if (value.toString().toLowerCase().includes(lowerCasedValue)) {
-        return true;
-      }
-    }
+  private compareValues(object: BaseModel, lowerCasedValue: string): boolean {
+    // for (let index = 0; index < this.columnAttributes.length; index++) {
+    //   const value = this.getAttributeFromRow(object, this.columnAttributes[index].columnName);
+    //   if (value.toString().toLowerCase().includes(lowerCasedValue)) {
+    //     return true;
+    //   }
+    // }
+    return object.hasValue(lowerCasedValue);
   }
 
-  private getAttributeFromRow(object: any, column: string): string {
-    for (let index = 0; index < this.columnAttributes.length; index++) {
-      if (this.columnAttributes[index].columnName === column) {
-        return object[this.columnAttributes[index].attributeName];
-      }
-    }
+  private getAttributeFromRow(object: BaseModel, column: string): string {
+    return object.resolveAttributeName(column);
   }
 
   private handleAction(actionToDo: string, object: any) {

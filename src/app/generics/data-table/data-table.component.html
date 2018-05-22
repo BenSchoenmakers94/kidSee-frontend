@@ -20,7 +20,7 @@
         matColumnDef={{column}}>
         <div >
           <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{getAttributeFromRow(row, column)}}</mat-cell>
+          <mat-cell *matCellDef="let row" >{{row.resolveAttributeName(column)}}</mat-cell>
         </div>
     </ng-container>
     </div>

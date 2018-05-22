@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JsonApiQueryData, JsonApiModel } from 'angular2-jsonapi';
 import { BaseService } from '../base/base.service';
+import { BaseModel } from '../../models/baseModel';
 
 @Injectable()
 export class LocationService extends BaseService {
@@ -15,18 +16,17 @@ export class LocationService extends BaseService {
     super();
    }
 
-  getAllObjects(): Observable<JsonApiModel[]> {
+  getAllObjects(): Observable<BaseModel[]> {
     return Observable.create((observer) => {
       this.datastore.findAll(Location, { }).subscribe(
         (locations: JsonApiQueryData<Location>) => {
-          console.log(locations);
           observer.next(locations.getModels());
         }
       );
     });
   }
 
-  getObjectsPage(pageNumber?: number, pageSize?: number): Observable<JsonApiModel[]> {
+  getObjectsPage(pageNumber?: number, pageSize?: number): Observable<BaseModel[]> {
       return Observable.create((observer) => {
         this.datastore.findAll(Location, {
           page: pageNumber,
@@ -37,7 +37,7 @@ export class LocationService extends BaseService {
       });
     }
 
-  getObjectFromId(id: string): Observable<JsonApiModel> {
+  getObjectFromId(id: string): Observable<BaseModel> {
     return new Observable((observer) => {
       this.datastore.findRecord(Location, id).subscribe((location: Location) => observer.next(location));
     });

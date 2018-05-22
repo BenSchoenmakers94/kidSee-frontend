@@ -1,4 +1,3 @@
-import { JsonApiModel } from 'angular2-jsonapi';
 import { Observable } from 'rxjs/Observable';
 import { ColumnAttribute } from './../../generics/column-attribute';
 import { AbstractObjectService } from './../../services/abstract-object.service';
@@ -35,8 +34,9 @@ export class HomeComponent implements OnInit {
   columnAttributes: ColumnAttribute[];
   actionsForTable: string[];
 
-  constructor(private abstractObjectService: AbstractObjectService, private dialog: MatDialog) {
-   }
+  constructor(
+    private abstractObjectService: AbstractObjectService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.initTableInformation();

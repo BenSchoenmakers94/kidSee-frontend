@@ -1,16 +1,17 @@
 import { Observable } from 'rxjs/Observable';
 import { JsonApiModel } from 'angular2-jsonapi';
 import { Injectable } from '@angular/core';
+import { BaseModel } from '../../models/baseModel';
 
 @Injectable()
 export abstract class BaseService {
     constructor() { }
 
-    abstract getAllObjects(): Observable<JsonApiModel[]>;
+    abstract getAllObjects(): Observable<BaseModel[]>;
 
-    abstract getObjectsPage(pageNumber: number, pageSize: number): Observable<JsonApiModel[]>;
+    abstract getObjectsPage(pageNumber: number, pageSize: number): Observable<BaseModel[]>;
 
-    abstract getObjectFromId(id: string): Observable<JsonApiModel>;
+    abstract getObjectFromId(id: string): Observable<BaseModel>;
 
     abstract postObject(object: any): Promise<any>;
 
