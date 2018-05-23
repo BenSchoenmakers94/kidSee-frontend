@@ -1,11 +1,7 @@
-import {Component } from '@angular/core';
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
-import { User } from "./models/user";
-import { AuthService } from "./services/auth.service";
-import { Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 
 @Component({

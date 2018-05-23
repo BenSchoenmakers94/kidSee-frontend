@@ -18,8 +18,10 @@ export class AuthService {
     return this.LoggedIn.asObservable();
   }
 
-  constructor( private datastore: Datastore, public httpClient: HttpClient) {
+  constructor( private datastore: Datastore,
+               public httpClient: HttpClient) {
     this.storage = window.localStorage;
+    if (this.isAuthenticated()) this.LoggedIn.next(true)
   }
 
   login(credentials): Promise<any> {
