@@ -5,15 +5,22 @@ import { Datastore } from './datastore';
 import { User } from '../../app/models/user';
 import * as bcrypt from 'bcryptjs';
 import { HttpHeaders } from '@angular/common/http';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 
 @Injectable()
 export class AuthService {
   private currentUser: User;
   private storage: Storage;
+  private LoggedIn = new BehaviorSubject<boolean>(false);
+
+  get isLoggedIn() {
+    return this.LoggedIn.asObservable();
+  }
 
   constructor( private datastore: Datastore, public httpClient: HttpClient) {
     this.storage = window.localStorage;
+    // this.LoggedIn = new BehaviorSubject<boolean>(false);
   }
 
   login(credentials): Promise<any> {
@@ -28,6 +35,7 @@ export class AuthService {
               this.datastore.headers = null;
               reject('No user found with that username');
             } else {
+              this.LoggedIn.next(true);
               resolve(user);
             }
           });
@@ -55,29 +63,28 @@ export class AuthService {
   }
 
   public isAuthenticated() {
-    var token = this.storage.getItem('token');
-    if(token) {
+    if(this.storage.getItem('token')) {
       return this.fetchCurrentUser().then(user => {
         return user != null;
       });
     }
     return false;
-
   }
 
   logout() {
+    this.LoggedIn.next(false);
     this.currentUser = null;
     this.datastore.headers = null;
     this.storage.removeItem('token');
     this.storage.removeItem('currentUser');
   }
 
-  // changePassword(password) {
-  //   bcrypt.genSalt(10, (err, salt) => {
-  //     bcrypt.hash(password, salt, (err, hash) => {
-  //       this.currentUser.password = hash;
-  //       this.currentUser.save().subscribe();
-  //     });
-  //   });
-  // }
+  changePassword(password) {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        this.currentUser.password = hash;
+        this.currentUser.save().subscribe();
+      });
+    });
+  }
 }
