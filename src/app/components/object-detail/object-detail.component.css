@@ -22,4 +22,8 @@
   .normal-attribute {
     display: grid;
   }
+
+  .right {
+    margin-left: 90%;
+  }
   

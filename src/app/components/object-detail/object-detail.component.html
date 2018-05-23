@@ -3,11 +3,10 @@
         <div *ngFor="let attribute of object?.getAttributeNames()">
           <ng-container *ngIf="object.isRelationShipAttribute(attribute); else normalAttribute" >
             <ng-container *ngIf="object.resolveAttributeName(attribute)['id']; else hasMany">
+              <label>{{attribute}}</label>
                 <mat-form-field>
-                    <mat-select>
-                      <ng-container *ngFor="let type of getIterableTypesOf(attribute)">
-                          <mat-option>{{type}}</mat-option>
-                      </ng-container>
+                    <mat-select [placeholder]="attribute">
+                          <mat-option *ngFor="let type of getIterableTypesOf(attribute)" [value]="type">{{type}}</mat-option>
                     </mat-select>
                     <mat-placeholder></mat-placeholder>
                   </mat-form-field>
@@ -25,17 +24,6 @@
            </div>
           </ng-template>
         </div>
-          <!-- <mat-form-field>
-            <mat-label>Both a label and a placeholder</mat-label>
-            <input matInput placeholder="Simple placeholder">
-          </mat-form-field>
-        
-          <mat-form-field>
-            <mat-select required>
-              <mat-option>-- None --</mat-option>
-              <mat-option value="option">Option</mat-option>
-            </mat-select>
-            <mat-placeholder></mat-placeholder>
-          </mat-form-field> -->
-        </div>
+      </div>
+      <button class="right" mat-raised-button color="primary" (click)="saveObject()">Save</button>
 </mat-card>

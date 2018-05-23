@@ -1,13 +1,9 @@
-import { CreateDialogComponent } from './../../dialogs/create-dialog/create-dialog.component';
 import { ColumnAttribute } from './../column-attribute';
-import { RemoveDialogComponent } from '../../dialogs/remove-dialog/remove-dialog.component';
 import { EditDialogComponent } from '../../dialogs/edit-dialog/edit-dialog.component';
 import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatSort, MatInput } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
-import { UserEditDialogComponent } from '../../dialogs/useredit-dialog/useredit-dialog.component';
-import { UserRemoveDialogComponent } from '../../dialogs/userremove-dialog/userremove-dialog.component';
 import { BaseModel } from '../../models/baseModel';
 import { RelationshipDialogComponent } from '../../dialogs/relationship-dialog/relationship-dialog.component';
 import { Router } from '@angular/router';
@@ -19,7 +15,7 @@ import { Router } from '@angular/router';
 })
 
 export class DataTableComponent implements AfterViewInit, OnInit {
-  private objectType: string;
+  public objectType: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -179,6 +175,8 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     const routerUrl = this.objectType + '/' + object.id;
     this.router.navigate([routerUrl]);
   }
+
+  public createNewObject() { }
 
   private returnObjectState(oldObject: any, newObject: any) {
     const newKeys = Object.keys(newObject);

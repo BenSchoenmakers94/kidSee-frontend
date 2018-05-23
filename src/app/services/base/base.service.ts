@@ -49,7 +49,7 @@ export class BaseService {
 
     private resolveType(type: string) {
         for (let index = 0; index < this.modelTypes.length; index++) {
-            if (this.modelTypes[index]['type'] === type.toLowerCase()) {
+            if (this.modelTypes[index]['type'].includes(type.toLowerCase())) {
                 return this.modelTypes[index]['modelType'];
             }
         }

@@ -1,6 +1,9 @@
 <mat-card>
   <mat-card-content>
-    <h2 class="example-h2">Attributes</h2>
+    <h2 class="example-h2">Attributes - {{objectType}}</h2>
+    <div class="icon clickable" (click)="createNewObject()">
+        <i class="material-icons">add_circle</i>
+    </div>
     <ul class="example-ul">
       <li *ngFor="let attribute of objectAttributes; let i=index">
         <mat-checkbox checked="true" (click)=changeDisplayedColumns(attribute) class="example-margin">{{attribute}}</mat-checkbox>

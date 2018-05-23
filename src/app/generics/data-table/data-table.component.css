@@ -38,4 +38,9 @@
   .clickable {
     cursor: pointer;
   }
+
+  .icon {
+    float: right;
+    margin-top: -32px;
+  }
   

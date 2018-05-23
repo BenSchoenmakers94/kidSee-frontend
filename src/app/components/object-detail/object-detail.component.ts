@@ -2,6 +2,7 @@ import { BaseService } from './../../services/base/base.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseModel } from '../../models/baseModel';
+import { ENAMETOOLONG } from 'constants';
 
 @Component({
   selector: 'app-object-detail',
@@ -12,6 +13,7 @@ export class ObjectDetailComponent implements OnInit {
 
   private objectType: string;
   private objectId: string;
+  private iterableTypes = [];
 
   public object: BaseModel;
 
@@ -26,17 +28,30 @@ export class ObjectDetailComponent implements OnInit {
 
     this.baseService.getObjectFromId(this.objectId, this.objectType).subscribe(object => {
       this.object = object;
+      for (let index = 0; index < object.belongsToAttributes.length; index++) {
+        this.baseService.getAllObjects(object.belongsToAttributes[index]).subscribe(valuesForType => {
+          for (let i = 0; i < valuesForType.length; i++) {
+            this.iterableTypes.push({
+              type: object.belongsToAttributes[index],
+              values: valuesForType[i]['name']
+            });
+          }
+        });
+      }
     });
   }
 
   public getIterableTypesOf(attributeName: string): string[] {
     const types = [];
-    this.baseService.getAllObjects(attributeName).subscribe(retrievedTypes => {
-      for (let index = 0; index < retrievedTypes.length; index++) {
-        types.push(retrievedTypes[index]['name']);
+    for (let index = 0; index < this.iterableTypes.length; index++) {
+      if (this.iterableTypes[index]['type'] === attributeName) {
+        types.push(this.iterableTypes[index]['values']);
       }
-    });
+    }
     return types;
   }
 
+  saveObject() {
+    console.log(this.object);
+  }
 }

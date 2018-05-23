@@ -33,5 +33,6 @@ export class User extends BaseModel {
   posts: Post[];
 
   public simpleAttributeNames = ['Id', 'Username', 'Email', 'Birthdate', 'School', 'Postal_code', 'Avatar'];
-  public relationShipAttributes = ['Posts'];
+  public hasManyAttributes = ['Posts'];
+  public belongsToAttributes = [];
 }

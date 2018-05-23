@@ -28,12 +28,16 @@ export class Location extends BaseModel {
   @Attribute()
   address: string;
 
+  @Attribute({serializedName: 'website-link'})
+  websiteLink: string;
+
   @BelongsTo()
   'location-type': LocationType;
 
   @HasMany()
   themes: Theme[];
 
-  public simpleAttributeNames = ['Id', 'Name', 'Lon', 'Lat', 'Description', 'Address'];
-  public relationShipAttributes = ['Location-Type', 'Themes'];
+  public simpleAttributeNames = ['Id', 'Name', 'Lon', 'Lat', 'Description', 'Address', 'Websitelink'];
+  public hasManyAttributes = ['Themes'];
+  public belongsToAttributes = ['Location-Type'];
 }

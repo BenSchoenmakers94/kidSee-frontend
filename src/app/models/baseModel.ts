@@ -3,13 +3,15 @@ import { JsonApiModel } from 'angular2-jsonapi';
 
 export abstract class BaseModel extends JsonApiModel {
     public abstract simpleAttributeNames: string[];
-    public abstract relationShipAttributes: string[];
+    public abstract hasManyAttributes: string[];
+    public abstract belongsToAttributes: string[];
 
     public getAttributeNames(shallow?: boolean): string[] {
         let attributeNames = [];
         attributeNames = attributeNames.concat(this.simpleAttributeNames);
         if (!shallow) {
-          attributeNames = attributeNames.concat(this.relationShipAttributes);
+          attributeNames = attributeNames.concat(this.belongsToAttributes);
+          attributeNames = attributeNames.concat(this.hasManyAttributes);
         }
         return attributeNames;
       }
@@ -18,7 +20,7 @@ export abstract class BaseModel extends JsonApiModel {
         const objectEntries = Object.entries(this);
         for (let index = 1; index < objectEntries.length; index++) {
             sanitizedAttributeName = sanitizedAttributeName.toLowerCase();
-            if (objectEntries[index][0].includes(sanitizedAttributeName)) {
+            if (objectEntries[index][0].toString().toLowerCase().includes(sanitizedAttributeName)) {
                 return objectEntries[index][1];
             }
         }
@@ -40,11 +42,23 @@ export abstract class BaseModel extends JsonApiModel {
     }
 
     public isRelationShipAttribute(attributeToCheck: string): boolean {
-        for (let index = 0; index < this.relationShipAttributes.length; index++) {
-            if (this.relationShipAttributes[index].toLowerCase().includes(attributeToCheck.toLowerCase())) {
+        let relationShipAttributes = [];
+        relationShipAttributes = relationShipAttributes.concat(this.hasManyAttributes);
+        relationShipAttributes = relationShipAttributes.concat(this.belongsToAttributes);
+        for (let index = 0; index < relationShipAttributes.length; index++) {
+            if (relationShipAttributes[index].toLowerCase().includes(attributeToCheck.toLowerCase())) {
               return true;
             }
           }
           return false;
+    }
+
+    public isBelongsToRelationship(attributeName: string): boolean {
+        for (let index = 0; index < this.belongsToAttributes.length; index++) {
+            if (this.belongsToAttributes[index].toLowerCase().includes(attributeName)) {
+                return true;
+            }
         }
+        return false;
+    }
 }
