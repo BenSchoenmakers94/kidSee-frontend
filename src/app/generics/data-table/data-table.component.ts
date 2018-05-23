@@ -10,6 +10,7 @@ import { BaseService } from '../../services/base/base.service';
 import { UserEditDialogComponent } from '../../dialogs/useredit-dialog/useredit-dialog.component';
 import { UserRemoveDialogComponent } from '../../dialogs/userremove-dialog/userremove-dialog.component';
 import { BaseModel } from '../../models/baseModel';
+import { RelationshipDialogComponent } from '../../dialogs/relationship-dialog/relationship-dialog.component';
 
 @Component({
   selector: 'app-data-table',
@@ -162,6 +163,13 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private getAttributeFromRow(object: BaseModel, column: string): string {
     return object.resolveAttributeName(column);
+  }
+
+  public showRelationshipDialog(object: BaseModel, columnName: string) {
+    const relationshipDataToShow = object.resolveAttributeName(columnName);
+    const dialogRef = this.dialog.open(RelationshipDialogComponent, {
+      data: relationshipDataToShow
+    });
   }
 
   private handleAction(actionToDo: string, object: any) {

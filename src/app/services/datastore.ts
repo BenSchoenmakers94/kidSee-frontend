@@ -12,6 +12,7 @@ import { Comment } from '../models/comment';
 
 const config: DatastoreConfig = {
   baseUrl: 'http://174.138.7.193/api',
+    // baseUrl: 'http://128.199.32.227/api',
   models: {
     users: User,
     posts: Post,

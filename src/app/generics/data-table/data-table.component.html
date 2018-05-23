@@ -24,7 +24,14 @@
         matColumnDef={{column}}>
         <div >
           <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
-          <mat-cell *matCellDef="let row" >{{row.resolveAttributeName(column)}}</mat-cell>
+          <mat-cell *matCellDef="let row">
+            <div *ngIf="row.isRelationShipAttribute(column);else noRelationshipAttribute">
+                <i class="material-icons icon-center" (click)="showRelationshipDialog(row, column)">visibility</i>
+            </div>
+            <ng-template #noRelationshipAttribute>
+                {{row.resolveAttributeName(column)}}
+            </ng-template>
+          </mat-cell>
         </div>
     </ng-container>
     </div>

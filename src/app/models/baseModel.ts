@@ -3,17 +3,18 @@ import _ = require('lodash');
 
 
 export abstract class BaseModel extends JsonApiModel {
-    public getAttributeNames(): string[] {
-        const unsanitizedAttributeNames = Object.getOwnPropertyNames(this);
+    public getAttributeNames(shallow?: boolean): string[] {
+        const objectEntries = Object.entries(this);
         const sanitizedAttributeNames: string[] = [];
-        unsanitizedAttributeNames.forEach(unsanitizedAttributeName => {
-            if (!unsanitizedAttributeName.includes('datastore')) {
-                let sanitizedAttributeName = '';
-                sanitizedAttributeName = unsanitizedAttributeName.substr(unsanitizedAttributeName.indexOf('_') + 1);
-                sanitizedAttributeName = _.upperFirst(sanitizedAttributeName);
-                sanitizedAttributeNames.push(sanitizedAttributeName);
-              }
-        });
+        for (let index = 1; index < objectEntries.length; index++) {
+            if ((objectEntries[index][1] instanceof BaseModel) && shallow) {
+               continue;
+            }
+            let sanitizedAttributeName = '';
+            sanitizedAttributeName = objectEntries[index][0].substr(objectEntries[index][0].indexOf('_') + 1);
+            sanitizedAttributeName = _.upperFirst(sanitizedAttributeName);
+            sanitizedAttributeNames.push(sanitizedAttributeName);
+        }
         return sanitizedAttributeNames;
     }
 
@@ -37,6 +38,20 @@ export abstract class BaseModel extends JsonApiModel {
                 if (objectValues[index].toString().toLowerCase().includes(valueToCheck)) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    public isRelationShipAttribute(attributeToCheck: string): boolean {
+        const objectEntries = Object.entries(this);
+        for (let index = 1; index < objectEntries.length; index++) {
+            if (objectEntries[index][1] instanceof BaseModel) {
+                if (objectEntries[index][0].toLowerCase().includes(attributeToCheck.toLowerCase())) {
+                    return true;
+                }
+            } else {
+                continue;
             }
         }
         return false;
