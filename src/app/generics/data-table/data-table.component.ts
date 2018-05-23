@@ -19,8 +19,6 @@ import { BaseModel } from '../../models/baseModel';
 
 export class DataTableComponent implements AfterViewInit, OnInit {
   @Input() objectType: string;
-  @Input() columnAttributes: ColumnAttribute[];
-  @Input() possibleActions: string[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -28,7 +26,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   public objectData: any[];
   private objectDataLocalFiltered: any[];
-  public displayedColumns: string[];
+  public displayedColumns: ColumnAttribute[];
   private specificObjectService: BaseService;
   public pageNumber: number;
   public pageSize: number;
@@ -119,10 +117,32 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private initColumns(object: BaseModel) {
     const attributeNames = object.getAttributeNames();
+    this.objectAttributes = attributeNames;
     for (let index = 0; index < attributeNames.length; index++) {
-      this.displayedColumns.push(attributeNames[index]);
+      this.displayedColumns.push({
+        columnName: attributeNames[index],
+        displayed: true
+      });
     }
-    this.displayedColumns.push('Actions');
+    //this.displayedColumns.push('Actions');
+  }
+
+  public getDisplayedColumns(): string[] {
+    const columnNames = [];
+    for (let index = 0; index < this.displayedColumns.length; index++) {
+      if (this.displayedColumns[index].displayed) {
+        columnNames.push(this.displayedColumns[index].columnName);
+      }
+    }
+    return columnNames;
+  }
+
+  public changeDisplayedColumns(column: string) {
+    for (let index = 0; index < this.displayedColumns.length; index++) {
+      if (this.displayedColumns[index].columnName === column) {
+        this.displayedColumns[index].displayed = !this.displayedColumns[index].displayed;
+      }
+    }
   }
 
   private applyFilter(filterValue: string) {
@@ -137,12 +157,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
   private compareValues(object: BaseModel, lowerCasedValue: string): boolean {
-    // for (let index = 0; index < this.columnAttributes.length; index++) {
-    //   const value = this.getAttributeFromRow(object, this.columnAttributes[index].columnName);
-    //   if (value.toString().toLowerCase().includes(lowerCasedValue)) {
-    //     return true;
-    //   }
-    // }
     return object.hasValue(lowerCasedValue);
   }
 
@@ -237,26 +251,18 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.changeDetectorRefs.detectChanges();
   }
 
-  private sortDataWith(direction: string, columnToSort: string, objects: any[]): any[] {
-    let sortableProperty: string;
-    for (let index = 0; index < this.columnAttributes.length; index++) {
-      if (this.columnAttributes[index].columnName === columnToSort) {
-        sortableProperty = this.columnAttributes[index].attributeName;
-        break;
-      }
-    }
-
+  private sortDataWith(direction: string, columnToSort: string, objects: BaseModel[]): any[] {
     objects.sort((objectA: any, objectB: any) => {
       return this.compare(
         objectA,
         objectB,
-        sortableProperty,
+        columnToSort,
         (direction !== 'asc'));
     });
     return objects;
   }
 
-  private compare(objectA: any, objectB: any, sortableProperty: string, isNotAsc: boolean): number {
-    return (objectA[sortableProperty] < objectB[sortableProperty] ? -1 : 1) * (isNotAsc ? -1 : 1);
+  private compare(objectA: BaseModel, objectB: BaseModel, sortableProperty: string, isNotAsc: boolean): number {
+    return (objectA.resolveAttributeName(sortableProperty) < objectB.resolveAttributeName(sortableProperty) ? -1 : 1) * (isNotAsc ? -1 : 1);
   }
 }

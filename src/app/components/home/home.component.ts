@@ -39,7 +39,6 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.initTableInformation();
     this.specificObjectService = this.abstractObjectService.getObject(this.specificObjectName);
     this.markers = [];
     this.locations = [];
@@ -47,26 +46,6 @@ export class HomeComponent implements OnInit {
     this.mapOn = true;
     this.switchName = 'Lijst';
     this.receiveData();
-  }
-
-  private initTableInformation() {
-    this.actionsForTable = [];
-    this.columnAttributes = [];
-
-    this.actionsForTable.push(...['edit', 'delete']);
-
-    this.columnAttributes.push({
-      columnName: 'Naam',
-      attributeName: 'name'
-    });
-    this.columnAttributes.push({
-      columnName: 'Beschrijving',
-      attributeName: 'description'
-    });
-    this.columnAttributes.push({
-      columnName: 'Adres',
-      attributeName: 'address'
-    });
   }
 
   private receiveData() {

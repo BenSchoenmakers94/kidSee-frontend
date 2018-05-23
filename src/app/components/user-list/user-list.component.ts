@@ -20,22 +20,6 @@ export class UserListComponent implements OnInit {
 
   }
 
-  private initTableInformation() {
-    this.actionsForTable = [];
-    this.columnAttributes = [];
-
-    this.actionsForTable.push(...['edit', 'delete']);
-
-    this.columnAttributes.push({
-      columnName: 'Gebruikersnaam',
-      attributeName: 'username'
-    });
-    this.columnAttributes.push({
-      columnName: 'Geboortedatum',
-      attributeName: 'birthdate'
-    });
-  }
-
   ngOnInit() {
     this.specificObjectService = this.abstractObjectService.getObject(this.specificObjectName);
     this.specificObjectService.getAllObjects().subscribe({
@@ -44,7 +28,6 @@ export class UserListComponent implements OnInit {
           this.users.push(user);
         })
     });
-    this.initTableInformation();
   }
 
   delete(id, index){

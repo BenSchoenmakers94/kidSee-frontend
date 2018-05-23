@@ -1,9 +1,14 @@
 <div>
-  <div class="example-container mat-elevation-z8">
-    <!-- <div *ngFor="let attribute of attributeList" >
-
-    </div> -->
-  </div>
+  <mat-card>
+    <mat-card-content>
+      <h2 class="example-h2">Attributes</h2>
+      <ul class="example-ul">
+        <li *ngFor="let attribute of objectAttributes; let i=index">
+            <mat-checkbox checked="true" (click)=changeDisplayedColumns(attribute) class="example-margin">{{attribute}}</mat-checkbox>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
   <div class="example-container mat-elevation-z8">
     <div class="example-header">
       <mat-form-field>
@@ -11,12 +16,11 @@
       </mat-form-field>
     </div>
   </div>
-  
   <mat-table #table [dataSource]="objectData" matSort class="mat-cell mat-elevation-z8">
     <div 
-      *ngFor="let column of displayedColumns; let i=index">
+      *ngFor="let column of getDisplayedColumns(); let i=index">
       <ng-container 
-        *ngIf="i < displayedColumns.length - 1"
+        *ngIf="i < getDisplayedColumns().length"
         matColumnDef={{column}}>
         <div >
           <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
@@ -24,10 +28,9 @@
         </div>
     </ng-container>
     </div>
-    
   
     <!-- actions -->
-    <ng-container matColumnDef="Actions">
+    <!-- <ng-container matColumnDef="Actions">
       <mat-header-cell *matHeaderCellDef>
       </mat-header-cell>
       
@@ -38,10 +41,10 @@
           <mat-icon aria-label=action>{{action}}</mat-icon>
         </button>
       </mat-cell>
-    </ng-container>
+    </ng-container> -->
   
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-header-row *matHeaderRowDef="getDisplayedColumns()"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: getDisplayedColumns();"></mat-row>
   </mat-table>
   <mat-paginator [length]="maxObjectsLengthInStorage" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" ></mat-paginator>  
 </div>
