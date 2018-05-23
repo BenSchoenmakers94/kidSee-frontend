@@ -32,4 +32,15 @@ export class ObjectDetailComponent implements OnInit {
     });
   }
 
+  public getIterableTypesOf(attributeName: string): string[] {
+    const types = [];
+    const typeRetrievalService = this.abstractObjectService.getObject(attributeName.toLowerCase());
+    typeRetrievalService.getAllObjects().subscribe(retrievedTypes => {
+      for (let index = 0; index < retrievedTypes.length; index++) {
+        types.push(retrievedTypes[index]['name']);
+      }
+    });
+    return types;
+  }
+
 }

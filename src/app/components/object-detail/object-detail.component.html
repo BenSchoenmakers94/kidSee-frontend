@@ -1,9 +1,21 @@
 <mat-card>
     <div class="example-container">
         <div *ngFor="let attribute of object?.getAttributeNames()">
-          <ng-template *ngIf="object.isRelationShipAttribute(attribute); else normalAttribute" >
-      
-          </ng-template>
+          <ng-container *ngIf="object.isRelationShipAttribute(attribute); else normalAttribute" >
+            <ng-container *ngIf="object.resolveAttributeName(attribute)['id']; else hasMany">
+                <mat-form-field>
+                    <mat-select>
+                      <ng-container *ngFor="let type of getIterableTypesOf(attribute)">
+                          <mat-option>{{type}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <mat-placeholder></mat-placeholder>
+                  </mat-form-field>
+            </ng-container>
+            <ng-template #hasMany>
+              TESTISDIT
+            </ng-template>
+          </ng-container>
           <ng-template #normalAttribute>
            <div class="normal-attribute">
               <label>{{attribute}}</label>
@@ -26,5 +38,4 @@
             <mat-placeholder></mat-placeholder>
           </mat-form-field> -->
         </div>
-        
 </mat-card>
