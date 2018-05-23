@@ -48,7 +48,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.objectData = [];
     this.objectDataLocalFiltered = [];
     this.receiveAllData().then(result => {
-      this.initColumns(result[8]);
+      this.initColumns(result[0]);
       this.maxObjectsLengthInStorage = result.length;
       this.checkForChanges(result);
     });
