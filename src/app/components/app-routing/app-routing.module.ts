@@ -1,8 +1,10 @@
-import { HomeComponent } from './../home/home.component';
+import { DataTableComponent } from './../../generics/data-table/data-table.component';
+import { MapComponent } from './../location/map/map.component';
+import { LocationComponent } from './../location/location.component';
+import { ObjectDetailComponent } from './../object-detail/object-detail.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserListComponent } from '../user-list/user-list.component';
-import { LoginComponent } from "../login/login.component";
+import { LoginComponent } from '../login/login.component';
 
 const routes: Routes = [
   {
@@ -10,12 +12,23 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'home',
-    component: HomeComponent
+    path: 'locations',
+    component: LocationComponent,
+    children: [{
+      path: '', component: MapComponent
+    }, {
+      path: 'list', component: DataTableComponent
+    }, {
+      path: ':id', component: ObjectDetailComponent
+    }]
   },
   {
     path: 'users',
-    component: UserListComponent
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: ':id', component: ObjectDetailComponent
+    }]
   }
 ];
 

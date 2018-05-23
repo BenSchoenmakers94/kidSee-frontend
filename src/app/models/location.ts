@@ -32,5 +32,8 @@ export class Location extends BaseModel {
   'location-type': LocationType;
 
   @HasMany()
-  'themes': Theme[];
+  themes: Theme[];
+
+  public simpleAttributeNames = ['Id', 'Name', 'Lon', 'Lat', 'Description', 'Address'];
+  public relationShipAttributes = ['Location-Type', 'Themes'];
 }

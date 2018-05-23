@@ -1,10 +1,15 @@
 <div class="container">
     <h3 mat-dialog-title>{{data.modelConfig.type}}</h3>
 
-    <div *ngFor="let attribute of data.getAttributeNames(true)">
-      <label>{{attribute}}: </label>
-      <label>{{data.resolveAttributeName(attribute)}}</label>
+    <div *ngIf="isDataAvailable;else noValue">
+        <div *ngFor="let attribute of data.getAttributeNames(true)">
+            <label>{{attribute}}: </label>
+            <label>{{data.resolveAttributeName(attribute)}}</label>
+          </div>
     </div>
+    <ng-template #noValue>
+      <label>No value</label>
+    </ng-template>
       <div mat-dialog-actions>
         <button mat-raised-button color="primary" [mat-dialog-close]="1" (click)="onOkClick()">OK</button>
       </div>

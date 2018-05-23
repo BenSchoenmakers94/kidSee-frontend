@@ -11,12 +11,13 @@ import { BaseModel } from '../../models/baseModel';
   styleUrls: ['./relationship-dialog.component.css']
 })
 export class RelationshipDialogComponent implements OnInit {
-  formControl = new FormControl('', [
-    Validators.required
-    // Validators.email,
-  ]);
+  public isDataAvailable: boolean;
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    if (this.data['id']) {
+      this.isDataAvailable = true;
+    }
+   }
   constructor(public dialogRef: MatDialogRef<RelationshipDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BaseModel, public abstractObjectService: AbstractObjectService) { }
 

@@ -1,22 +1,18 @@
 import { JsonApiModel } from 'angular2-jsonapi';
-import _ = require('lodash');
 
 
 export abstract class BaseModel extends JsonApiModel {
+    public abstract simpleAttributeNames: string[];
+    public abstract relationShipAttributes: string[];
+
     public getAttributeNames(shallow?: boolean): string[] {
-        const objectEntries = Object.entries(this);
-        const sanitizedAttributeNames: string[] = [];
-        for (let index = 1; index < objectEntries.length; index++) {
-            if ((objectEntries[index][1] instanceof BaseModel) && shallow) {
-               continue;
-            }
-            let sanitizedAttributeName = '';
-            sanitizedAttributeName = objectEntries[index][0].substr(objectEntries[index][0].indexOf('_') + 1);
-            sanitizedAttributeName = _.upperFirst(sanitizedAttributeName);
-            sanitizedAttributeNames.push(sanitizedAttributeName);
+        let attributeNames = [];
+        attributeNames = attributeNames.concat(this.simpleAttributeNames);
+        if (!shallow) {
+          attributeNames = attributeNames.concat(this.relationShipAttributes);
         }
-        return sanitizedAttributeNames;
-    }
+        return attributeNames;
+      }
 
     public resolveAttributeName(sanitizedAttributeName: string): string {
         const objectEntries = Object.entries(this);
@@ -26,7 +22,7 @@ export abstract class BaseModel extends JsonApiModel {
                 return objectEntries[index][1];
             }
         }
-          return '';
+          return 'No value';
     }
 
     public hasValue(valueToCheck: string): boolean {
@@ -44,16 +40,11 @@ export abstract class BaseModel extends JsonApiModel {
     }
 
     public isRelationShipAttribute(attributeToCheck: string): boolean {
-        const objectEntries = Object.entries(this);
-        for (let index = 1; index < objectEntries.length; index++) {
-            if (objectEntries[index][1] instanceof BaseModel) {
-                if (objectEntries[index][0].toLowerCase().includes(attributeToCheck.toLowerCase())) {
-                    return true;
-                }
-            } else {
-                continue;
+        for (let index = 0; index < this.relationShipAttributes.length; index++) {
+            if (this.relationShipAttributes[index].toLowerCase().includes(attributeToCheck.toLowerCase())) {
+              return true;
             }
+          }
+          return false;
         }
-        return false;
-    }
 }

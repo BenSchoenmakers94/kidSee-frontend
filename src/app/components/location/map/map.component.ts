@@ -1,24 +1,22 @@
 import { Observable } from 'rxjs/Observable';
-import { ColumnAttribute } from './../../generics/column-attribute';
-import { AbstractObjectService } from './../../services/abstract-object.service';
-import { EditDialogComponent } from './../../dialogs/edit-dialog/edit-dialog.component';
+import { ColumnAttribute } from './../../../generics/column-attribute';
+import { AbstractObjectService } from './../../../services/abstract-object.service';
+import { EditDialogComponent } from './../../../dialogs/edit-dialog/edit-dialog.component';
 import { MatDialog } from '@angular/material';
-import { Location } from './../../models/location';
+import { Location } from './../../../models/location';
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
-import { CreateDialogComponent } from '../../dialogs/create-dialog/create-dialog.component';
-import { BaseService } from '../../services/base/base.service';
+import { CreateDialogComponent } from '../../../dialogs/create-dialog/create-dialog.component';
+import { BaseService } from '../../../services/base/base.service';
 
 declare var google: any;
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-location-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.css']
 })
-export class HomeComponent implements OnInit {
-  switchName: string;
-  mapOn: Boolean;
+export class MapComponent implements OnInit {
   // google maps zoom level
   zoom = 17;
 
@@ -31,8 +29,6 @@ export class HomeComponent implements OnInit {
 
   specificObjectService: BaseService;
   specificObjectName = 'locations';
-  columnAttributes: ColumnAttribute[];
-  actionsForTable: string[];
 
   constructor(
     private abstractObjectService: AbstractObjectService,
@@ -42,9 +38,6 @@ export class HomeComponent implements OnInit {
     this.specificObjectService = this.abstractObjectService.getObject(this.specificObjectName);
     this.markers = [];
     this.locations = [];
-
-    this.mapOn = true;
-    this.switchName = 'Lijst';
     this.receiveData();
   }
 
@@ -62,7 +55,7 @@ export class HomeComponent implements OnInit {
         this.markers.push({
           lat: location.lat,
           lng: location.lon,
-          iconUrl: '../../../assets/imgs/icon_' + specificIconUrl + '.png',
+          iconUrl: '../../../../assets/imgs/icon_' + specificIconUrl + '.png',
           draggable: false
         });
       })
@@ -94,7 +87,7 @@ export class HomeComponent implements OnInit {
     const newMarker = {
       lat: $event.coords.lat,
       lng: $event.coords.lng,
-      iconUrl: '../../../assets/imgs/coins.png',
+      iconUrl: '../../../../assets/imgs/coins.png',
       draggable: false
     };
     this.markers.push(newMarker);
@@ -114,17 +107,6 @@ export class HomeComponent implements OnInit {
     }, reject => {
       alert(reject);
     });
-  }
-
-  private switchToList() {
-    this.receiveData();
-    if (this.mapOn) {
-      this.mapOn = false;
-      this.switchName = 'Map';
-    } else {
-      this.mapOn = true;
-      this.switchName = 'Lijst';
-    }
   }
 
   getGeoLocation(marker: Marker): Promise<any> {

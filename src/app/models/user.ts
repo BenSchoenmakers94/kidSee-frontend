@@ -1,6 +1,7 @@
 import { JsonApiModelConfig, JsonApiModel, Attribute, HasMany } from 'angular2-jsonapi';
 import { Post } from './post';
 import { BaseModel } from './baseModel';
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material';
 
 @JsonApiModelConfig({
   type: 'users'
@@ -28,12 +29,9 @@ export class User extends BaseModel {
   @Attribute()
   avatar: string;
 
-  @Attribute()
-  created_at: Date;
-
-  @Attribute()
-  updated_at: Date;
-
   @HasMany()
-  posts: Post[] = [];
+  posts: Post[];
+
+  public simpleAttributeNames = ['Id', 'Username', 'Email', 'Birthdate', 'School', 'Postal_code', 'Avatar'];
+  public relationShipAttributes = ['Posts'];
 }

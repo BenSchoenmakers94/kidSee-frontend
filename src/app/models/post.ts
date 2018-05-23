@@ -26,7 +26,7 @@ export class Post extends BaseModel {
   postStatuses: PostStatus;
 
   @HasMany()
-  comments: Comment[] = [];
+  comments: Comment[];
 
   @Attribute()
   created_at: Date;

@@ -21,7 +21,7 @@ const config: DatastoreConfig = {
     contentTypes: ContentType,
     locations: Location,
     'location-types': LocationType,
-    'themes': Theme
+    themes: Theme
   }
 };
 
