@@ -20,7 +20,6 @@ export class AuthService {
 
   constructor( private datastore: Datastore, public httpClient: HttpClient) {
     this.storage = window.localStorage;
-    // this.LoggedIn = new BehaviorSubject<boolean>(false);
   }
 
   login(credentials): Promise<any> {

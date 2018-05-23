@@ -3,7 +3,6 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from 
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from "../../services/auth.service";
 
-
 @Injectable()
 export class AuthGuard implements CanActivate {
 
@@ -19,6 +18,5 @@ export class AuthGuard implements CanActivate {
     } else {
       return true;
     }
-
   }
 }
