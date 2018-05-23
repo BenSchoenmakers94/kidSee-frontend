@@ -1,4 +1,3 @@
-import { AbstractObjectService } from './../../services/abstract-object.service';
 import { Datastore } from './../../services/datastore';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -19,7 +18,7 @@ export class RelationshipDialogComponent implements OnInit {
     }
    }
   constructor(public dialogRef: MatDialogRef<RelationshipDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: BaseModel, public abstractObjectService: AbstractObjectService) { }
+    @Inject(MAT_DIALOG_DATA) public data: BaseModel) { }
 
     onOkClick(): void {
       this.dialogRef.close();

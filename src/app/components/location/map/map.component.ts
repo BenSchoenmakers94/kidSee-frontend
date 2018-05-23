@@ -1,13 +1,11 @@
+import { BaseService } from './../../../services/base/base.service';
 import { Observable } from 'rxjs/Observable';
 import { ColumnAttribute } from './../../../generics/column-attribute';
-import { AbstractObjectService } from './../../../services/abstract-object.service';
 import { EditDialogComponent } from './../../../dialogs/edit-dialog/edit-dialog.component';
 import { MatDialog } from '@angular/material';
 import { Location } from './../../../models/location';
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
-import { CreateDialogComponent } from '../../../dialogs/create-dialog/create-dialog.component';
-import { BaseService } from '../../../services/base/base.service';
 
 declare var google: any;
 
@@ -27,15 +25,13 @@ export class MapComponent implements OnInit {
   markers: Marker[];
   locations: any[];
 
-  specificObjectService: BaseService;
   specificObjectName = 'locations';
 
   constructor(
-    private abstractObjectService: AbstractObjectService,
+    private baseService: BaseService,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.specificObjectService = this.abstractObjectService.getObject(this.specificObjectName);
     this.markers = [];
     this.locations = [];
     this.receiveData();
@@ -44,7 +40,7 @@ export class MapComponent implements OnInit {
   private receiveData() {
     this.markers = [];
     this.locations.length = 0;
-    this.specificObjectService.getAllObjects().subscribe({
+    this.baseService.getAllObjects(this.specificObjectName).subscribe({
       next: locations =>
       locations.forEach(location => {
         this.locations.push(location);

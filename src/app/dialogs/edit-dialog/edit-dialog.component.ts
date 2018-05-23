@@ -1,9 +1,8 @@
-import { JsonApiModel } from 'angular2-jsonapi';
-import { AbstractObjectService } from './../../services/abstract-object.service';
-import { Datastore } from './../../services/datastore';
+import { BaseService } from './../../services/base/base.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
+import { BaseModel } from '../../models/baseModel';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -18,7 +17,7 @@ export class EditDialogComponent implements OnInit {
 
   ngOnInit(): void { }
   constructor(public dialogRef: MatDialogRef<EditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: JsonApiModel, public abstractObjectService: AbstractObjectService) { }
+    @Inject(MAT_DIALOG_DATA) public data: BaseModel, public baseService: BaseService) { }
 
     getErrorMessage() {
       return this.formControl.hasError('required') ? 'Required field' :
@@ -33,7 +32,6 @@ export class EditDialogComponent implements OnInit {
     }
 
     stopEdit(): void {
-      const specificObjectService = this.abstractObjectService.getObject(this.data.modelConfig.type);
-      specificObjectService.patchObject(this.data);
+      this.baseService.patchObject(this.data);
     }
   }

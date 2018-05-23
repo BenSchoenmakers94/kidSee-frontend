@@ -1,4 +1,3 @@
-import { AbstractObjectService } from './../../services/abstract-object.service';
 import { CreateDialogComponent } from './../../dialogs/create-dialog/create-dialog.component';
 import { ColumnAttribute } from './../column-attribute';
 import { RemoveDialogComponent } from '../../dialogs/remove-dialog/remove-dialog.component';
@@ -29,7 +28,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   public objectData: any[];
   private objectDataLocalFiltered: any[];
   public displayedColumns: ColumnAttribute[];
-  private specificObjectService: BaseService;
   public pageNumber: number;
   public pageSize: number;
   public pageSizeOptions = ('' + Array(20)).split(',').map(function () { return this[0]++; }, [1]);
@@ -41,14 +39,13 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   constructor(
     public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
-    private abstractObjectService: AbstractObjectService,
+    private baseService: BaseService,
     private router: Router) { }
 
   ngOnInit() {
     const routerSegments = this.router.url.split('/');
     this.objectType = routerSegments[routerSegments.indexOf('') + 1];
     this.objectDetailVisible = false;
-    this.specificObjectService = this.abstractObjectService.getObject(this.objectType);
     this.pageNumber = 1;
     this.pageSize = 10;
     this.displayedColumns = [];
@@ -105,7 +102,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private receiveAllData(): Promise<BaseModel[]> {
     return new Promise(resolve => {
-      this.specificObjectService.getAllObjects().subscribe({
+      this.baseService.getAllObjects(this.objectType).subscribe({
         next: objects => {
           resolve(objects);
           this.maxObjectsLengthInStorageCopy = objects.length;
@@ -116,7 +113,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private receivePageData(pageNumber: number, pageSize: number): Promise<BaseModel[]> {
     return new Promise(resolve => {
-      this.specificObjectService.getObjectsPage(pageNumber, pageSize).subscribe({
+      this.baseService.getObjectsPage(pageNumber, pageSize).subscribe({
         next: objects => resolve(objects)
       });
     });
