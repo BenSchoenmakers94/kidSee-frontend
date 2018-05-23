@@ -14,26 +14,26 @@ export class AuthService {
 
   constructor( private datastore: Datastore, public httpClient: HttpClient) {
     this.storage = window.localStorage;
-    }
+  }
 
   login(credentials): Promise<any> {
     return new Promise((resolve, reject) => {
       this.httpClient.post(this.datastore.getBaseUrl() + '/tokens', credentials,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }) })
-      .subscribe(res => {
-        this.storage.setItem('currentUser', res['meta']['id']);
-        this.storage.setItem('token', res['meta']['token']);
-        this.fetchCurrentUser().then(user => {
-          if (!user) {
-            this.datastore.headers = null;
-            reject('No user found with that username');
-          } else {
-            resolve(user);
-          }
+        { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }) })
+        .subscribe(res => {
+          this.storage.setItem('currentUser', res['meta']['id']);
+          this.storage.setItem('token', res['meta']['token']);
+          this.fetchCurrentUser().then(user => {
+            if (!user) {
+              this.datastore.headers = null;
+              reject('No user found with that username');
+            } else {
+              resolve(user);
+            }
+          });
         });
-      });
     });
-   }
+  }
 
   fetchCurrentUser() {
     return new Promise<any>((resolve) => {
@@ -50,8 +50,19 @@ export class AuthService {
           (err) => {
             resolve(null);
           });
-        }
+      }
     });
+  }
+
+  public isAuthenticated() {
+    var token = this.storage.getItem('token');
+    if(token) {
+      return this.fetchCurrentUser().then(user => {
+        return user != null;
+      });
+    }
+    return false;
+
   }
 
   logout() {
@@ -61,12 +72,12 @@ export class AuthService {
     this.storage.removeItem('currentUser');
   }
 
-  changePassword(password) {
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
-        this.currentUser.password = hash;
-        this.currentUser.save().subscribe();
-      });
-    });
-  }
+  // changePassword(password) {
+  //   bcrypt.genSalt(10, (err, salt) => {
+  //     bcrypt.hash(password, salt, (err, hash) => {
+  //       this.currentUser.password = hash;
+  //       this.currentUser.save().subscribe();
+  //     });
+  //   });
+  // }
 }
