@@ -55,10 +55,14 @@ export class HomeComponent implements OnInit {
       next: locations =>
       locations.forEach(location => {
         this.locations.push(location);
+        let specificIconUrl = 'plain';
+        if (location['location-type']) {
+          specificIconUrl = location['location-type'].name;
+        }
         this.markers.push({
           lat: location.lat,
           lng: location.lon,
-          iconUrl: '../../../assets/imgs/coins.png',
+          iconUrl: '../../../assets/imgs/icon_' + specificIconUrl + '.png',
           draggable: false
         });
       })
