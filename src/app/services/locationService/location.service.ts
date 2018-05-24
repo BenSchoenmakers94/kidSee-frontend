@@ -1,3 +1,4 @@
+import { Theme } from './../../models/theme';
 import { LocationType } from './../../models/locationType';
 import { Location } from './../../models/location';
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JsonApiQueryData, JsonApiModel } from 'angular2-jsonapi';
 import { BaseService } from '../base/base.service';
+import { BaseModel } from '../../models/baseModel';
 
 @Injectable()
 export class LocationService extends BaseService {
@@ -14,15 +16,17 @@ export class LocationService extends BaseService {
     super();
    }
 
-  getAllObjects(): Observable<JsonApiModel[]> {
+  getAllObjects(): Observable<BaseModel[]> {
     return Observable.create((observer) => {
       this.datastore.findAll(Location, { }).subscribe(
-        (locations: JsonApiQueryData<Location>) => observer.next(locations.getModels())
+        (locations: JsonApiQueryData<Location>) => {
+          observer.next(locations.getModels());
+        }
       );
     });
   }
 
-  getObjectsPage(pageNumber?: number, pageSize?: number): Observable<JsonApiModel[]> {
+  getObjectsPage(pageNumber?: number, pageSize?: number): Observable<BaseModel[]> {
       return Observable.create((observer) => {
         this.datastore.findAll(Location, {
           page: pageNumber,
@@ -33,7 +37,7 @@ export class LocationService extends BaseService {
       });
     }
 
-  getObjectFromId(id: string): Observable<JsonApiModel> {
+  getObjectFromId(id: string): Observable<BaseModel> {
     return new Observable((observer) => {
       this.datastore.findRecord(Location, id).subscribe((location: Location) => observer.next(location));
     });
@@ -41,20 +45,26 @@ export class LocationService extends BaseService {
 
   postObject(location: Location): Promise<any> {
     return new Promise(((resolve, reject) => {
-      // tslint:disable-next-line:prefer-const
-      let newLocationType = this.datastore.findRecord(LocationType, '1').subscribe( // wordt onderwater nog niets mee gedaan
-        (locationType: LocationType) => {
-          const newLocation = this.datastore.createRecord(Location, {
-            'name': location.name,
-            'lon': location.lon,
-            'lat': location.lat,
-            'description': location.description,
-            'address': location.address,
-            'location-type': locationType
+      if (!location['location-type']) {
+        const defaultLocationType = this.datastore.findRecord(LocationType, '1').subscribe(
+          (locationType: LocationType) => {
+            this.createLocation(locationType, location);
           });
-          newLocation.save().subscribe();
-        });
+      } else {
+        this.createLocation(location['location-type'], location);
+      }
     }));
+  }
+
+  private createLocation(locationType: LocationType, location: Location) {
+    const newLocation = this.datastore.createRecord(Location, {
+      'name': location.name,
+      'lon': location.lon,
+      'lat': location.lat,
+      'description': location.description,
+      'address': location.address,
+      'location-type': locationType
+    }).save().subscribe();
   }
 
   patchObject(locationToUpdate: any): Promise<any> {
@@ -65,8 +75,18 @@ export class LocationService extends BaseService {
         location.lat = locationToUpdate.lat,
         location.description = locationToUpdate.description,
         location.address = locationToUpdate.address;
-        location.locationType = locationToUpdate.locationType;
-        location.save().subscribe();
+        location['location-type'] = null;
+        if (!location['location-type']) {
+          const defaultLocationType = this.datastore.findRecord(LocationType, '3').subscribe(
+            (locationType: LocationType) => {
+              location['location-type'] = locationType;
+              location.save().subscribe();
+            }
+          );
+        } else {
+          location.locationType = locationToUpdate.locationType;
+          location.save().subscribe();
+        }
        });
     });
   }

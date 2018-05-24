@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Datastore } from "../datastore";
-import { User } from "../../models/user";
-import { Observable } from "rxjs/Observable";
-import { BaseService } from "../base/base.service";
-import {JsonApiModel, JsonApiQueryData} from "angular2-jsonapi";
-import {Location} from "../../models/location";
+import { Datastore } from '../datastore';
+import { User } from '../../models/user';
+import { Observable } from 'rxjs/Observable';
+import { BaseService } from '../base/base.service';
+import {JsonApiModel, JsonApiQueryData} from 'angular2-jsonapi';
+import {Location} from '../../models/location';
+import { BaseModel } from '../../models/baseModel';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -13,7 +14,7 @@ export class UserService extends BaseService {
     super();
   }
 
-  getAllObjects(): Observable<JsonApiModel[]> {
+  getAllObjects(): Observable<BaseModel[]> {
     return Observable.create((observer) => {
       this.datastore.findAll(User, {}).subscribe(
         (users: JsonApiQueryData<User>) => observer.next(users.getModels())
@@ -21,7 +22,7 @@ export class UserService extends BaseService {
     });
   }
 
-  getObjectsPage(pageNumber: number, pageSize: number): Observable<JsonApiModel[]> {
+  getObjectsPage(pageNumber: number, pageSize: number): Observable<BaseModel[]> {
     return Observable.create((observer) => {
       this.datastore.findAll(User, {
         page: pageNumber,
@@ -32,12 +33,12 @@ export class UserService extends BaseService {
     });
   }
 
-  getObjectFromId(id: string): Observable<JsonApiModel> {
+  getObjectFromId(id: string): Observable<BaseModel> {
     return Observable.create((observer) => {
       return this.datastore.findRecord(User, id).subscribe(
         (user) => {
           observer.next(user);
-        })
+        });
     });
   }
 
@@ -53,11 +54,5 @@ export class UserService extends BaseService {
 
   deleteObject(id: string) {
     this.datastore.deleteRecord(User, id).subscribe();
-  }
-
-
-  public getSpecificUser(id){
-
-
   }
 }

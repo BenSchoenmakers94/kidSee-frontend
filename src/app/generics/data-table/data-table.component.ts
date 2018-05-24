@@ -1,4 +1,3 @@
-import { JsonApiModel } from 'angular2-jsonapi';
 import { AbstractObjectService } from './../../services/abstract-object.service';
 import { CreateDialogComponent } from './../../dialogs/create-dialog/create-dialog.component';
 import { ColumnAttribute } from './../column-attribute';
@@ -8,8 +7,9 @@ import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, A
 import { MatDialog, MatPaginator, MatSort, MatInput } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
-import { UserEditDialogComponent } from "../../dialogs/useredit-dialog/useredit-dialog.component";
-import { UserRemoveDialogComponent } from "../../dialogs/userremove-dialog/userremove-dialog.component";
+import { UserEditDialogComponent } from '../../dialogs/useredit-dialog/useredit-dialog.component';
+import { UserRemoveDialogComponent } from '../../dialogs/userremove-dialog/userremove-dialog.component';
+import { BaseModel } from '../../models/baseModel';
 
 @Component({
   selector: 'app-data-table',
@@ -19,24 +19,24 @@ import { UserRemoveDialogComponent } from "../../dialogs/userremove-dialog/userr
 
 export class DataTableComponent implements AfterViewInit, OnInit {
   @Input() objectType: string;
-  @Input() columnAttributes: ColumnAttribute[];
-  @Input() possibleActions: string[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatInput) filterInput: MatInput;
 
-  private objectData: any[];
+  public objectData: any[];
   private objectDataLocalFiltered: any[];
-  private displayedColumns: string[];
+  public displayedColumns: ColumnAttribute[];
   private specificObjectService: BaseService;
-  private pageNumber: number;
-  private pageSize: number;
-  private pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
-  private maxObjectsLengthInStorage: number;
+  public pageNumber: number;
+  public pageSize: number;
+  public pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
+  public maxObjectsLengthInStorage: number;
   private maxObjectsLengthInStorageCopy: number;
+  public objectAttributes: string[];
 
-  constructor(public dialog: MatDialog,
+  constructor(
+    public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
     private abstractObjectService: AbstractObjectService) { }
 
@@ -47,8 +47,8 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.displayedColumns = [];
     this.objectData = [];
     this.objectDataLocalFiltered = [];
-    this.initColumns();
     this.receiveAllData().then(result => {
+      this.initColumns(result[0]);
       this.maxObjectsLengthInStorage = result.length;
       this.checkForChanges(result);
     });
@@ -69,12 +69,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         this.pageNumber = this.paginator._pageIndex + 1;
         this.pageSize = this.paginator.pageSize;
         this.receivePageData(this.pageNumber, this.pageSize).then(result => {
-        this.checkForChanges(
-        this.sortDataWith(
-        this.sort.direction,
-        this.sort.active,
-        result));
-      });
+          this.checkForChanges(
+          this.sortDataWith(
+          this.sort.direction,
+          this.sort.active,
+          result));
+        });
       } else {
         this.checkForChanges(
           this.sortDataWith(
@@ -92,11 +92,11 @@ export class DataTableComponent implements AfterViewInit, OnInit {
       startIndex = 0;
     }
     const endIndex = pageNumber * pageSize;
-    const test = returnableObjects.slice(startIndex, endIndex);
-    return test;
+    const localPageData = returnableObjects.slice(startIndex, endIndex);
+    return localPageData;
   }
 
-  private receiveAllData(): Promise<JsonApiModel[]> {
+  private receiveAllData(): Promise<BaseModel[]> {
     return new Promise(resolve => {
       this.specificObjectService.getAllObjects().subscribe({
         next: objects => {
@@ -107,7 +107,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private receivePageData(pageNumber: number, pageSize: number): Promise<JsonApiModel[]> {
+  private receivePageData(pageNumber: number, pageSize: number): Promise<BaseModel[]> {
     return new Promise(resolve => {
       this.specificObjectService.getObjectsPage(pageNumber, pageSize).subscribe({
         next: objects => resolve(objects)
@@ -115,11 +115,34 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private initColumns() {
-    this.columnAttributes.forEach(columnAttribute => {
-      this.displayedColumns.push(columnAttribute.columnName);
-    });
-    this.displayedColumns.push('Actions');
+  private initColumns(object: BaseModel) {
+    const attributeNames = object.getAttributeNames();
+    this.objectAttributes = attributeNames;
+    for (let index = 0; index < attributeNames.length; index++) {
+      this.displayedColumns.push({
+        columnName: attributeNames[index],
+        displayed: true
+      });
+    }
+    //this.displayedColumns.push('Actions');
+  }
+
+  public getDisplayedColumns(): string[] {
+    const columnNames = [];
+    for (let index = 0; index < this.displayedColumns.length; index++) {
+      if (this.displayedColumns[index].displayed) {
+        columnNames.push(this.displayedColumns[index].columnName);
+      }
+    }
+    return columnNames;
+  }
+
+  public changeDisplayedColumns(column: string) {
+    for (let index = 0; index < this.displayedColumns.length; index++) {
+      if (this.displayedColumns[index].columnName === column) {
+        this.displayedColumns[index].displayed = !this.displayedColumns[index].displayed;
+      }
+    }
   }
 
   private applyFilter(filterValue: string) {
@@ -133,21 +156,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     });
   }
 
-  private compareValues(object: any, lowerCasedValue: string): boolean {
-    for (let index = 0; index < this.columnAttributes.length; index++) {
-      const value = this.getAttributeFromRow(object, this.columnAttributes[index].columnName);
-      if (value.toString().toLowerCase().includes(lowerCasedValue)) {
-        return true;
-      }
-    }
+  private compareValues(object: BaseModel, lowerCasedValue: string): boolean {
+    return object.hasValue(lowerCasedValue);
   }
 
-  private getAttributeFromRow(object: any, column: string): string {
-    for (let index = 0; index < this.columnAttributes.length; index++) {
-      if (this.columnAttributes[index].columnName === column) {
-        return object[this.columnAttributes[index].attributeName];
-      }
-    }
+  private getAttributeFromRow(object: BaseModel, column: string): string {
+    return object.resolveAttributeName(column);
   }
 
   private handleAction(actionToDo: string, object: any) {
@@ -177,12 +191,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private startEdit(objectToEdit: any) {
     const tempObjectClone = _.cloneDeep(objectToEdit);
     //TODO: delete this if when modular dialogs are available
-    var dialogRef;
-    if(tempObjectClone.username != null) {
+    let dialogRef;
+    if (tempObjectClone.username != null) {
       dialogRef = this.dialog.open(UserEditDialogComponent, {
         data: tempObjectClone
       });
-    }else {
+    } else {
       dialogRef = this.dialog.open(EditDialogComponent, {
         data: tempObjectClone
       });
@@ -198,13 +212,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private remove(objectToRemove: any) {
 
     //TODO: delete this if when modular dialogs are available
-    var dialogRef;
-    if(objectToRemove.username != null) {
+    let dialogRef;
+    if (objectToRemove.username != null) {
       dialogRef = this.dialog.open(UserRemoveDialogComponent, {
         data: objectToRemove
       });
-    }
-    else {
+    } else {
       dialogRef = this.dialog.open(RemoveDialogComponent, {
         data: objectToRemove
       });
@@ -238,26 +251,18 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.changeDetectorRefs.detectChanges();
   }
 
-  private sortDataWith(direction: string, columnToSort: string, objects: any[]): any[] {
-    let sortableProperty: string;
-    for (let index = 0; index < this.columnAttributes.length; index++) {
-      if (this.columnAttributes[index].columnName === columnToSort) {
-        sortableProperty = this.columnAttributes[index].attributeName;
-        break;
-      }
-    }
-
+  private sortDataWith(direction: string, columnToSort: string, objects: BaseModel[]): any[] {
     objects.sort((objectA: any, objectB: any) => {
       return this.compare(
         objectA,
         objectB,
-        sortableProperty,
+        columnToSort,
         (direction !== 'asc'));
     });
     return objects;
   }
 
-  private compare(objectA: any, objectB: any, sortableProperty: string, isNotAsc: boolean): number {
-    return (objectA[sortableProperty] < objectB[sortableProperty] ? -1 : 1) * (isNotAsc ? -1 : 1);
+  private compare(objectA: BaseModel, objectB: BaseModel, sortableProperty: string, isNotAsc: boolean): number {
+    return (objectA.resolveAttributeName(sortableProperty) < objectB.resolveAttributeName(sortableProperty) ? -1 : 1) * (isNotAsc ? -1 : 1);
   }
 }

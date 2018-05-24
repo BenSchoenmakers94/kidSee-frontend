@@ -1,5 +1,3 @@
-import { LocationType } from './../../models/locationType';
-import { JsonApiModel } from 'angular2-jsonapi';
 import { Observable } from 'rxjs/Observable';
 import { ColumnAttribute } from './../../generics/column-attribute';
 import { AbstractObjectService } from './../../services/abstract-object.service';
@@ -36,11 +34,11 @@ export class HomeComponent implements OnInit {
   columnAttributes: ColumnAttribute[];
   actionsForTable: string[];
 
-  constructor(private abstractObjectService: AbstractObjectService, private dialog: MatDialog) {
-   }
+  constructor(
+    private abstractObjectService: AbstractObjectService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.initTableInformation();
     this.specificObjectService = this.abstractObjectService.getObject(this.specificObjectName);
     this.markers = [];
     this.locations = [];
@@ -48,26 +46,6 @@ export class HomeComponent implements OnInit {
     this.mapOn = true;
     this.switchName = 'Lijst';
     this.receiveData();
-  }
-
-  private initTableInformation() {
-    this.actionsForTable = [];
-    this.columnAttributes = [];
-
-    this.actionsForTable.push(...['edit', 'delete']);
-
-    this.columnAttributes.push({
-      columnName: 'Naam',
-      attributeName: 'name'
-    });
-    this.columnAttributes.push({
-      columnName: 'Beschrijving',
-      attributeName: 'description'
-    });
-    this.columnAttributes.push({
-      columnName: 'Adres',
-      attributeName: 'address'
-    });
   }
 
   private receiveData() {
