@@ -87,22 +87,22 @@ export class MapComponent implements OnInit {
       draggable: false
     };
     this.markers.push(newMarker);
-    this.getGeoLocation(newMarker).then(newLocation => {
-      newLocation.modelConfig.type = 'locations';
-      const dialogRef = this.dialog.open(CreateDialogComponent, {
-        data: newLocation
-      });
+    // this.getGeoLocation(newMarker).then(newLocation => {
+    //   newLocation.modelConfig.type = 'locations';
+    //   const dialogRef = this.dialog.open(CreateDialogComponent, {
+    //     data: newLocation
+    //   });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result === 1) {
-          this.locations.push(newLocation);
-        } else {
-          this.markers.pop();
-        }
-      });
-    }, reject => {
-      alert(reject);
-    });
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     if (result === 1) {
+    //       this.locations.push(newLocation);
+    //     } else {
+    //       this.markers.pop();
+    //     }
+    //   });
+    // }, reject => {
+    //   alert(reject);
+    // });
   }
 
   getGeoLocation(marker: Marker): Promise<any> {

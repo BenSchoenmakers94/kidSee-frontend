@@ -5,6 +5,7 @@ import { ObjectDetailComponent } from './../object-detail/object-detail.componen
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
+import { WizardComponent } from '../wizard/wizard.component';
 
 const routes: Routes = [
   {
@@ -17,15 +18,36 @@ const routes: Routes = [
     children: [{
       path: '', component: MapComponent
     }, {
+      path: 'new', component: WizardComponent
+    }, {
       path: 'list', component: DataTableComponent
     }, {
-      path: ':id', component: ObjectDetailComponent
+      path: ':id',
+      component: ObjectDetailComponent,
+      children: [{
+        path: 'themes/new', component: WizardComponent
+      }]
     }]
   },
   {
     path: 'users',
     children: [{
       path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent,
+      children: [{
+        path: 'posts/new', component: WizardComponent
+      }]
+    }]
+  }, {
+    path: 'location-types',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
     }, {
       path: ':id', component: ObjectDetailComponent
     }]

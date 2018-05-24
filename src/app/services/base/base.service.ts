@@ -47,7 +47,7 @@ export class BaseService {
           }];
     }
 
-    private resolveType(type: string) {
+    public resolveType(type: string) {
         for (let index = 0; index < this.modelTypes.length; index++) {
             if (this.modelTypes[index]['type'].includes(type.toLowerCase())) {
                 return this.modelTypes[index]['modelType'];
@@ -59,7 +59,9 @@ export class BaseService {
     getAllObjects(type: string): Observable<BaseModel[]> {
          const modelType = this.resolveType(type);
          return Observable.create((observer) => {
-            this.datastore.findAll(modelType, { }).subscribe(
+            this.datastore.findAll(modelType, {
+                page_size: 999
+             }).subscribe(
               objects => {
                 observer.next(objects.getModels());
               }
@@ -94,7 +96,7 @@ export class BaseService {
 
     private createObject(object: BaseModel) {
         const modelType = this.resolveType(object.modelConfig.type);
-        const newLocation = this.datastore.createRecord(modelType, object).save().subscribe();
+        const newObject = this.datastore.createRecord(modelType, object).save().subscribe();
     }
 
     patchObject(object: BaseModel): Promise<any> {

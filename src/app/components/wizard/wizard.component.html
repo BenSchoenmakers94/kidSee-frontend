@@ -1,0 +1,80 @@
+<mat-card class="center">
+    <div class="wizard-progress">
+        <ng-container *ngFor="let step of objectToCreate.getAttributeNamesForCreation(); let i=index">
+            <ng-container *ngIf="i < (stepCounter - 1)">
+                <div class="step complete">
+                    {{step}}
+                    <div class="node"></div>
+                  </div>
+            </ng-container>
+            <ng-container *ngIf="i === (stepCounter - 1)">
+                <div class="step in-progress">
+                    {{step}}
+                    <div class="node"></div>
+                  </div>
+            </ng-container>
+            <ng-container *ngIf="i > (stepCounter - 1)">
+                <div class="step">
+                    {{step}}
+                    <div class="node"></div>
+                  </div>
+            </ng-container>
+        </ng-container>
+      </div>
+    <div class="marginTop">
+        <ng-container *ngIf="stepCounter < 1;else contentBlock">
+            <mat-card-title>
+                <p>Welcome to the creation wizard of: {{objectType}}</p>
+                <p>This wizard will take {{objectToCreate.getAttributeNamesForCreation().length}}  steps</p>
+              </mat-card-title>
+        </ng-container>
+        <ng-template #contentBlock>
+          <ng-container *ngIf="stepCounter > objectToCreate.getAttributeNamesForCreation().length;else formBlock" >
+              <mat-card-title>
+                  <p>You have completed all of the steps!</p>
+              </mat-card-title>
+          </ng-container>
+          <ng-template #formBlock>
+              <div class="marginTop">
+                  <mat-form-field>
+                      <ng-container *ngIf="objectToCreate.isRequiredAttribute(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else notRequired" >
+                        <ng-container *ngIf="objectToCreate.isBelongsToRelationship(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else normalRequired" >
+                            <mat-select [value]="objectToCreate.resolveBelongsToRelationshipAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (selectionChange)="updateBelongsToState($event.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
+                                <mat-option *ngFor="let type of getIterableTypesOf(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" [value]="type">{{type}}</mat-option>
+                          </mat-select>
+                        </ng-container>
+                        <ng-template #normalRequired>
+                            <input matInput [value]="objectToCreate.resolveAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (keyup)="updateSimpleAttributeState($event.target.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
+                        </ng-template>
+                      </ng-container>
+                      <ng-template #notRequired>
+                          <ng-container *ngIf="objectToCreate.isBelongsToRelationship(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else normalNotRequired">
+                              <mat-select [value]="objectToCreate.resolveBelongsToRelationshipAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (selectionChange)="updateBelongsToState($event.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}}>
+                                  <mat-option *ngFor="let type of getIterableTypesOf(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" [value]="type">{{type}}</mat-option>
+                            </mat-select>
+                          </ng-container>
+                          <ng-template #normalNotRequired>
+                              <input matInput [value]="objectToCreate.resolveAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (keyup)="updateSimpleAttributeState($event.target.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}}>
+                          </ng-template>
+                      </ng-template>
+                  </mat-form-field>
+              </div>
+              </ng-template>
+        </ng-template>
+          <div class="marginTop">
+              <ng-container *ngIf="stepCounter >= 1" >
+                  <button mat-fab class="left" (click)="decrementStep()">
+                      <i class="material-icons">arrow_back</i>
+                  </button>
+              </ng-container>
+              <ng-container *ngIf="stepCounter <= objectToCreate.getAttributeNamesForCreation().length" >
+                  <button mat-fab class="right" (click)="incrementStep()">
+                      <i class="material-icons">arrow_forward</i>
+                  </button>
+              </ng-container>
+              <ng-container *ngIf="stepCounter > objectToCreate.getAttributeNamesForCreation().length" >
+                  <button mat-raised-button color="accent" (click)="saveObject()">Save</button>
+              </ng-container>
+          </div>
+    </div>
+</mat-card>

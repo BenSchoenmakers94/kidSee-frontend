@@ -176,7 +176,10 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.router.navigate([routerUrl]);
   }
 
-  public createNewObject() { }
+  public createNewObject() {
+    const routerUrl = this.objectType + '/new';
+    this.router.navigate([routerUrl]);
+   }
 
   private returnObjectState(oldObject: any, newObject: any) {
     const newKeys = Object.keys(newObject);

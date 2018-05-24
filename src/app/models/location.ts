@@ -37,7 +37,9 @@ export class Location extends BaseModel {
   @HasMany()
   themes: Theme[];
 
-  public simpleAttributeNames = ['Id', 'Name', 'Lon', 'Lat', 'Description', 'Address', 'Websitelink'];
-  public hasManyAttributes = ['Themes'];
-  public belongsToAttributes = ['Location-Type'];
+  public simpleAttributeNames = [{ name: 'Id', required: true }, { name: 'Name', required: true },
+  { name: 'Lon', required: true }, { name: 'Lat', required: true }, { name: 'Description', required: true },
+  { name: 'Address', required: true }, { name: 'Websitelink', required: false }];
+  public hasManyAttributes = [{ name: 'Themes', required: false }];
+  public belongsToAttributes = [{ name: 'Location-types', required: true }];
 }

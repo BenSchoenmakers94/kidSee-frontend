@@ -11,4 +11,9 @@ export class LocationType extends BaseModel  {
 
   @Attribute()
   description: string;
+
+  public simpleAttributeNames = [{ name: 'Id', required: true }, { name: 'Name', required: true },
+  { name: 'Description', required: true }];
+  public hasManyAttributes = [];
+  public belongsToAttributes = [];
 }
