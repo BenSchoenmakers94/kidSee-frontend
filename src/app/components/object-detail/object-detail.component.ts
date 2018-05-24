@@ -2,6 +2,8 @@ import { BaseService } from './../../services/base/base.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseModel } from '../../models/baseModel';
+import { MatDialog } from '@angular/material';
+import { RemoveDialogComponent } from '../../dialogs/remove-dialog/remove-dialog.component';
 
 @Component({
   selector: 'app-object-detail',
@@ -18,7 +20,8 @@ export class ObjectDetailComponent implements OnInit {
 
   constructor(
     private baseService: BaseService,
-    private router: Router) { }
+    private router: Router,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     const routerSegments = this.router.url.split('/');
@@ -40,17 +43,28 @@ export class ObjectDetailComponent implements OnInit {
     });
   }
 
-public getIterableTypesOf(attributeName: string): string[] {
-  const types = [];
-    for (let index = 0; index < this.iterableTypes.length; index++) {
-      if (this.iterableTypes[index]['type'] === attributeName) {
-        types.push(this.iterableTypes[index]['values']);
+  public getIterableTypesOf(attributeName: string): string[] {
+    const types = [];
+      for (let index = 0; index < this.iterableTypes.length; index++) {
+        if (this.iterableTypes[index]['type'] === attributeName) {
+          types.push(this.iterableTypes[index]['values']);
+        }
       }
-    }
-    return types;
-}
+      return types;
+  }
 
-saveObject() {
-    console.log(this.object);
+  saveObject() {
+    this.baseService.patchObject(this.object);
+  }
+
+  removeObject() {
+    const dialogRef = this.dialog.open(RemoveDialogComponent, { });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        this.baseService.deleteObject(this.object);
+      }
+      this.router.navigate([this.objectType]);
+    });
   }
 }

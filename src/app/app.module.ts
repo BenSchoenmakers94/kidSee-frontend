@@ -54,6 +54,7 @@ import { RelationshipDialogComponent } from './dialogs/relationship-dialog/relat
 import { ObjectDetailComponent } from './components/object-detail/object-detail.component';
 import { MapComponent } from './components/location/map/map.component';
 import { WizardComponent } from './components/wizard/wizard.component';
+import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
 
 @NgModule({
   exports: [
@@ -104,7 +105,8 @@ export class AngularMaterialModule {}
     DataTableComponent,
     RelationshipDialogComponent,
     ObjectDetailComponent,
-    WizardComponent
+    WizardComponent,
+    RemoveDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -131,7 +133,8 @@ export class AngularMaterialModule {}
     DataTableComponent,
     RelationshipDialogComponent,
     ObjectDetailComponent,
-    WizardComponent
+    WizardComponent,
+    RemoveDialogComponent
   ],
   providers: [
     Datastore,
