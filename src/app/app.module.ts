@@ -58,6 +58,7 @@ import { DataTableComponent } from './generics/data-table/data-table.component';
 import { UserEditDialogComponent } from "./dialogs/useredit-dialog/useredit-dialog.component";
 import { UserCreateDialogComponent } from "./dialogs/usercreate-dialog/usercreate-dialog.component";
 import { UserRemoveDialogComponent } from "./dialogs/userremove-dialog/userremove-dialog.component";
+import { AuthGuard } from "./components/app-routing/auth.guard";
 import { RelationshipDialogComponent } from './dialogs/relationship-dialog/relationship-dialog.component';
 
 @NgModule({
@@ -155,7 +156,8 @@ export class AngularMaterialModule {}
       multi: true
     },
     LocationService,
-    AbstractObjectService
+    AbstractObjectService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
