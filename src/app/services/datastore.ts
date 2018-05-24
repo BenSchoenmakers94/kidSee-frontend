@@ -1,3 +1,5 @@
+import { Theme } from './../models/theme';
+import { LocationType } from './../models/locationType';
 import { PostStatus } from './../models/postStatus';
 import { Injectable } from '@angular/core';
 import { JsonApiDatastoreConfig, JsonApiDatastore, DatastoreConfig } from 'angular2-jsonapi';
@@ -10,13 +12,16 @@ import { Comment } from '../models/comment';
 
 const config: DatastoreConfig = {
   baseUrl: 'http://174.138.7.193/api',
+    // baseUrl: 'http://128.199.32.227/api',
   models: {
     users: User,
     posts: Post,
     comments: Comment,
     postStatuses: PostStatus,
     contentTypes: ContentType,
-    locations: Location
+    locations: Location,
+    'location-types': LocationType,
+    'themes': Theme
   }
 };
 

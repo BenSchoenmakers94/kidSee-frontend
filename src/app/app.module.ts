@@ -59,6 +59,7 @@ import { UserEditDialogComponent } from "./dialogs/useredit-dialog/useredit-dial
 import { UserCreateDialogComponent } from "./dialogs/usercreate-dialog/usercreate-dialog.component";
 import { UserRemoveDialogComponent } from "./dialogs/userremove-dialog/userremove-dialog.component";
 import { AuthGuard } from "./components/app-routing/auth.guard";
+import { RelationshipDialogComponent } from './dialogs/relationship-dialog/relationship-dialog.component';
 
 @NgModule({
   exports: [
@@ -111,7 +112,8 @@ export class AngularMaterialModule {}
     DataTableComponent,
     UserEditDialogComponent,
     UserCreateDialogComponent,
-    UserRemoveDialogComponent
+    UserRemoveDialogComponent,
+    RelationshipDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -141,7 +143,8 @@ export class AngularMaterialModule {}
     DataTableComponent,
     UserEditDialogComponent,
     UserCreateDialogComponent,
-    UserRemoveDialogComponent
+    UserRemoveDialogComponent,
+    RelationshipDialogComponent
   ],
   providers: [
     Datastore,

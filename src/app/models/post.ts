@@ -3,11 +3,12 @@ import { User } from './user';
 import { ContentType } from './contentType';
 import { PostStatus } from './postStatus';
 import { Comment } from './comment';
+import { BaseModel } from './baseModel';
 
 @JsonApiModelConfig({
   type: 'posts'
 })
-export class Post extends JsonApiModel {
+export class Post extends BaseModel {
 
   @Attribute()
   content: string;
