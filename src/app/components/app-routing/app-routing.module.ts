@@ -51,7 +51,51 @@ const routes: Routes = [
     }, {
       path: ':id', component: ObjectDetailComponent
     }]
-  }
+  },
+  {
+    path: 'posts',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'themes',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'comments',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'assignments',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
 ];
 
 @NgModule({

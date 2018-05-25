@@ -1,4 +1,3 @@
-import { Theme } from './../../models/theme';
 import { PostStatus } from './../../models/postStatus';
 import { ContentType } from './../../models/contentType';
 import { LocationType } from './../../models/locationType';
@@ -10,7 +9,13 @@ import { JsonApiModel, JsonApiQueryData, ModelType } from 'angular2-jsonapi';
 import { Injectable } from '@angular/core';
 import { BaseModel } from '../../models/baseModel';
 import { HttpClient } from '@angular/common/http';
+import { Theme } from '../../models/theme';
 import { Post } from '../../models/post';
+import { Comment } from './../../models/comment';
+import { Assignment } from '../../models/assignment';
+import { AssignmentType } from '../../models/assignmentType';
+import { AnswerType } from '../../models/answerType';
+import { Answer } from '../../models/answer';
 
 @Injectable()
 export class BaseService {
@@ -42,13 +47,30 @@ export class BaseService {
             modelType: Post
           },
           {
-            type: 'postStatuses',
+            type: 'post-statuses',
             modelType: PostStatus
           },
           {
             type: 'themes',
             modelType: Theme
-          }];
+          },
+          {
+            type: 'assignments',
+            modelType: Assignment
+          },
+          {
+            type: 'assignment-types',
+            modelType: AssignmentType
+          },
+          {
+            type: 'answers',
+            modelType: Answer
+          },
+          {
+            type: 'answer-types',
+            modelType: AnswerType
+          }
+          ];
     }
 
     public resolveType(type: string) {
