@@ -50,7 +50,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     this.receiveAllData().then(result => {
       this.initColumns(result[0]);
       this.maxObjectsLengthInStorage = result.length;
-      this.checkForChanges(result);
+      this.checkForChanges(result.slice(0, this.pageSize));
     });
   }
 
@@ -109,7 +109,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private receivePageData(pageNumber: number, pageSize: number): Promise<BaseModel[]> {
     return new Promise(resolve => {
-      this.baseService.getObjectsPage(pageNumber, pageSize).subscribe({
+      this.baseService.getObjectsPage(this.objectType, pageNumber, pageSize).subscribe({
         next: objects => resolve(objects)
       });
     });
@@ -164,8 +164,10 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
   public showRelationshipDialog(object: BaseModel, columnName: string) {
-    console.log(object);
-    const relationshipDataToShow = object[columnName.toLowerCase()];
+    let relationshipDataToShow = object[columnName.toLowerCase()];
+    if (!relationshipDataToShow) {
+      relationshipDataToShow = object['content'];
+    }
     const dialogRef = this.dialog.open(RelationshipDialogComponent, {
       data: {
         parentObject: object,
@@ -209,13 +211,13 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
   private sortDataWith(direction: string, columnToSort: string, objects: BaseModel[]): any[] {
-    objects.sort((objectA: any, objectB: any) => {
-      return this.compare(
-        objectA,
-        objectB,
-        columnToSort,
-        (direction !== 'asc'));
-    });
+    // objects.sort((objectA: any, objectB: any) => {
+    //   return this.compare(
+    //     objectA,
+    //     objectB,
+    //     columnToSort,
+    //     (direction !== 'asc'));
+    // });
     return objects;
   }
 

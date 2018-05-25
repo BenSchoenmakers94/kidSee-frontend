@@ -15,16 +15,13 @@ export class Comment extends BaseModel {
   @BelongsTo()
   post: Post;
 
-  @Attribute({serializedName: 'content'})
-  name: string;
-
   @Attribute()
   content: string;
 
   @BelongsTo()
   'content-type': ContentType;
 
-  public simpleAttributeNames = [{ name: 'id', required: false }, { name: 'name', required: true }];
+  public simpleAttributeNames = [{ name: 'id', required: false }, { name: 'content', required: true }];
   public hasManyAttributes = [];
   public belongsToAttributes = [{ name: 'content-type', required: true }, { name: 'post', required: true },
     { name: 'user', required: true }];

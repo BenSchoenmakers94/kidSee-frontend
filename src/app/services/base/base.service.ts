@@ -95,13 +95,14 @@ export class BaseService {
           });
     }
 
-    getObjectsPage(pageNumber?: number, pageSize?: number): Observable<BaseModel[]> {
+    getObjectsPage(type: string, pageNumber?: number, pageSize?: number): Observable<BaseModel[]> {
+        const modelType = this.resolveType(type);
           return Observable.create((observer) => {
-            this.datastore.findAll(Location, {
+            this.datastore.findAll(modelType, {
               page: pageNumber,
               page_size: pageSize
              }).subscribe(
-              (locations: JsonApiQueryData<Location>) => observer.next(locations.getModels())
+              objects => observer.next(objects.getModels())
             );
           });
     }
