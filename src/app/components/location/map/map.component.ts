@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material';
 import { Location } from './../../../models/location';
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
+import { Router } from '@angular/router';
 
 declare var google: any;
 
@@ -29,7 +30,8 @@ export class MapComponent implements OnInit {
 
   constructor(
     private baseService: BaseService,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.markers = [];
@@ -60,9 +62,8 @@ export class MapComponent implements OnInit {
 
   private clickedMarker(marker: Marker) {
     this.getLocationFromMarker(marker).then(resolve => {
-      const dialogRef = this.dialog.open(EditDialogComponent, {
-        data: resolve
-      });
+      const navUrl = 'locations/' + resolve.id;
+      this.router.navigate([navUrl]);
     }, reject => { });
   }
 
@@ -87,22 +88,14 @@ export class MapComponent implements OnInit {
       draggable: false
     };
     this.markers.push(newMarker);
-    // this.getGeoLocation(newMarker).then(newLocation => {
-    //   newLocation.modelConfig.type = 'locations';
-    //   const dialogRef = this.dialog.open(CreateDialogComponent, {
-    //     data: newLocation
-    //   });
-
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     if (result === 1) {
-    //       this.locations.push(newLocation);
-    //     } else {
-    //       this.markers.pop();
-    //     }
-    //   });
-    // }, reject => {
-    //   alert(reject);
-    // });
+    this.getGeoLocation(newMarker).then(newLocation => {
+      this.baseService.postObjectData(newLocation).then((result) => {
+        const navUrl = 'locations/' + result.id;
+        this.router.navigate([navUrl]);
+      });
+    }, reject => {
+      alert(reject);
+    });
   }
 
   getGeoLocation(marker: Marker): Promise<any> {
@@ -129,7 +122,8 @@ export class MapComponent implements OnInit {
                   description: '',
                   address: (marker.streetName + ' ' + marker.buildingNum +
                   ', ' + marker.postalCode + ' ' + marker.cityName),
-                  modelConfig: {}
+                  modelConfig: { type: 'locations' },
+                  'location-type': { id: 1 }
                 });
               } else {
                 reject('No address available!');

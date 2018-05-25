@@ -137,6 +137,11 @@ export abstract class BaseModel extends JsonApiModel {
               return true;
             }
         }
+        for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+            if (this.manyToManyAttributes[index].name.toLowerCase().includes(attributeToCheck.toLowerCase())) {
+                return true;
+            }
+        }
           return false;
     }
 

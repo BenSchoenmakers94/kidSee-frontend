@@ -1,3 +1,4 @@
+import { Theme } from './../../models/theme';
 import { PostStatus } from './../../models/postStatus';
 import { ContentType } from './../../models/contentType';
 import { LocationType } from './../../models/locationType';
@@ -9,7 +10,6 @@ import { JsonApiModel, JsonApiQueryData, ModelType } from 'angular2-jsonapi';
 import { Injectable } from '@angular/core';
 import { BaseModel } from '../../models/baseModel';
 import { HttpClient } from '@angular/common/http';
-import { Theme } from '../../models/theme';
 import { Post } from '../../models/post';
 
 @Injectable()
@@ -44,6 +44,10 @@ export class BaseService {
           {
             type: 'postStatuses',
             modelType: PostStatus
+          },
+          {
+            type: 'themes',
+            modelType: Theme
           }];
     }
 
@@ -90,13 +94,29 @@ export class BaseService {
     postObject(object: BaseModel): Promise<any> {
         const modelType = this.resolveType(object.modelConfig.type);
         return new Promise(((resolve, reject) => {
-            this.createObject(object);
+            const newObject = this.datastore.createRecord(modelType, object).save().subscribe(result => {
+                resolve(result);
+            });
         }));
     }
 
-    private createObject(object: BaseModel) {
-        const modelType = this.resolveType(object.modelConfig.type);
-        const newObject = this.datastore.createRecord(modelType, object).save().subscribe();
+    postObjectData(object: any): Promise<any> {
+    return new Promise(((resolve, reject) => {
+        // tslint:disable-next-line:prefer-const
+        let newLocation = this.datastore.createRecord(Location, {
+          'name': 'No value set',
+          'lon': object.lon,
+          'lat': object.lat,
+          'description': object.description,
+          'address': object.address
+        });
+        this.getObjectFromId('0', 'location-types').subscribe((result: LocationType) => {
+            newLocation['location-type'] = result;
+            newLocation.save().subscribe(resulter => {
+                resolve(resulter);
+            });
+        });
+      }));
     }
 
     patchObject(object: BaseModel): Promise<any> {

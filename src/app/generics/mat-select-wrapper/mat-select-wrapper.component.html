@@ -1,3 +1,19 @@
-<p>
-  mat-select-wrapper works!
-</p>
+<mat-card>
+  <mat-card-title>{{objectType}}</mat-card-title>
+    <p>
+      <mat-form-field>
+        <mat-select [formControl]="bankMultiCtrl" [multiple]="true">
+          <app-mat-select-search [formControl]="bankMultiFilterCtrl" [object]="primaryObject" [objectType]="objectType"></app-mat-select-search>
+          <mat-option *ngFor="let bank of filteredBanksMulti | async" [value]="bank">
+            {{bank.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+    <p>
+      Selected {{objectType}}: 
+    </p>
+    <ul *ngFor="let bank of bankMultiCtrl?.value">
+      <li>{{bank.name}}</li>
+    </ul>
+</mat-card>

@@ -13,4 +13,9 @@ export class Theme extends BaseModel {
 
     @HasMany()
     locations: Location[];
+
+    public simpleAttributeNames = [{ name: 'id', required: false }, { name: 'name', required: true }];
+    public hasManyAttributes = [];
+    public belongsToAttributes = [];
+    public manyToManyAttributes = [{ name: 'locations', required: false }];
 }

@@ -8,6 +8,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatOption, MatSelect } from '@angular/material';
 import { Subject } from 'rxjs/Subject';
 import { take, takeUntil } from 'rxjs/operators';
+import { BaseModel } from '../../../models/baseModel';
 
 @Component({
   selector: 'app-mat-select-search',
@@ -29,6 +30,10 @@ export class MatSelectSearchComponent implements OnInit, OnDestroy, AfterViewIni
 
   /** Label to be shown when no entries are found. Set to null if no message should be shown. */
   @Input() noEntriesFoundLabel = 'No values found!';
+
+  @Input() object: BaseModel;
+
+  @Input() objectType: string;
 
   /** Reference to the search input field */
   @ViewChild('searchSelectInput', {read: ElementRef}) searchSelectInput: ElementRef;
@@ -61,6 +66,7 @@ export class MatSelectSearchComponent implements OnInit, OnDestroy, AfterViewIni
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.previousSelectedValues = this.object[this.objectType.toLowerCase()];
     // set custom panel class
     const panelClass = 'mat-select-search-panel';
     if (this.matSelect.panelClass) {
@@ -239,6 +245,8 @@ export class MatSelectSearchComponent implements OnInit, OnDestroy, AfterViewIni
     this.matSelect.valueChange
       .pipe(takeUntil(this._onDestroy))
       .subscribe((values) => {
+        this.object[this.objectType.toLowerCase()] = values;
+        this.object.save().subscribe();
         if (this.matSelect.multiple) {
           let restoreSelectedValues = false;
           if (this._value && this._value.length
@@ -265,5 +273,4 @@ export class MatSelectSearchComponent implements OnInit, OnDestroy, AfterViewIni
         }
       });
   }
-
 }
