@@ -27,7 +27,6 @@ export class ObjectDetailComponent implements OnInit {
     const routerSegments = this.router.url.split('/');
     this.objectId = routerSegments[routerSegments.length - 1];
     this.objectType = routerSegments[routerSegments.length - 2];
-
     this.baseService.getObjectFromId(this.objectId, this.objectType).subscribe(object => {
       this.object = object;
       for (let index = 0; index < object.belongsToAttributes.length; index++) {

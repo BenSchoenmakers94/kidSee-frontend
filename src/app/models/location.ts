@@ -38,8 +38,8 @@ export class Location extends BaseModel {
   themes: Theme[];
 
   public simpleAttributeNames = [{ name: 'Id', required: true }, { name: 'Name', required: true },
-  { name: 'Lon', required: true }, { name: 'Lat', required: true }, { name: 'Description', required: true },
-  { name: 'Address', required: true }, { name: 'Websitelink', required: false }];
+    { name: 'Lon', required: true }, { name: 'Lat', required: true }, { name: 'Description', required: true },
+    { name: 'Address', required: true }, { name: 'Websitelink', required: false }];
   public hasManyAttributes = [];
   public belongsToAttributes = [{ name: 'Location-type', required: true }];
   public manyToManyAttributes = [{ name: 'Themes', required: false }];

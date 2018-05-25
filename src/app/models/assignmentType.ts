@@ -1,15 +1,15 @@
-import { Attribute, JsonApiModel, JsonApiModelConfig } from 'angular2-jsonapi';
+import { Attribute, JsonApiModelConfig } from 'angular2-jsonapi';
 import { BaseModel } from './baseModel';
 
 @JsonApiModelConfig({
-  type: 'post-statuses'
+  type: 'assignment-types'
 })
-export class PostStatus extends BaseModel {
+export class AssignmentType extends BaseModel {
   @Attribute()
   name: string;
 
   public simpleAttributeNames = [{ name: 'id', required: false }, { name: 'name', required: true }];
-  public hasManyAttributes = [];
   public belongsToAttributes = [];
   public manyToManyAttributes = [];
+  public hasManyAttributes = [];
 }

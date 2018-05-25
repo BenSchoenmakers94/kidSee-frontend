@@ -2,7 +2,7 @@ import { Attribute, JsonApiModel, JsonApiModelConfig } from 'angular2-jsonapi';
 import { BaseModel } from './baseModel';
 
 @JsonApiModelConfig({
-  type: 'contentTypes'
+  type: 'content-types'
 })
 export class ContentType extends BaseModel {
   @Attribute()
@@ -10,4 +10,9 @@ export class ContentType extends BaseModel {
 
   @Attribute()
   description: string;
+
+  public simpleAttributeNames = [{ name: 'id', required: false }, { name: 'name', required: true }, { name: 'description', required: true }];
+  public hasManyAttributes = [];
+  public belongsToAttributes = [];
+  public manyToManyAttributes = [];
 }

@@ -10,20 +10,23 @@ import { BaseModel } from './baseModel';
 })
 export class Post extends BaseModel {
 
-  @Attribute()
-  content: string;
+  @Attribute({serializedName: 'content'})
+  subject: string;
 
   @Attribute()
   title: string;
 
-  @Attribute()
-  type: ContentType;
+  @Attribute({serializedName: 'title'})
+  name: string;
+
+  @BelongsTo()
+  'content-type': ContentType;
 
   @BelongsTo()
   user: User;
 
-  @Attribute()
-  postStatuses: PostStatus;
+  @BelongsTo()
+  'post-status': PostStatus;
 
   @HasMany()
   comments: Comment[];
@@ -33,4 +36,10 @@ export class Post extends BaseModel {
 
   @Attribute()
   updated_at: Date;
+
+  public simpleAttributeNames = [{ name: 'id', required: false }, { name: 'name', required: true }, { name: 'subject', required: true }];
+  public hasManyAttributes = [{ name: 'comments', required: false }];
+  public belongsToAttributes = [{ name: 'content-type', required: true }, { name: 'post-status', required: true },
+    { name: 'user', required: true }];
+  public manyToManyAttributes = [];
 }
