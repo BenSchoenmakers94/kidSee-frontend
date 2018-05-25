@@ -50,6 +50,7 @@ import { LocationComponent } from './components/location/location.component';
 import { AgmCoreModule } from '@agm/core';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { DataTableComponent } from './generics/data-table/data-table.component';
+import { AuthGuard } from "./components/app-routing/auth.guard";
 import { RelationshipDialogComponent } from './dialogs/relationship-dialog/relationship-dialog.component';
 import { ObjectDetailComponent } from './components/object-detail/object-detail.component';
 import { MapComponent } from './components/location/map/map.component';
@@ -153,7 +154,8 @@ export class AngularMaterialModule {}
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
