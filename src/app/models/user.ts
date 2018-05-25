@@ -37,4 +37,5 @@ export class User extends BaseModel {
   { name: 'School', required: true }, { name: 'Postal_code', required: false }, { name: 'Avatar', required: false }];
   public hasManyAttributes = [{ name: 'Posts', required: false }];
   public belongsToAttributes = [];
+  public manyToManyAttributes = [];
 }

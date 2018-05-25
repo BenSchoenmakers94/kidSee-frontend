@@ -16,4 +16,5 @@ export class LocationType extends BaseModel  {
   { name: 'Description', required: true }];
   public hasManyAttributes = [];
   public belongsToAttributes = [];
+  public manyToManyAttributes = [];
 }

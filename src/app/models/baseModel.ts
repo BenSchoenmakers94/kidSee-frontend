@@ -7,6 +7,7 @@ export abstract class BaseModel extends JsonApiModel {
     public abstract simpleAttributeNames: RequiredDecorator[];
     public abstract hasManyAttributes: RequiredDecorator[];
     public abstract belongsToAttributes: RequiredDecorator[];
+    public abstract manyToManyAttributes: RequiredDecorator[];
 
     public getAttributeNames(shallow?: boolean): string[] {
         const attributeNames = [];
@@ -24,6 +25,10 @@ export abstract class BaseModel extends JsonApiModel {
                 const element = this.hasManyAttributes[index];
                 attributeNames.push(element.name);
             }
+            for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+                const element = this.manyToManyAttributes[index];
+                attributeNames.push(element.name);
+            }
         }
         return attributeNames;
     }
@@ -36,6 +41,10 @@ export abstract class BaseModel extends JsonApiModel {
         }
         for (let index = 0; index < this.belongsToAttributes.length; index++) {
             const element = this.belongsToAttributes[index];
+            attributeNames.push(element.name);
+        }
+        for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+            const element = this.manyToManyAttributes[index];
             attributeNames.push(element.name);
         }
         return attributeNames;
@@ -70,6 +79,9 @@ export abstract class BaseModel extends JsonApiModel {
             case 'belongsToAttributes':
                 return false;
 
+            case 'manyToManyAttributes':
+                return false;
+
             default:
                 return true;
         }
@@ -89,7 +101,6 @@ export abstract class BaseModel extends JsonApiModel {
     }
 
     public resolveBelongsToRelationshipAttributeName(attributeName: string): string {
-        debugger;
         for (let index = 0; index < this.belongsToAttributes.length; index++) {
             const element = this.belongsToAttributes[index];
             if (element.name.toLowerCase().includes(attributeName.toLowerCase())) {
@@ -98,7 +109,6 @@ export abstract class BaseModel extends JsonApiModel {
                 }
             }
         }
-
         return '';
     }
 
@@ -133,6 +143,15 @@ export abstract class BaseModel extends JsonApiModel {
     public isBelongsToRelationship(attributeName: string): boolean {
         for (let index = 0; index < this.belongsToAttributes.length; index++) {
             if (this.belongsToAttributes[index].name.toLowerCase().includes(attributeName.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public isManyToManyRelationship(attributeName: string): boolean {
+        for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+            if (this.manyToManyAttributes[index].name.toLowerCase().includes(attributeName.toLowerCase())) {
                 return true;
             }
         }

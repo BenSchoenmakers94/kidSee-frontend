@@ -56,6 +56,8 @@ import { MapComponent } from './components/location/map/map.component';
 import { WizardComponent } from './components/wizard/wizard.component';
 import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
 import { SimpleTableComponent } from './components/simple-table/simple-table.component';
+import { MatSelectSearchComponent } from './generics/mat-select-wrapper/mat-select-search/mat-select-search.component';
+import { MatSelectWrapperComponent } from './generics/mat-select-wrapper/mat-select-wrapper.component';
 
 @NgModule({
   exports: [
@@ -108,7 +110,9 @@ export class AngularMaterialModule {}
     ObjectDetailComponent,
     WizardComponent,
     RemoveDialogComponent,
-    SimpleTableComponent
+    SimpleTableComponent,
+    MatSelectWrapperComponent,
+    MatSelectSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -137,7 +141,9 @@ export class AngularMaterialModule {}
     ObjectDetailComponent,
     WizardComponent,
     RemoveDialogComponent,
-    SimpleTableComponent
+    SimpleTableComponent,
+    MatSelectWrapperComponent,
+    MatSelectSearchComponent
   ],
   providers: [
     Datastore,
