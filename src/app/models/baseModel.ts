@@ -89,6 +89,7 @@ export abstract class BaseModel extends JsonApiModel {
     }
 
     public resolveBelongsToRelationshipAttributeName(attributeName: string): string {
+        debugger;
         for (let index = 0; index < this.belongsToAttributes.length; index++) {
             const element = this.belongsToAttributes[index];
             if (element.name.toLowerCase().includes(attributeName.toLowerCase())) {

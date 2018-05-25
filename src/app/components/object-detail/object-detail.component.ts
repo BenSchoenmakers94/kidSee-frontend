@@ -35,7 +35,8 @@ export class ObjectDetailComponent implements OnInit {
           for (let i = 0; i < valuesForType.length; i++) {
             this.iterableTypes.push({
               type: object.belongsToAttributes[index].name,
-              values: valuesForType[i]['name']
+              values: valuesForType[i]['name'],
+              object: valuesForType[i]
             });
           }
         });
@@ -51,6 +52,26 @@ export class ObjectDetailComponent implements OnInit {
         }
       }
       return types;
+  }
+
+  private getIterableObjectWith(value: string): string[] {
+    for (let index = 0; index < this.iterableTypes.length; index++) {
+      const element = this.iterableTypes[index];
+      if (element.values.toLowerCase().includes(value.toLowerCase())) {
+        return element.object;
+      }
+    }
+}
+
+  public updateSimpleAttributeState(type: string, value: string) {
+    this.object[type.toLowerCase()] = value;
+  }
+
+  public updateBelongsToState(type: string, value: string) {
+    const objectToAdd = this.getIterableObjectWith(value);
+    if (objectToAdd) {
+      this.object[type.toLowerCase()] = objectToAdd;
+    }
   }
 
   saveObject() {

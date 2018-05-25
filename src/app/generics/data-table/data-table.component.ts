@@ -164,9 +164,14 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
   public showRelationshipDialog(object: BaseModel, columnName: string) {
-    const relationshipDataToShow = object.resolveAttributeName(columnName);
+    const relationshipDataToShow = object[columnName.toLowerCase()];
     const dialogRef = this.dialog.open(RelationshipDialogComponent, {
-      data: relationshipDataToShow
+      data: {
+        parentObject: object,
+        dataToShow: relationshipDataToShow,
+        hasMany: !object.isBelongsToRelationship(columnName),
+        attribute: columnName
+      }
     });
   }
 

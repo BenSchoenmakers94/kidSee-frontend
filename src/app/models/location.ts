@@ -41,5 +41,5 @@ export class Location extends BaseModel {
   { name: 'Lon', required: true }, { name: 'Lat', required: true }, { name: 'Description', required: true },
   { name: 'Address', required: true }, { name: 'Websitelink', required: false }];
   public hasManyAttributes = [{ name: 'Themes', required: false }];
-  public belongsToAttributes = [{ name: 'Location-types', required: true }];
+  public belongsToAttributes = [{ name: 'Location-type', required: true }];
 }

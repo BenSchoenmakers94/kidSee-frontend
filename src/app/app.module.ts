@@ -55,6 +55,7 @@ import { ObjectDetailComponent } from './components/object-detail/object-detail.
 import { MapComponent } from './components/location/map/map.component';
 import { WizardComponent } from './components/wizard/wizard.component';
 import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
+import { SimpleTableComponent } from './components/simple-table/simple-table.component';
 
 @NgModule({
   exports: [
@@ -106,7 +107,8 @@ export class AngularMaterialModule {}
     RelationshipDialogComponent,
     ObjectDetailComponent,
     WizardComponent,
-    RemoveDialogComponent
+    RemoveDialogComponent,
+    SimpleTableComponent
   ],
   imports: [
     BrowserModule,
@@ -134,7 +136,8 @@ export class AngularMaterialModule {}
     RelationshipDialogComponent,
     ObjectDetailComponent,
     WizardComponent,
-    RemoveDialogComponent
+    RemoveDialogComponent,
+    SimpleTableComponent
   ],
   providers: [
     Datastore,

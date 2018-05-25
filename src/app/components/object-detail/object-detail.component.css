@@ -23,11 +23,17 @@
     display: grid;
   }
 
-  .right {
-    margin-left: 90%;
+  .margin-top {
+    margin-top: 8%;
   }
 
+  .right {
+    float: right;
+    margin-top: -4%;
+  }
+  
   .left {
-    margin-right: 90%;
+    float: left;
+    margin-top: -4%;
   }
   

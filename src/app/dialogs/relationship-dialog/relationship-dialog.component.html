@@ -1,11 +1,16 @@
 <div class="container">
-    <h3 mat-dialog-title>{{data.modelConfig.type}}</h3>
+    <h3 mat-dialog-title>{{attribute}}</h3>
 
     <div *ngIf="isDataAvailable;else noValue">
-        <div *ngFor="let attribute of data.getAttributeNames(true)">
-            <label>{{attribute}}: </label>
-            <label>{{data.resolveAttributeName(attribute)}}</label>
-          </div>
+        <ng-container *ngIf="hasMany;else belongsToAttribute">
+            <app-simple-table [dataType]="attribute" [parentObject]="parentObject"></app-simple-table>
+         </ng-container>
+         <ng-template #belongsToAttribute>
+            <div *ngFor="let attribute of displayData.getAttributeNames(true)">
+                <label>{{attribute}}: </label>
+                <label>{{displayData.resolveAttributeName(attribute)}}</label>
+            </div>
+         </ng-template>
     </div>
     <ng-template #noValue>
       <label>No value</label>
