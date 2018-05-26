@@ -1,4 +1,4 @@
-import { JsonApiModelConfig, JsonApiModel, Attribute, HasMany } from 'angular2-jsonapi';
+import { JsonApiModelConfig, Attribute, HasMany } from 'angular2-jsonapi';
 import { Post } from './post';
 import { BaseModel } from './baseModel';
 
@@ -28,12 +28,16 @@ export class User extends BaseModel {
   @Attribute()
   avatar: string;
 
-  @Attribute()
-  created_at: Date;
-
-  @Attribute()
-  updated_at: Date;
-
   @HasMany()
-  posts: Post[] = [];
+  posts: Post[];
+
+  @Attribute({serializedName: 'username'})
+  name: string;
+
+  public simpleAttributeNames = [{ name: 'Id', required: true }, { name: 'name', required: true },
+    { name: 'Password', required: true }, { name: 'Email', required: true }, { name: 'Birthdate', required: true },
+    { name: 'School', required: true }, { name: 'Postal_code', required: false }, { name: 'Avatar', required: false }];
+  public hasManyAttributes = [{ name: 'Posts', required: false }];
+  public belongsToAttributes = [];
+  public manyToManyAttributes = [];
 }

@@ -1,14 +1,7 @@
 <div class="container">
-    <h3 mat-dialog-title>Wilt u deze locatie verwijderen?</h3>
-    <div mat-dialog-content>
-      <strong>Naam: </strong>{{data.name}}
-      <p></p>
-      <strong>Adres: </strong>{{data.address}}
-      <p></p>
-    </div>
-
-    <div mat-dialog-actions>
-      <button mat-raised-button color="primary" [mat-dialog-close]="1" (click)="confirmDelete()">Delete</button>
-      <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
-    </div>
+    <h3 mat-dialog-title>Are you sure you wish to delete this object?</h3>
+      <div mat-dialog-actions>
+        <button mat-raised-button color="primary"[type]="submit" [mat-dialog-close]="1" (click)="remove()">Delete</button>
+        <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+      </div>
   </div>

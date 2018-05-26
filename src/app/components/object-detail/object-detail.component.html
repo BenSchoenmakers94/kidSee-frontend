@@ -1,0 +1,37 @@
+<mat-card>
+    <div class="example-container">
+        <div *ngFor="let attribute of object?.getAttributeNames() | slice:1">
+          <ng-container *ngIf="object.isRelationShipAttribute(attribute); else normalAttribute" >
+            <ng-container *ngIf="object.isBelongsToRelationship(attribute);else hasMany">
+              <label>{{attribute}}</label>
+                <mat-form-field>
+                    <mat-select [value]="object.resolveBelongsToRelationshipAttributeName(attribute)" id={{attribute}} (selectionChange)="updateBelongsToState($event.source.id, $event.value)">
+                          <mat-option *ngFor="let type of getIterableTypesOf(attribute)" [value]="type">{{type}}</mat-option>
+                    </mat-select>
+                    <mat-placeholder></mat-placeholder>
+                  </mat-form-field>
+            </ng-container>
+            <ng-template #hasMany>
+              <ng-container *ngIf="object.isManyToManyRelationship(attribute);else notManyToMany" >
+                <app-mat-select-wrapper [primaryObject]="object" [objectType]="attribute"></app-mat-select-wrapper>
+              </ng-container>
+              <ng-template #notManyToMany>
+                  <app-simple-table [dataType]="attribute" [parentObject]="object"></app-simple-table>
+              </ng-template>
+            </ng-template>
+          </ng-container>
+          <ng-template #normalAttribute>
+           <div class="normal-attribute">
+              <label>{{attribute}}</label>
+            <mat-form-field>
+                <input matInput id={{attribute}} (keyup)="updateSimpleAttributeState($event.target.id, $event.target.value)" value={{object.resolveAttributeName(attribute)}}>
+            </mat-form-field>
+           </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="margin-top">
+          <button class="right" mat-raised-button color="primary" (click)="saveObject()">Save</button>
+          <button class="left" mat-raised-button color="primary" (click)="removeObject()">Delete</button>
+      </div>
+</mat-card>

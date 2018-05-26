@@ -1,4 +1,4 @@
-import { AbstractObjectService } from './services/abstract-object.service';
+import { BaseService } from './services/base/base.service';
 import { EditDialogComponent } from './dialogs/edit-dialog/edit-dialog.component';
 import { Datastore } from './services/datastore';
 import { AuthService } from './services/auth.service';
@@ -42,24 +42,23 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 import { AppComponent } from './app.component';
-import { UserListComponent } from './components/user-list/user-list.component';
 import { AppRoutingModule } from './components/app-routing/app-routing.module';
-import { UserService } from './services/userService/user-service.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomeComponent } from './components/home/home.component';
+import { LocationComponent } from './components/location/location.component';
 import { AgmCoreModule } from '@agm/core';
-import { LocationService } from './services//locationService/location.service';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
-import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
-import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';
 import { DataTableComponent } from './generics/data-table/data-table.component';
-import { UserEditDialogComponent } from "./dialogs/useredit-dialog/useredit-dialog.component";
-import { UserCreateDialogComponent } from "./dialogs/usercreate-dialog/usercreate-dialog.component";
-import { UserRemoveDialogComponent } from "./dialogs/userremove-dialog/userremove-dialog.component";
 import { AuthGuard } from "./components/app-routing/auth.guard";
 import { RelationshipDialogComponent } from './dialogs/relationship-dialog/relationship-dialog.component';
+import { ObjectDetailComponent } from './components/object-detail/object-detail.component';
+import { MapComponent } from './components/location/map/map.component';
+import { WizardComponent } from './components/wizard/wizard.component';
+import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.component';
+import { SimpleTableComponent } from './components/simple-table/simple-table.component';
+import { MatSelectSearchComponent } from './generics/mat-select-wrapper/mat-select-search/mat-select-search.component';
+import { MatSelectWrapperComponent } from './generics/mat-select-wrapper/mat-select-wrapper.component';
 
 @NgModule({
   exports: [
@@ -104,16 +103,17 @@ export class AngularMaterialModule {}
   declarations: [
     AppComponent,
     LoginComponent,
-    UserListComponent,
-    HomeComponent,
+    LocationComponent,
+    MapComponent,
     EditDialogComponent,
-    RemoveDialogComponent,
-    CreateDialogComponent,
     DataTableComponent,
-    UserEditDialogComponent,
-    UserCreateDialogComponent,
-    UserRemoveDialogComponent,
-    RelationshipDialogComponent
+    RelationshipDialogComponent,
+    ObjectDetailComponent,
+    WizardComponent,
+    RemoveDialogComponent,
+    SimpleTableComponent,
+    MatSelectWrapperComponent,
+    MatSelectSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -136,27 +136,25 @@ export class AngularMaterialModule {}
   entryComponents: [
     AppComponent,
     LoginComponent,
-    UserListComponent,
     EditDialogComponent,
-    RemoveDialogComponent,
-    CreateDialogComponent,
     DataTableComponent,
-    UserEditDialogComponent,
-    UserCreateDialogComponent,
-    UserRemoveDialogComponent,
-    RelationshipDialogComponent
+    RelationshipDialogComponent,
+    ObjectDetailComponent,
+    WizardComponent,
+    RemoveDialogComponent,
+    SimpleTableComponent,
+    MatSelectWrapperComponent,
+    MatSelectSearchComponent
   ],
   providers: [
     Datastore,
-    UserService,
+    BaseService,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
     },
-    LocationService,
-    AbstractObjectService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

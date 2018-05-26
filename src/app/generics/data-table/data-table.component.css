@@ -32,5 +32,15 @@
 
   .icon-center {
     margin-left: 15%;
+    cursor: help;
+  }
+  
+  .clickable {
+    cursor: pointer;
+  }
+
+  .icon {
+    float: right;
+    margin-top: -32px;
   }
   

@@ -1,23 +1,159 @@
+import { PostStatus } from './../../models/postStatus';
+import { ContentType } from './../../models/contentType';
+import { LocationType } from './../../models/locationType';
+import { Location } from './../../models/location';
+import { User } from './../../models/user';
+import { Datastore } from './../datastore';
 import { Observable } from 'rxjs/Observable';
-import { JsonApiModel } from 'angular2-jsonapi';
+import { JsonApiModel, JsonApiQueryData, ModelType } from 'angular2-jsonapi';
 import { Injectable } from '@angular/core';
 import { BaseModel } from '../../models/baseModel';
+import { HttpClient } from '@angular/common/http';
+import { Theme } from '../../models/theme';
+import { Post } from '../../models/post';
+import { Comment } from './../../models/comment';
+import { Assignment } from '../../models/assignment';
+import { AssignmentType } from '../../models/assignmentType';
+import { AnswerType } from '../../models/answerType';
+import { Answer } from '../../models/answer';
 
 @Injectable()
-export abstract class BaseService {
-    constructor() { }
+export class BaseService {
+    private modelTypes;
 
-    abstract getAllObjects(): Observable<BaseModel[]>;
+    constructor(private datastore: Datastore, private http: HttpClient) {
+        this.modelTypes = [{
+            type: 'locations',
+            modelType: Location
+          },
+          {
+            type: 'users',
+            modelType: User
+          },
+          {
+            type: 'location-types',
+            modelType: LocationType
+          },
+          {
+            type: 'comments',
+            modelType: Comment
+          },
+          {
+            type: 'content-types',
+            modelType: ContentType
+          },
+          {
+            type: 'posts',
+            modelType: Post
+          },
+          {
+            type: 'post-statuses',
+            modelType: PostStatus
+          },
+          {
+            type: 'themes',
+            modelType: Theme
+          },
+          {
+            type: 'assignments',
+            modelType: Assignment
+          },
+          {
+            type: 'assignment-types',
+            modelType: AssignmentType
+          },
+          {
+            type: 'answers',
+            modelType: Answer
+          },
+          {
+            type: 'answer-types',
+            modelType: AnswerType
+          }
+          ];
+    }
 
-    abstract getObjectsPage(pageNumber: number, pageSize: number): Observable<BaseModel[]>;
+    public resolveType(type: string) {
+        for (let index = 0; index < this.modelTypes.length; index++) {
+            if (this.modelTypes[index]['type'].includes(type.toLowerCase())) {
+                return this.modelTypes[index]['modelType'];
+            }
+        }
+        return null;
+    }
 
-    abstract getObjectFromId(id: string): Observable<BaseModel>;
+    getAllObjects(type: string): Observable<BaseModel[]> {
+         const modelType = this.resolveType(type);
+         return Observable.create((observer) => {
+            this.datastore.findAll(modelType, {
+                page_size: 999
+             }).subscribe(
+              objects => {
+                observer.next(objects.getModels());
+              }
+            );
+          });
+    }
 
-    abstract postObject(object: any): Promise<any>;
+    getObjectsPage(pageNumber?: number, pageSize?: number): Observable<BaseModel[]> {
+          return Observable.create((observer) => {
+            this.datastore.findAll(Location, {
+              page: pageNumber,
+              page_size: pageSize
+             }).subscribe(
+              (locations: JsonApiQueryData<Location>) => observer.next(locations.getModels())
+            );
+          });
+    }
 
-    abstract patchObject(object: any): Promise<any>;
+    getObjectFromId(id: string, type: string): Observable<BaseModel> {
+        const modelType = this.resolveType(type);
+        return new Observable((observer) => {
+          this.datastore.findRecord(modelType, id).subscribe((object: BaseModel) => observer.next(object));
+        });
+    }
 
-    abstract deleteObject(id: string);
+    postObject(object: BaseModel): Promise<any> {
+        const modelType = this.resolveType(object.modelConfig.type);
+        return new Promise(((resolve, reject) => {
+            const newObject = this.datastore.createRecord(modelType, object).save().subscribe(result => {
+                resolve(result);
+            });
+        }));
+    }
+
+    postObjectData(object: any): Promise<any> {
+    return new Promise(((resolve, reject) => {
+        // tslint:disable-next-line:prefer-const
+        let newLocation = this.datastore.createRecord(Location, {
+          'name': 'No value set',
+          'lon': object.lon,
+          'lat': object.lat,
+          'description': object.description,
+          'address': object.address
+        });
+        this.getObjectFromId('0', 'location-types').subscribe((result: LocationType) => {
+            newLocation['location-type'] = result;
+            newLocation.save().subscribe(resulter => {
+                resolve(resulter);
+            });
+        });
+      }));
+    }
+
+    patchObject(object: BaseModel): Promise<any> {
+        const modelType = this.resolveType(object.modelConfig.type);
+        return new Promise((resolve, reject) => {
+          object.save().subscribe(savedObject => {
+              resolve(savedObject);
+          });
+        });
+    }
+
+    deleteObject(object: BaseModel) {
+        const modelType = this.resolveType(object.modelConfig.type);
+        this.datastore.deleteRecord(modelType, object.id).subscribe();
+    }
 
     getPageNumberObject(pageNumber: number): any {
         if (pageNumber !== undefined) {

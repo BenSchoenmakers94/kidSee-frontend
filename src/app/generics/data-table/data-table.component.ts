@@ -1,16 +1,12 @@
-import { AbstractObjectService } from './../../services/abstract-object.service';
-import { CreateDialogComponent } from './../../dialogs/create-dialog/create-dialog.component';
 import { ColumnAttribute } from './../column-attribute';
-import { RemoveDialogComponent } from '../../dialogs/remove-dialog/remove-dialog.component';
 import { EditDialogComponent } from '../../dialogs/edit-dialog/edit-dialog.component';
 import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatSort, MatInput } from '@angular/material';
 import * as _ from 'lodash';
 import { BaseService } from '../../services/base/base.service';
-import { UserEditDialogComponent } from '../../dialogs/useredit-dialog/useredit-dialog.component';
-import { UserRemoveDialogComponent } from '../../dialogs/userremove-dialog/userremove-dialog.component';
 import { BaseModel } from '../../models/baseModel';
 import { RelationshipDialogComponent } from '../../dialogs/relationship-dialog/relationship-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-data-table',
@@ -19,7 +15,7 @@ import { RelationshipDialogComponent } from '../../dialogs/relationship-dialog/r
 })
 
 export class DataTableComponent implements AfterViewInit, OnInit {
-  @Input() objectType: string;
+  public objectType: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -28,21 +24,24 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   public objectData: any[];
   private objectDataLocalFiltered: any[];
   public displayedColumns: ColumnAttribute[];
-  private specificObjectService: BaseService;
   public pageNumber: number;
   public pageSize: number;
-  public pageSizeOptions = ('' + Array(20)).split(',').map(function() { return this[0]++; }, [1]);
+  public pageSizeOptions = ('' + Array(20)).split(',').map(function () { return this[0]++; }, [1]);
   public maxObjectsLengthInStorage: number;
   private maxObjectsLengthInStorageCopy: number;
   public objectAttributes: string[];
+  public objectDetailVisible: boolean;
 
   constructor(
     public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
-    private abstractObjectService: AbstractObjectService) { }
+    private baseService: BaseService,
+    private router: Router) { }
 
   ngOnInit() {
-    this.specificObjectService = this.abstractObjectService.getObject(this.objectType);
+    const routerSegments = this.router.url.split('/');
+    this.objectType = routerSegments[routerSegments.indexOf('') + 1];
+    this.objectDetailVisible = false;
     this.pageNumber = 1;
     this.pageSize = 10;
     this.displayedColumns = [];
@@ -53,7 +52,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
       this.maxObjectsLengthInStorage = result.length;
       this.checkForChanges(result);
     });
-   }
+  }
 
   ngAfterViewInit(): void {
     this.sort.sortChange.subscribe({
@@ -71,17 +70,17 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         this.pageSize = this.paginator.pageSize;
         this.receivePageData(this.pageNumber, this.pageSize).then(result => {
           this.checkForChanges(
-          this.sortDataWith(
-          this.sort.direction,
-          this.sort.active,
-          result));
+            this.sortDataWith(
+              this.sort.direction,
+              this.sort.active,
+              result));
         });
       } else {
         this.checkForChanges(
           this.sortDataWith(
-          this.sort.direction,
-          this.sort.active,
-          this.receiveLocalPageData(this.paginator.pageIndex + 1, this.paginator.pageSize)));
+            this.sort.direction,
+            this.sort.active,
+            this.receiveLocalPageData(this.paginator.pageIndex + 1, this.paginator.pageSize)));
       }
     });
   }
@@ -99,7 +98,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private receiveAllData(): Promise<BaseModel[]> {
     return new Promise(resolve => {
-      this.specificObjectService.getAllObjects().subscribe({
+      this.baseService.getAllObjects(this.objectType).subscribe({
         next: objects => {
           resolve(objects);
           this.maxObjectsLengthInStorageCopy = objects.length;
@@ -110,7 +109,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
   private receivePageData(pageNumber: number, pageSize: number): Promise<BaseModel[]> {
     return new Promise(resolve => {
-      this.specificObjectService.getObjectsPage(pageNumber, pageSize).subscribe({
+      this.baseService.getObjectsPage(pageNumber, pageSize).subscribe({
         next: objects => resolve(objects)
       });
     });
@@ -125,7 +124,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         displayed: true
       });
     }
-    //this.displayedColumns.push('Actions');
   }
 
   public getDisplayedColumns(): string[] {
@@ -166,77 +164,28 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   }
 
   public showRelationshipDialog(object: BaseModel, columnName: string) {
-    const relationshipDataToShow = object.resolveAttributeName(columnName);
+    console.log(object);
+    const relationshipDataToShow = object[columnName.toLowerCase()];
     const dialogRef = this.dialog.open(RelationshipDialogComponent, {
-      data: relationshipDataToShow
-    });
-  }
-
-  private handleAction(actionToDo: string, object: any) {
-    switch (actionToDo) {
-      case 'create': {
-        this.createObject(object);
-        break;
-      }
-      case 'edit': {
-        this.startEdit(object);
-        break;
-      }
-      case 'delete': {
-        this.remove(object);
-        break;
-      }
-    }
-  }
-
-
-  private createObject(objectToCreate: any) {
-    const dialogRef = this.dialog.open(CreateDialogComponent, {
-      data: objectToCreate //TODO - Update table
-    });
-  }
-
-  private startEdit(objectToEdit: any) {
-    const tempObjectClone = _.cloneDeep(objectToEdit);
-    //TODO: delete this if when modular dialogs are available
-    let dialogRef;
-    if (tempObjectClone.username != null) {
-      dialogRef = this.dialog.open(UserEditDialogComponent, {
-        data: tempObjectClone
-      });
-    } else {
-      dialogRef = this.dialog.open(EditDialogComponent, {
-        data: tempObjectClone
-      });
-    }
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        this.returnObjectState(objectToEdit, tempObjectClone);
-        this.checkForChanges(this.objectData);
-       }
-    });
-  }
-
-  private remove(objectToRemove: any) {
-
-    //TODO: delete this if when modular dialogs are available
-    let dialogRef;
-    if (objectToRemove.username != null) {
-      dialogRef = this.dialog.open(UserRemoveDialogComponent, {
-        data: objectToRemove
-      });
-    } else {
-      dialogRef = this.dialog.open(RemoveDialogComponent, {
-        data: objectToRemove
-      });
-    }
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        this.objectData.splice(this.objectData.indexOf(objectToRemove), 1);
-        this.checkForChanges(this.objectData);
+      data: {
+        parentObject: object,
+        dataToShow: relationshipDataToShow,
+        hasMany: !object.isBelongsToRelationship(columnName),
+        attribute: columnName
       }
     });
   }
+
+  public showObjectDetailPage(object: BaseModel) {
+    this.objectDetailVisible = true;
+    const routerUrl = this.objectType + '/' + object.id;
+    this.router.navigate([routerUrl]);
+  }
+
+  public createNewObject() {
+    const routerUrl = this.objectType + '/new';
+    this.router.navigate([routerUrl]);
+   }
 
   private returnObjectState(oldObject: any, newObject: any) {
     const newKeys = Object.keys(newObject);
@@ -249,9 +198,9 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   private renewList(objectDataToRenew: any[]) {
     const tempObjectData = objectDataToRenew;
     this.objectData = [];
-      tempObjectData.forEach(objectToAdd => {
-        this.objectData.push(objectToAdd);
-      });
+    tempObjectData.forEach(objectToAdd => {
+      this.objectData.push(objectToAdd);
+    });
   }
 
   private checkForChanges(objectData) {

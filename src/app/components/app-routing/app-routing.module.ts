@@ -1,8 +1,11 @@
-import { HomeComponent } from './../home/home.component';
+import { DataTableComponent } from './../../generics/data-table/data-table.component';
+import { MapComponent } from './../location/map/map.component';
+import { LocationComponent } from './../location/location.component';
+import { ObjectDetailComponent } from './../object-detail/object-detail.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserListComponent } from '../user-list/user-list.component';
-import { LoginComponent } from "../login/login.component";
+import { LoginComponent } from '../login/login.component';
+import { WizardComponent } from '../wizard/wizard.component';
 import { AuthGuard } from "./auth.guard";
 
 const routes: Routes = [
@@ -11,18 +14,88 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [AuthGuard]
+    path: 'locations',
+    component: LocationComponent,
+    children: [{
+      path: '', component: MapComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: 'list', component: DataTableComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent,
+      children: [{
+        path: 'themes/new', component: WizardComponent
+      }]
+    }]
   },
   {
     path: 'users',
-    component: UserListComponent,
-    canActivate: [AuthGuard]
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent,
+      children: [{
+        path: 'posts/new', component: WizardComponent
+      }]
+    }]
+  }, {
+    path: 'location-types',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id', component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'posts',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'themes',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'comments',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'assignments',
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
   },
   {
     path: '**',

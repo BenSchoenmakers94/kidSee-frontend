@@ -1,7 +1,5 @@
-import { JsonApiModel } from 'angular2-jsonapi';
-import { AbstractObjectService } from './../../services/abstract-object.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-remove-dialog',
@@ -9,17 +7,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   styleUrls: ['./remove-dialog.component.css']
 })
 export class RemoveDialogComponent implements OnInit {
+
   ngOnInit(): void { }
+  constructor(public dialogRef: MatDialogRef<RemoveDialogComponent>) { }
 
-  constructor(public dialogRef: MatDialogRef<RemoveDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: JsonApiModel, public abstractObjectService: AbstractObjectService) { }
 
-  onNoClick(): void {
-  this.dialogRef.close();
+    submit() { }
+
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+
+    remove() {
+      this.dialogRef.close(1);
+    }
   }
-
-  confirmDelete(): void {
-    const specificObjectService = this.abstractObjectService.getObject(this.data.modelConfig.type);
-    specificObjectService.deleteObject(this.data.id);
-  }
-}

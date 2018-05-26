@@ -9,6 +9,10 @@ import { Post } from '../models/post';
 import { ContentType } from '../models/contentType';
 import { Location } from '../models/location';
 import { Comment } from '../models/comment';
+import { Assignment } from '../models/assignment';
+import { AssignmentType } from '../models/assignmentType';
+import { Answer } from '../models/answer';
+import { AnswerType } from '../models/answerType';
 
 const config: DatastoreConfig = {
   baseUrl: 'http://174.138.7.193/api',
@@ -17,11 +21,15 @@ const config: DatastoreConfig = {
     users: User,
     posts: Post,
     comments: Comment,
-    postStatuses: PostStatus,
-    contentTypes: ContentType,
+    'post-statuses': PostStatus,
+    'content-types': ContentType,
     locations: Location,
     'location-types': LocationType,
-    'themes': Theme
+    themes: Theme,
+    assignments: Assignment,
+    'assignment-types': AssignmentType,
+    answers: Answer,
+    'answer-types': AnswerType
   }
 };
 

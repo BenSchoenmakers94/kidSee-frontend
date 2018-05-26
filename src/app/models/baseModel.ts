@@ -1,32 +1,115 @@
+import { element } from 'protractor';
 import { JsonApiModel } from 'angular2-jsonapi';
-import _ = require('lodash');
+import { RequiredDecorator } from './decorators/requiredDecorator';
 
 
 export abstract class BaseModel extends JsonApiModel {
+    public abstract simpleAttributeNames: RequiredDecorator[];
+    public abstract hasManyAttributes: RequiredDecorator[];
+    public abstract belongsToAttributes: RequiredDecorator[];
+    public abstract manyToManyAttributes: RequiredDecorator[];
+
     public getAttributeNames(shallow?: boolean): string[] {
-        const objectEntries = Object.entries(this);
-        const sanitizedAttributeNames: string[] = [];
-        for (let index = 1; index < objectEntries.length; index++) {
-            if ((objectEntries[index][1] instanceof BaseModel) && shallow) {
-               continue;
-            }
-            let sanitizedAttributeName = '';
-            sanitizedAttributeName = objectEntries[index][0].substr(objectEntries[index][0].indexOf('_') + 1);
-            sanitizedAttributeName = _.upperFirst(sanitizedAttributeName);
-            sanitizedAttributeNames.push(sanitizedAttributeName);
+        const attributeNames = [];
+        for (let index = 0; index < this.simpleAttributeNames.length; index++) {
+            const element = this.simpleAttributeNames[index];
+            attributeNames.push(element.name);
         }
-        return sanitizedAttributeNames;
+
+        if (!shallow) {
+            for (let index = 0; index < this.belongsToAttributes.length; index++) {
+                const element = this.belongsToAttributes[index];
+                attributeNames.push(element.name);
+            }
+            for (let index = 0; index < this.hasManyAttributes.length; index++) {
+                const element = this.hasManyAttributes[index];
+                attributeNames.push(element.name);
+            }
+            for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+                const element = this.manyToManyAttributes[index];
+                attributeNames.push(element.name);
+            }
+        }
+        return attributeNames;
+    }
+
+    public getAttributeNamesForCreation(): string[] {
+        const attributeNames = [];
+        for (let index = 1; index < this.simpleAttributeNames.length; index++) {
+            const element = this.simpleAttributeNames[index];
+            attributeNames.push(element.name);
+        }
+        for (let index = 0; index < this.belongsToAttributes.length; index++) {
+            const element = this.belongsToAttributes[index];
+            attributeNames.push(element.name);
+        }
+        for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+            const element = this.manyToManyAttributes[index];
+            attributeNames.push(element.name);
+        }
+        return attributeNames;
+    }
+
+    public isRequiredAttribute(attributeName: string): boolean {
+        let attributes: RequiredDecorator[];
+        attributes = [];
+        attributes = attributes.concat(this.simpleAttributeNames);
+        attributes = attributes.concat(this.belongsToAttributes);
+
+        for (let index = 0; index < attributes.length; index++) {
+            const element = attributes[index];
+            if (element.required && element.name.includes(attributeName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private shouldBeResolved(attributeName: string): boolean {
+        switch (attributeName) {
+            case '_datastore':
+                return false;
+
+            case 'simpleAttributeNames':
+                return false;
+
+            case 'hasManyAttributes':
+                return false;
+
+            case 'belongsToAttributes':
+                return false;
+
+            case 'manyToManyAttributes':
+                return false;
+
+            default:
+                return true;
+        }
     }
 
     public resolveAttributeName(sanitizedAttributeName: string): string {
         const objectEntries = Object.entries(this);
-        for (let index = 1; index < objectEntries.length; index++) {
-            sanitizedAttributeName = sanitizedAttributeName.toLowerCase();
-            if (objectEntries[index][0].includes(sanitizedAttributeName)) {
-                return objectEntries[index][1];
+        for (let index = 0; index < objectEntries.length; index++) {
+            if (this.shouldBeResolved(objectEntries[index][0])) {
+                sanitizedAttributeName = sanitizedAttributeName.toLowerCase();
+                if (objectEntries[index][0].toString().toLowerCase().includes(sanitizedAttributeName)) {
+                    return objectEntries[index][1];
+                }
             }
         }
           return '';
+    }
+
+    public resolveBelongsToRelationshipAttributeName(attributeName: string): string {
+        for (let index = 0; index < this.belongsToAttributes.length; index++) {
+            const element = this.belongsToAttributes[index];
+            if (element.name.toLowerCase().includes(attributeName.toLowerCase())) {
+                if (this[element.name.toLowerCase()]) {
+                    return this[element.name.toLowerCase()]['name'];
+                }
+            }
+        }
+        return '';
     }
 
     public hasValue(valueToCheck: string): boolean {
@@ -44,14 +127,37 @@ export abstract class BaseModel extends JsonApiModel {
     }
 
     public isRelationShipAttribute(attributeToCheck: string): boolean {
-        const objectEntries = Object.entries(this);
-        for (let index = 1; index < objectEntries.length; index++) {
-            if (objectEntries[index][1] instanceof BaseModel) {
-                if (objectEntries[index][0].toLowerCase().includes(attributeToCheck.toLowerCase())) {
-                    return true;
-                }
-            } else {
-                continue;
+        for (let index = 0; index < this.hasManyAttributes.length; index++) {
+            if (this.hasManyAttributes[index].name.toLowerCase().includes(attributeToCheck.toLowerCase())) {
+              return true;
+            }
+        }
+        for (let index = 0; index < this.belongsToAttributes.length; index++) {
+            if (this.belongsToAttributes[index].name.toLowerCase().includes(attributeToCheck.toLowerCase())) {
+              return true;
+            }
+        }
+        for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+            if (this.manyToManyAttributes[index].name.toLowerCase().includes(attributeToCheck.toLowerCase())) {
+                return true;
+            }
+        }
+          return false;
+    }
+
+    public isBelongsToRelationship(attributeName: string): boolean {
+        for (let index = 0; index < this.belongsToAttributes.length; index++) {
+            if (this.belongsToAttributes[index].name.toLowerCase().includes(attributeName.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public isManyToManyRelationship(attributeName: string): boolean {
+        for (let index = 0; index < this.manyToManyAttributes.length; index++) {
+            if (this.manyToManyAttributes[index].name.toLowerCase().includes(attributeName.toLowerCase())) {
+                return true;
             }
         }
         return false;
