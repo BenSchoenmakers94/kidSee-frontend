@@ -5,7 +5,7 @@ import { Datastore } from './datastore';
 import { User } from '../../app/models/user';
 import * as bcrypt from 'bcryptjs';
 import { HttpHeaders } from '@angular/common/http';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 @Injectable()
@@ -84,7 +84,7 @@ export class AuthService {
 
   changePassword(password) {
     bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (error, hash) => {
+      bcrypt.hash(password, salt, (err, hash) => {
         this.currentUser.password = hash;
         this.currentUser.save().subscribe();
       });
