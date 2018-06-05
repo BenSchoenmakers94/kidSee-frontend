@@ -1,0 +1,19 @@
+.card {
+    width: 80%;
+    margin: auto;
+    margin-top: 2%;
+    display: flow-root;
+}
+
+.subCard {
+    float: left;
+    width: 35%;
+    min-height: 30%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    text-align: center;
+    cursor: pointer;
+    
+}

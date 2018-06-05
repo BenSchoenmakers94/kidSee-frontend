@@ -73,6 +73,10 @@ export class BaseService {
           ];
     }
 
+    public getModelTypes(): any {
+        return this.modelTypes;
+    }
+
     public resolveType(type: string) {
         for (let index = 0; index < this.modelTypes.length; index++) {
             if (this.modelTypes[index]['type'].includes(type.toLowerCase())) {
