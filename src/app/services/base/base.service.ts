@@ -1,4 +1,4 @@
-import { PostStatus } from './../../models/postStatus';
+import { Status } from './../../models/postStatus';
 import { ContentType } from './../../models/contentType';
 import { LocationType } from './../../models/locationType';
 import { Location } from './../../models/location';
@@ -47,8 +47,8 @@ export class BaseService {
             modelType: Post
           },
           {
-            type: 'post-statuses',
-            modelType: PostStatus
+            type: 'statuses',
+            modelType: Status
           },
           {
             type: 'themes',

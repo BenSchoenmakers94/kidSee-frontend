@@ -2,9 +2,9 @@ import { Attribute, JsonApiModel, JsonApiModelConfig } from 'angular2-jsonapi';
 import { BaseModel } from './baseModel';
 
 @JsonApiModelConfig({
-  type: 'post-statuses'
+  type: 'statuses'
 })
-export class PostStatus extends BaseModel {
+export class Status extends BaseModel {
   @Attribute()
   name: string;
 

@@ -153,6 +153,18 @@ const routes: Routes = [
     }]
   },
   {
+    path: 'statuses',
+    canActivate: [AuthGuard],
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'
