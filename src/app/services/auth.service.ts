@@ -7,14 +7,13 @@ import * as bcrypt from 'bcryptjs';
 import { HttpHeaders } from '@angular/common/http';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
-
 @Injectable()
 export class AuthService {
   private currentUser: User;
   private storage: Storage;
   private LoggedIn = new BehaviorSubject<boolean>(false);
 
-  get isLoggedIn() {
+  public get isLoggedIn() {
     return this.LoggedIn.asObservable();
   }
 
@@ -78,14 +77,5 @@ export class AuthService {
     this.datastore.headers = null;
     this.storage.removeItem('token');
     this.storage.removeItem('currentUser');
-  }
-
-  changePassword(password) {
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
-        this.currentUser.password = hash;
-        this.currentUser.save().subscribe();
-      });
-    });
   }
 }
