@@ -5,7 +5,7 @@ import { Datastore } from './datastore';
 import { User } from '../../app/models/user';
 import * as bcrypt from 'bcryptjs';
 import { HttpHeaders } from '@angular/common/http';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
 @Injectable()
@@ -21,7 +21,9 @@ export class AuthService {
   constructor( private datastore: Datastore,
                public httpClient: HttpClient) {
     this.storage = window.localStorage;
-    if (this.isAuthenticated()) this.LoggedIn.next(true)
+    if (this.isAuthenticated()) {
+      this.LoggedIn.next(true);
+    }
   }
 
   login(credentials): Promise<any> {
@@ -64,7 +66,7 @@ export class AuthService {
   }
 
   public isAuthenticated() {
-    if(this.storage.getItem('token')) {
+    if (this.storage.getItem('token')) {
       return this.fetchCurrentUser().then(user => {
         return user != null;
       });
@@ -82,7 +84,7 @@ export class AuthService {
 
   changePassword(password) {
     bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
+      bcrypt.hash(password, salt, (error, hash) => {
         this.currentUser.password = hash;
         this.currentUser.save().subscribe();
       });
