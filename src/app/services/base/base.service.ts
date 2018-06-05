@@ -1,4 +1,4 @@
-import { PostStatus } from './../../models/postStatus';
+import { Status } from './../../models/postStatus';
 import { ContentType } from './../../models/contentType';
 import { LocationType } from './../../models/locationType';
 import { Location } from './../../models/location';
@@ -47,8 +47,8 @@ export class BaseService {
             modelType: Post
           },
           {
-            type: 'post-statuses',
-            modelType: PostStatus
+            type: 'statuses',
+            modelType: Status
           },
           {
             type: 'themes',
@@ -95,13 +95,14 @@ export class BaseService {
           });
     }
 
-    getObjectsPage(pageNumber?: number, pageSize?: number): Observable<BaseModel[]> {
+    getObjectsPage(type: string, pageNumber?: number, pageSize?: number): Observable<BaseModel[]> {
+        const modelType = this.resolveType(type);
           return Observable.create((observer) => {
-            this.datastore.findAll(Location, {
+            this.datastore.findAll(modelType, {
               page: pageNumber,
               page_size: pageSize
              }).subscribe(
-              (locations: JsonApiQueryData<Location>) => observer.next(locations.getModels())
+              objects => observer.next(objects.getModels())
             );
           });
     }

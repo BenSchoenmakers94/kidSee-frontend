@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { WizardComponent } from '../wizard/wizard.component';
-import { AuthGuard } from "./auth.guard";
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
@@ -16,6 +16,7 @@ const routes: Routes = [
   {
     path: 'locations',
     component: LocationComponent,
+    canActivate: [AuthGuard],
     children: [{
       path: '', component: MapComponent
     }, {
@@ -32,6 +33,7 @@ const routes: Routes = [
   },
   {
     path: 'users',
+    canActivate: [AuthGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -45,6 +47,7 @@ const routes: Routes = [
     }]
   }, {
     path: 'location-types',
+    canActivate: [AuthGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -55,6 +58,7 @@ const routes: Routes = [
   },
   {
     path: 'posts',
+    canActivate: [AuthGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -66,6 +70,7 @@ const routes: Routes = [
   },
   {
     path: 'themes',
+    canActivate: [AuthGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -77,6 +82,7 @@ const routes: Routes = [
   },
   {
     path: 'comments',
+    canActivate: [AuthGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -88,6 +94,67 @@ const routes: Routes = [
   },
   {
     path: 'assignments',
+    canActivate: [AuthGuard],
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'assignment-types',
+    canActivate: [AuthGuard],
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'answers',
+    canActivate: [AuthGuard],
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'answer-types',
+    canActivate: [AuthGuard],
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'content-types',
+    canActivate: [AuthGuard],
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
+    path: 'statuses',
+    canActivate: [AuthGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -99,7 +166,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/login',
+    redirectTo: '',
     pathMatch: 'full'
   },
 ];

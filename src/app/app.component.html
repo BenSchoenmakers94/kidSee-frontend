@@ -1,13 +1,21 @@
 
 <router-outlet>
     <mat-toolbar *ngIf="isLoggedIn | async">
-        <button mat-button [routerLink]="['/home']">
+        <button mat-raised-button color="primary" [routerLink]="['']">
             <span>{{title}}</span>
         </button>
        <button mat-button [routerLink]="['/users']">Users</button>
     <button mat-button [routerLink]="['/posts']">Posts</button>
     <button mat-button [routerLink]="['/themes']">Themes</button>
     <button mat-button [routerLink]="['/assignments']">Assignments</button>
+    <button mat-button [routerLink]="['/comments']">Comments</button>
+    <button mat-button [routerLink]="['/locations']">Locations</button>
+    <button mat-button [routerLink]="['/location-types']">Location-types</button>
+    <button mat-button [routerLink]="['/answers']">Answers</button>
+    <button mat-button [routerLink]="['/answer-types']">Answer-Types</button>
+    <button mat-button [routerLink]="['/assignment-types']">Assignment-Types</button>
+    <!-- <button mat-button [routerLink]="['/content-types']">Content-Types</button> -->
+    <!-- <button mat-button [routerLink]="['/statuses']">Statuses</button> -->
         <span class="fill-space"></span>
         <button class="logout" mat-raised-button color="primary" (click)="logout()">Logout</button>
     </mat-toolbar>

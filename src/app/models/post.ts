@@ -1,7 +1,7 @@
 import { JsonApiModelConfig, JsonApiModel, Attribute, HasMany, BelongsTo } from 'angular2-jsonapi';
 import { User } from './user';
 import { ContentType } from './contentType';
-import { PostStatus } from './postStatus';
+import { Status } from './postStatus';
 import { Comment } from './comment';
 import { BaseModel } from './baseModel';
 
@@ -26,7 +26,7 @@ export class Post extends BaseModel {
   user: User;
 
   @BelongsTo()
-  'post-status': PostStatus;
+  'status': Status;
 
   @HasMany()
   comments: Comment[];
@@ -39,7 +39,7 @@ export class Post extends BaseModel {
 
   public simpleAttributeNames = [{ name: 'id', required: false }, { name: 'name', required: true }, { name: 'subject', required: true }];
   public hasManyAttributes = [{ name: 'comments', required: false }];
-  public belongsToAttributes = [{ name: 'content-type', required: true }, { name: 'post-status', required: true },
+  public belongsToAttributes = [{ name: 'content-type', required: true }, { name: 'status', required: true },
     { name: 'user', required: true }];
   public manyToManyAttributes = [];
 }
