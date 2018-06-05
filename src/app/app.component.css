@@ -16,4 +16,10 @@ ul {
 
 .sidenav {
     background: beige;
+    height: fit-content;
+}
+
+.extra-margin {
+    margin-top: 4%;
+    margin-bottom: 4%;
 }
