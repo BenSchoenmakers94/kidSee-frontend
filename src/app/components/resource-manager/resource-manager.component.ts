@@ -7,12 +7,11 @@ import { Router } from '@angular/router';
   templateUrl: './resource-manager.component.html',
   styleUrls: ['./resource-manager.component.css']
 })
-export class ResourceManagerComponent implements OnInit {
+export class ResourceManagerComponent {
 
-  constructor(private router: Router, private baseService: BaseService) { }
-
-  ngOnInit() {
-  }
+  constructor(
+    private router: Router,
+    private baseService: BaseService) { }
 
   public getResources(): string[] {
     const resourceNames: string[] = [];
