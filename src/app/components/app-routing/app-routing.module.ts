@@ -29,8 +29,7 @@ const routes: Routes = [
       children: [{
         path: 'themes/new', component: WizardComponent
       }]
-    }],
-    canActivate: [AuthGuard]
+    }]
   },
   {
     path: 'users',
@@ -45,8 +44,7 @@ const routes: Routes = [
       children: [{
         path: 'posts/new', component: WizardComponent
       }]
-    }],
-    canActivate: [AuthGuard]
+    }]
   }, {
     path: 'location-types',
     canActivate: [AuthGuard],
@@ -56,8 +54,7 @@ const routes: Routes = [
       path: 'new', component: WizardComponent
     }, {
       path: ':id', component: ObjectDetailComponent
-    }],
-    canActivate: [AuthGuard]
+    }]
   },
   {
     path: 'posts',
@@ -69,8 +66,7 @@ const routes: Routes = [
     }, {
       path: ':id',
       component: ObjectDetailComponent
-    }],
-    canActivate: [AuthGuard]
+    }]
   },
   {
     path: 'themes',
@@ -82,8 +78,7 @@ const routes: Routes = [
     }, {
       path: ':id',
       component: ObjectDetailComponent
-    }],
-    canActivate: [AuthGuard]
+    }]
   },
   {
     path: 'comments',
@@ -95,8 +90,7 @@ const routes: Routes = [
     }, {
       path: ':id',
       component: ObjectDetailComponent
-    }],
-    canActivate: [AuthGuard]
+    }]
   },
   {
     path: 'assignments',
@@ -168,8 +162,7 @@ const routes: Routes = [
     }, {
       path: ':id',
       component: ObjectDetailComponent
-    }],
-    canActivate: [AuthGuard]
+    }]
   },
   {
     path: '**',

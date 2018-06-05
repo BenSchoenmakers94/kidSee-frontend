@@ -1,7 +1,7 @@
     <mat-sidenav-container class="example-container">
         <mat-sidenav #sidenav class="sidenav" mode="side">
         <ul *ngIf="isLoggedIn | async">
-            <li><button mat-button [routerLink]="['/home']"><span>{{title}}</span></button></li>
+            <li><button class="nav-button" mat-button [routerLink]="['/home']"><span>{{title}}</span></button></li>
             <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/users']">Users</button></li>
             <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/posts']">Posts</button></li>
             <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/themes']">Themes</button></li>
