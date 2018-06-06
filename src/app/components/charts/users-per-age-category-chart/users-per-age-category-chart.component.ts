@@ -20,14 +20,6 @@ export class UsersPerAgeCategoryChartComponent implements OnInit {
    this.calculateAgeGroups();
   }
 
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
-
   private calculateAgeGroups() {
     let primary = 0;
     let secondary = 0;
