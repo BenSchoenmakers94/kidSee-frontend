@@ -1,5 +1,57 @@
-<mat-card>
+<mat-card class="card">
     <mat-card-title>
-      Ratings
+      Waarderingen
     </mat-card-title>
-  </mat-card>
+    <div class="align-content">
+      <div class="left">
+      <p>Ik wil een: </p>
+    <mat-form-field>
+        <mat-select [(value)]="selectedChart">
+          <mat-option value="bar">Staafdiagram</mat-option>
+          <mat-option value="doughnut">Cirkeldiagram</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p> van </p>
+    <mat-form-field>
+        <mat-select [(value)]="selectedType">
+          <mat-option value="locations">Locaties</mat-option>
+          <mat-option value="Assignments">Opdrachten</mat-option>
+          <mat-option value="posts">Posts</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p> gesorteerd op </p>
+      <mat-form-field>
+          <mat-select [(value)]="selectedSorting">
+            <mat-option value="high">best gewaardeerd</mat-option>
+            <mat-option value="low">minst gewaardeerd</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <p> gelimiteerd tot</p>
+        <mat-form-field>
+            <mat-select [(value)]="selectedAmount">
+              <mat-option value="5">5 resultaten</mat-option>
+              <mat-option value="10">10 resultaten</mat-option>
+              <mat-option value="15">15 resultaten</mat-option>
+              <mat-option value="20">20 resultaten</mat-option>
+            </mat-select>
+          </mat-form-field>
+        <div>
+            <ng-container *ngIf="selectedChart && selectedType && selectedSorting">
+                <button mat-raised-button color="primary" (click)="generateChart()">Creër grafiek!</button>
+            </ng-container>
+        </div>
+    </div>
+    <ng-container *ngIf="displayChart" >
+        <div class="right">
+            <canvas baseChart
+            width="800"
+            height="400"
+            [datasets]="chartData"
+            [labels]="chartLabels"
+            [options]="chartOptions"
+            [legend]="chartLegend"
+            [chartType]="chartType"></canvas>
+        </div>
+    </ng-container>
+  </div>
+</mat-card>
