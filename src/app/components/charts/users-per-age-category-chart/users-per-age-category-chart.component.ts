@@ -18,8 +18,8 @@ export class UsersPerAgeCategoryChartComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.doughnutChartLabels = ['Onderbouw', 'Middenbouw', 'Bovenbouw'];
-    this.colors = [ { backgroundColor: ['#9999ff', '#4ce7b3', '#ffd56f'], borderColor: 'transparent' } ];
+    this.doughnutChartLabels = ['Onderbouw', 'Middenbouw', 'Bovenbouw', 'Ouder'];
+    this.colors = [ { backgroundColor: ['#9999ff', '#4ce7b3', '#ffd56f', '#ff4b33'], borderColor: 'transparent' } ];
     this.doughnutChartType = 'doughnut';
     this.doughnutChartData = [];
 
@@ -30,6 +30,7 @@ export class UsersPerAgeCategoryChartComponent implements OnInit {
     let primary = 0;
     let secondary = 0;
     let tertiary = 0;
+    let older = 0;
     const chartData = [];
 
     const condition = new Date(Date.now()).getFullYear();
@@ -41,13 +42,16 @@ export class UsersPerAgeCategoryChartComponent implements OnInit {
           primary++;
         } else if ((condition - date.getFullYear()) <= 9) {
           secondary++;
-        } else {
+        } else if ((condition - date.getFullYear()) <= 13) {
           tertiary++;
+        } else {
+          older++;
         }
       }
       chartData.push(primary);
       chartData.push(secondary);
       chartData.push(tertiary);
+      chartData.push(older);
       this.doughnutChartData = chartData;
     });
   }
