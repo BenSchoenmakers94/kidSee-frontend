@@ -59,6 +59,7 @@ import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.com
 import { SimpleTableComponent } from './components/simple-table/simple-table.component';
 import { MatSelectSearchComponent } from './generics/mat-select-wrapper/mat-select-search/mat-select-search.component';
 import { MatSelectWrapperComponent } from './generics/mat-select-wrapper/mat-select-wrapper.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   exports: [
@@ -113,7 +114,8 @@ export class AngularMaterialModule {}
     RemoveDialogComponent,
     SimpleTableComponent,
     MatSelectWrapperComponent,
-    MatSelectSearchComponent
+    MatSelectSearchComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +146,8 @@ export class AngularMaterialModule {}
     RemoveDialogComponent,
     SimpleTableComponent,
     MatSelectWrapperComponent,
-    MatSelectSearchComponent
+    MatSelectSearchComponent,
+    HomeComponent
   ],
   providers: [
     Datastore,
