@@ -1,3 +1,4 @@
+import { BaseService } from './../../../services/base/base.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,63 +6,130 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './users-registered-in-time-chart.component.html',
   styleUrls: ['./users-registered-in-time-chart.component.css']
 })
-export class UsersRegisteredInTimeChartComponent {
-// lineChart
-public lineChartData:Array<any> = [
-  {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-  {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
-  {data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C'}
-];
-public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-public lineChartOptions:any = {
-  responsive: true
-};
-public lineChartColors:Array<any> = [
-  { // grey
-    backgroundColor: 'rgba(148,159,177,0.2)',
-    borderColor: 'rgba(148,159,177,1)',
-    pointBackgroundColor: 'rgba(148,159,177,1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-  },
-  { // dark grey
-    backgroundColor: 'rgba(77,83,96,0.2)',
-    borderColor: 'rgba(77,83,96,1)',
-    pointBackgroundColor: 'rgba(77,83,96,1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgba(77,83,96,1)'
-  },
-  { // grey
-    backgroundColor: 'rgba(148,159,177,0.2)',
-    borderColor: 'rgba(148,159,177,1)',
-    pointBackgroundColor: 'rgba(148,159,177,1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+export class UsersRegisteredInTimeChartComponent implements OnInit {
+
+  private months: NumberOfMonth[];
+  public lineChartData: Array<any>;
+  public lineChartLabels: Array<any>;
+  public lineChartOptions: any;
+  public lineChartColors: Array<any>;
+  public lineChartLegend: boolean;
+  public lineChartType: string;
+
+  constructor(private baseService: BaseService) {  }
+
+  ngOnInit() {
+    this.lineChartData = [{data: [], label: ''}];
+    this.lineChartLegend = true;
+    this.lineChartType = 'line';
+    this.lineChartOptions = { responsive: true };
+    this.lineChartColors = [{ backgroundColor: '#e8425c', borderColor: '#900020' }];
+
+    this.initMonths();
+    this.calculatePerMonth();
   }
-];
-public lineChartLegend:boolean = true;
-public lineChartType:string = 'line';
 
-public randomize():void {
-  let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-  for (let i = 0; i < this.lineChartData.length; i++) {
-    _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-    for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-      _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-    }
+  private calculatePerMonth() {
+    const datasets = [];
+    const linesData: LineChartData = {
+      data: [],
+      label: 'Nieuwe Gebruikers'
+    };
+
+    this.baseService.getAllObjects('users').subscribe(users => {
+      for (let index = 0; index < users.length; index++) {
+        const element = users[index]['insertedAt'];
+        const monthNumber = element.getMonth();
+        this.months.find(month => month.number === monthNumber).amount++;
+      }
+      for (let index = 0; index < this.months.length; index++) {
+        const element = this.months[index];
+        linesData.data.push(element.amount);
+      }
+      datasets.push(linesData);
+      this.lineChartData = datasets;
+    });
   }
-  this.lineChartData = _lineChartData;
+
+  public initMonths() {
+    this.months = [];
+    const monthChartData = [];
+    this.months.push({
+      number: 0,
+      month: 'Januari',
+      amount: 0
+    });
+    this.months.push({
+      number: 1,
+      month: 'Februari',
+      amount: 0
+    });
+    this.months.push({
+      number: 2,
+      month: 'Maart',
+      amount: 0
+    });
+    this.months.push({
+      number: 3,
+      month: 'April',
+      amount: 0
+    });
+    this.months.push({
+      number: 4,
+      month: 'Mei',
+      amount: 0
+    });
+    this.months.push({
+      number: 5,
+      month: 'Juni',
+      amount: 0
+    });
+    this.months.push({
+      number: 6,
+      month: 'Juli',
+      amount: 0
+    });
+    this.months.push({
+      number: 7,
+      month: 'Augustus',
+      amount: 0
+    });
+    this.months.push({
+      number: 8,
+      month: 'September',
+      amount: 0
+    });
+    this.months.push({
+      number: 9,
+      month: 'Oktober',
+      amount: 0
+    });
+    this.months.push({
+      number: 10,
+      month: 'November',
+      amount: 0
+    });
+    this.months.push({
+      number: 11,
+      month: 'December',
+      amount: 0
+    });
+
+    this.months.forEach(month => {
+      monthChartData.push(month.month);
+    });
+    this.lineChartLabels = monthChartData;
+  }
 }
 
-// events
-public chartClicked(e:any):void {
-  console.log(e);
+
+interface NumberOfMonth {
+  number: number;
+  month: string;
+  amount: number;
 }
 
-public chartHovered(e:any):void {
-  console.log(e);
-}
+interface LineChartData {
+  data: number[];
+  label: string;
 }

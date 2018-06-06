@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-title>
-      Users per Agegroup
+      Gebruikers geregistreerd tegen de tijd
     </mat-card-title>
       <canvas class="sizing" baseChart
       [datasets]="lineChartData"
@@ -8,7 +8,5 @@
       [options]="lineChartOptions"
       [colors]="lineChartColors"
       [legend]="lineChartLegend"
-      [chartType]="lineChartType"
-      (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"></canvas>
+      [chartType]="lineChartType"></canvas>
   </mat-card>
