@@ -8,16 +8,22 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./users-per-age-category-chart.component.css']
 })
 export class UsersPerAgeCategoryChartComponent implements OnInit {
-  public doughnutChartLabels: string[] = ['Onderbouw', 'Middenbouw', 'Bovenbouw'];
+  public doughnutChartLabels: string[];
   public doughnutChartData: number[];
-  public colors: any[] = [ { backgroundColor: ['#9999ff', '#4ce7b3', '#ffd56f'], borderColor: 'transparent' } ];
-  public doughnutChartType = 'doughnut';
+  public colors: any[];
+  public doughnutChartType: string;
 
-  constructor(private baseService: BaseService, private changeDetectorRef: ChangeDetectorRef) { }
+  constructor(
+    private baseService: BaseService,
+    private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-   this.doughnutChartData = [];
-   this.calculateAgeGroups();
+    this.doughnutChartLabels = ['Onderbouw', 'Middenbouw', 'Bovenbouw'];
+    this.colors = [ { backgroundColor: ['#9999ff', '#4ce7b3', '#ffd56f'], borderColor: 'transparent' } ];
+    this.doughnutChartType = 'doughnut';
+    this.doughnutChartData = [];
+
+    this.calculateAgeGroups();
   }
 
   private calculateAgeGroups() {
