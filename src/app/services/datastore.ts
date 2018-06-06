@@ -14,10 +14,11 @@ import { Assignment } from '../models/assignment';
 import { AssignmentType } from '../models/assignmentType';
 import { Answer } from '../models/answer';
 import { AnswerType } from '../models/answerType';
+import { Role } from '../models/role';
 
 const config: DatastoreConfig = {
   baseUrl: 'http://174.138.7.193/api',
-    // baseUrl: 'http://128.199.32.227/api',
+    //baseUrl: 'http://128.199.32.227/api',
   models: {
     users: User,
     posts: Post,
@@ -31,7 +32,8 @@ const config: DatastoreConfig = {
     'assignment-types': AssignmentType,
     answers: Answer,
     'answer-types': AnswerType,
-    ratings: Rating
+    ratings: Rating,
+    roles: Role
   }
 };
 

@@ -1,6 +1,7 @@
-import { JsonApiModelConfig, Attribute, HasMany } from 'angular2-jsonapi';
+import {JsonApiModelConfig, Attribute, HasMany, BelongsTo} from 'angular2-jsonapi';
 import { Post } from './post';
 import { BaseModel } from './baseModel';
+import { Role } from "./role";
 
 @JsonApiModelConfig({
   type: 'users'
@@ -37,10 +38,13 @@ export class User extends BaseModel {
   @Attribute({serializedName: 'inserted-at'})
   insertedAt: Date;
 
+  @BelongsTo()
+  role: Role;
+
   public simpleAttributeNames = [{ name: 'Id', required: true }, { name: 'name', required: true },
     { name: 'Password', required: true }, { name: 'Email', required: true }, { name: 'Birthdate', required: true },
     { name: 'School', required: true }, { name: 'Postal_code', required: false }, { name: 'Avatar', required: false }];
   public hasManyAttributes = [{ name: 'Posts', required: false }];
-  public belongsToAttributes = [];
+  public belongsToAttributes = [{ name: 'Roles', required: false}];
   public manyToManyAttributes = [];
 }

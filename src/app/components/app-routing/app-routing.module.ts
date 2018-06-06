@@ -10,6 +10,7 @@ import { WizardComponent } from '../wizard/wizard.component';
 import { AuthGuard } from './auth.guard';
 import { HomeComponent } from '../home/home.component';
 import { ResourceManagerComponent } from '../resource-manager/resource-manager.component';
+import { RoleGuard } from "./role.guard";
 
 const routes: Routes = [
   {
@@ -34,7 +35,7 @@ const routes: Routes = [
   {
     path: 'locations',
     component: LocationComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: MapComponent
     }, {
@@ -51,7 +52,7 @@ const routes: Routes = [
   },
   {
     path: 'users',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -65,7 +66,7 @@ const routes: Routes = [
     }]
   }, {
     path: 'location-types',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -76,7 +77,7 @@ const routes: Routes = [
   },
   {
     path: 'posts',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -88,7 +89,7 @@ const routes: Routes = [
   },
   {
     path: 'themes',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -100,7 +101,7 @@ const routes: Routes = [
   },
   {
     path: 'comments',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -112,7 +113,7 @@ const routes: Routes = [
   },
   {
     path: 'assignments',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -124,7 +125,7 @@ const routes: Routes = [
   },
   {
     path: 'assignment-types',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -136,7 +137,7 @@ const routes: Routes = [
   },
   {
     path: 'answers',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -148,7 +149,7 @@ const routes: Routes = [
   },
   {
     path: 'answer-types',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -160,7 +161,7 @@ const routes: Routes = [
   },
   {
     path: 'content-types',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -172,7 +173,7 @@ const routes: Routes = [
   },
   {
     path: 'statuses',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
     children: [{
       path: '', component: DataTableComponent
     }, {
@@ -198,7 +199,8 @@ const routes: Routes = [
   ],
   declarations: [],
   providers: [
-    AuthGuard
+    AuthGuard,
+    RoleGuard
   ]
 
 })
