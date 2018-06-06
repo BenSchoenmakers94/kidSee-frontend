@@ -1,3 +1,4 @@
+import { ChartsComponent } from './../charts/charts.component';
 import { DataTableComponent } from './../../generics/data-table/data-table.component';
 import { MapComponent } from './../location/map/map.component';
 import { LocationComponent } from './../location/location.component';
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'charts',
+    component: ChartsComponent,
     canActivate: [AuthGuard]
   },
   {

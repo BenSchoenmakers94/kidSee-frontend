@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-title>
+    Users per Agegroup
+  </mat-card-title>
+    <canvas class="sizing" baseChart
+    [data]="doughnutChartData"
+    [labels]="doughnutChartLabels"
+    [chartType]="doughnutChartType"
+    [colors]="colors"
+    (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)"></canvas>
+</mat-card>
