@@ -1,3 +1,4 @@
+import { BaseService } from './../../../services/base/base.service';
 import { Component, OnInit } from '@angular/core';
 import { resolve } from 'path';
 
@@ -10,7 +11,7 @@ export class RatingsChartComponent implements OnInit {
 
   public selectedType = 'locations';
   public selectedChart = 'doughnut';
-  public selectedSorting = 'high';
+  public selectedSorting = 'true';
   public selectedAmount = '10';
 
   public displayChart = false;
@@ -23,7 +24,7 @@ export class RatingsChartComponent implements OnInit {
 
   public once: boolean;
 
-  constructor() { }
+  constructor(private baseService: BaseService) { }
 
   ngOnInit() {
     this.once = true;
@@ -43,27 +44,22 @@ export class RatingsChartComponent implements OnInit {
   }
 
   public generateChart() {
+    const asc = this.selectedSorting === 'true' ? true : false;
     this.clearChart().then(result => {
-      this.once = true;
-      this.chartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-      this.chartType = this.selectedChart;
-      this.chartLegend = true;
-      if (this.once) {
-        this.chartData = [
-          {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-          {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
-        ];
-        this.once = false;
-      } else {
-        this.chartData = [
-          {data: [0], label: 'Series C'}
-        ];
-      }
-      this.chartOptions = {
-        scaleShowVerticalLines: false,
-        responsive: true
-      };
+      this.baseService.getFilteredAndSortedObjects(
+        this.selectedType,
+        'rating-count',
+        this.selectedType,
+      'rating',
+      asc,
+      +this.selectedAmount).subscribe(ratingObjects => {
+        for (let index = 0; index < ratingObjects.length; index++) {
+          const element = ratingObjects[index];
+          this.baseService.getObjectFromId(element['objectId'], element['objectType'].concat('s')).subscribe(resultingObject => {
 
+          });
+        }
+      });
       this.displayChart = true;
     });
   }

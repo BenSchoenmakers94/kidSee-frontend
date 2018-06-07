@@ -24,6 +24,9 @@ export class Assignment extends BaseModel {
   @BelongsTo()
   location: Location;
 
+  @Attribute({serializedName: 'rating-count'})
+  ratingCount: number;
+
   @Attribute()
   content: String;
 

@@ -183,4 +183,62 @@ export class BaseService {
             return { };
         }
     }
+
+    public getFilteredObjects(type: string, filterProperty: string, filterValue: string): Observable<BaseModel[]> {
+        const modelType = this.resolveType(type);
+         return Observable.create((observer) => {
+            this.datastore.findAll(modelType, {
+                page_size: 999,
+                filter: '[' + filterProperty + ']=' + filterValue
+             }).subscribe(
+              objects => {
+                observer.next(objects.getModels());
+              }
+            );
+          });
+    }
+
+    public getFilteredAndSortedObjects(type: string,
+        filterProperty: string,
+        filterValue: string,
+        sortProperty: string,
+        asc: boolean,
+        limit: number): Observable<BaseModel[]> {
+
+            const modelType = this.resolveType(type);
+            if (!asc) {
+                sortProperty = '-'.concat(sortProperty);
+            }
+            const filterOpt = 'filter[' + filterProperty + ']';
+            const params = {
+                page_size: limit,
+                sort: sortProperty
+             };
+             params[filterOpt] = filterValue;
+            return Observable.create((observer) => {
+                this.datastore.findAll(modelType, params).subscribe(
+                objects => {
+                    observer.next(objects.getModels());
+                }
+                );
+            });
+    }
+
+    public getSortedObjects(type: string, sortProperty: string, asc: boolean, limit: number): Observable<BaseModel[]> {
+        const modelType = this.resolveType(type);
+            if (!asc) {
+                sortProperty = '-'.concat(sortProperty);
+            }
+            const params = {
+                page_size: limit,
+                sort: sortProperty
+             };
+             return Observable.create((observer) => {
+                this.datastore.findAll(modelType, params).subscribe(
+                objects => {
+                    observer.next(objects.getModels());
+                }
+                );
+            });
+    }
 }

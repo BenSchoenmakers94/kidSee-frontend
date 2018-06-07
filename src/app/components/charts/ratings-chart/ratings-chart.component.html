@@ -14,16 +14,16 @@
       <p> van </p>
     <mat-form-field>
         <mat-select [(value)]="selectedType">
-          <mat-option value="locations">Locaties</mat-option>
-          <mat-option value="Assignments">Opdrachten</mat-option>
-          <mat-option value="posts">Posts</mat-option>
+          <mat-option value="location">Locaties</mat-option>
+          <mat-option value="assignment">Opdrachten</mat-option>
+          <mat-option value="post">Posts</mat-option>
         </mat-select>
       </mat-form-field>
       <p> gesorteerd op </p>
       <mat-form-field>
           <mat-select [(value)]="selectedSorting">
-            <mat-option value="high">best gewaardeerd</mat-option>
-            <mat-option value="low">minst gewaardeerd</mat-option>
+            <mat-option value="true">best gewaardeerd</mat-option>
+            <mat-option value="false">minst gewaardeerd</mat-option>
           </mat-select>
         </mat-form-field>
         <p> gelimiteerd tot</p>
