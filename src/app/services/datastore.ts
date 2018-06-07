@@ -1,3 +1,4 @@
+import { Rating } from './../models/rating';
 import { Theme } from './../models/theme';
 import { LocationType } from './../models/locationType';
 import { Status } from './../models/postStatus';
@@ -29,7 +30,8 @@ const config: DatastoreConfig = {
     assignments: Assignment,
     'assignment-types': AssignmentType,
     answers: Answer,
-    'answer-types': AnswerType
+    'answer-types': AnswerType,
+    ratings: Rating
   }
 };
 

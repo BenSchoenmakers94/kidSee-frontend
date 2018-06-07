@@ -59,6 +59,12 @@ import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.com
 import { SimpleTableComponent } from './components/simple-table/simple-table.component';
 import { MatSelectSearchComponent } from './generics/mat-select-wrapper/mat-select-search/mat-select-search.component';
 import { MatSelectWrapperComponent } from './generics/mat-select-wrapper/mat-select-wrapper.component';
+import { HomeComponent } from './components/home/home.component';
+import { ChartsComponent } from './components/charts/charts.component';
+import { ChartsModule } from 'ng2-charts';
+import { UsersPerAgeCategoryChartComponent } from './components/charts/users-per-age-category-chart/users-per-age-category-chart.component';
+import { UsersRegisteredInTimeChartComponent } from './components/charts/users-registered-in-time-chart/users-registered-in-time-chart.component';
+import { RatingsChartComponent } from './components/charts/ratings-chart/ratings-chart.component';
 import { ResourceManagerComponent } from './components/resource-manager/resource-manager.component';
 
 @NgModule({
@@ -115,6 +121,11 @@ export class AngularMaterialModule {}
     SimpleTableComponent,
     MatSelectWrapperComponent,
     MatSelectSearchComponent,
+    HomeComponent,
+    ChartsComponent,
+    UsersPerAgeCategoryChartComponent,
+    UsersRegisteredInTimeChartComponent,
+    RatingsChartComponent,
     ResourceManagerComponent
   ],
   imports: [
@@ -133,7 +144,8 @@ export class AngularMaterialModule {}
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCFDAhXM4QGRxQIUJBV3702hUnYdm-p4w0'
-    })
+    }),
+    ChartsModule
   ],
   entryComponents: [
     AppComponent,
@@ -147,6 +159,11 @@ export class AngularMaterialModule {}
     SimpleTableComponent,
     MatSelectWrapperComponent,
     MatSelectSearchComponent,
+    HomeComponent,
+    ChartsComponent,
+    UsersPerAgeCategoryChartComponent,
+    UsersRegisteredInTimeChartComponent,
+    RatingsChartComponent,
     ResourceManagerComponent
   ],
   providers: [

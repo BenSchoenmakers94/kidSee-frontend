@@ -1,3 +1,4 @@
+import { ChartsComponent } from './../charts/charts.component';
 import { DataTableComponent } from './../../generics/data-table/data-table.component';
 import { MapComponent } from './../location/map/map.component';
 import { LocationComponent } from './../location/location.component';
@@ -7,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { WizardComponent } from '../wizard/wizard.component';
 import { AuthGuard } from './auth.guard';
+import { HomeComponent } from '../home/home.component';
 import { ResourceManagerComponent } from '../resource-manager/resource-manager.component';
 
 const routes: Routes = [
@@ -15,6 +17,15 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'charts',
+    component: ChartsComponent,
+    canActivate: [AuthGuard]
+  },
     path: 'resources',
     component: ResourceManagerComponent,
     canActivate: [AuthGuard]

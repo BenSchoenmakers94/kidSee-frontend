@@ -34,6 +34,9 @@ export class User extends BaseModel {
   @Attribute({serializedName: 'username'})
   name: string;
 
+  @Attribute({serializedName: 'inserted-at'})
+  insertedAt: Date;
+
   public simpleAttributeNames = [{ name: 'Id', required: true }, { name: 'name', required: true },
     { name: 'Password', required: true }, { name: 'Email', required: true }, { name: 'Birthdate', required: true },
     { name: 'School', required: true }, { name: 'Postal_code', required: false }, { name: 'Avatar', required: false }];

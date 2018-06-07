@@ -1,3 +1,4 @@
+import { Rating } from './../../models/rating';
 import { Status } from './../../models/postStatus';
 import { ContentType } from './../../models/contentType';
 import { LocationType } from './../../models/locationType';
@@ -20,6 +21,7 @@ import { Answer } from '../../models/answer';
 @Injectable()
 export class BaseService {
     private modelTypes;
+    private notShowableModelTypes;
 
     constructor(private datastore: Datastore, private http: HttpClient) {
         this.modelTypes = [{
@@ -71,6 +73,11 @@ export class BaseService {
             modelType: AnswerType
           }
           ];
+
+          this.notShowableModelTypes = [{
+              type: 'ratings',
+              modelType: Rating
+          }];
     }
 
     public getModelTypes(): any {
@@ -81,6 +88,11 @@ export class BaseService {
         for (let index = 0; index < this.modelTypes.length; index++) {
             if (this.modelTypes[index]['type'].includes(type.toLowerCase())) {
                 return this.modelTypes[index]['modelType'];
+            }
+        }
+        for (let index = 0; index < this.notShowableModelTypes.length; index++) {
+            if (this.notShowableModelTypes[index]['type'].includes(type.toLowerCase())) {
+                return this.notShowableModelTypes[index]['modelType'];
             }
         }
         return null;
@@ -174,5 +186,63 @@ export class BaseService {
         } else {
             return { };
         }
+    }
+
+    public getFilteredObjects(type: string, filterProperty: string, filterValue: string): Observable<BaseModel[]> {
+        const modelType = this.resolveType(type);
+         return Observable.create((observer) => {
+            this.datastore.findAll(modelType, {
+                page_size: 999,
+                filter: '[' + filterProperty + ']=' + filterValue
+             }).subscribe(
+              objects => {
+                observer.next(objects.getModels());
+              }
+            );
+          });
+    }
+
+    public getFilteredAndSortedObjects(type: string,
+        filterProperty: string,
+        filterValue: string,
+        sortProperty: string,
+        asc: boolean,
+        limit: number): Observable<BaseModel[]> {
+
+            const modelType = this.resolveType(type);
+            if (!asc) {
+                sortProperty = '-'.concat(sortProperty);
+            }
+            const filterOpt = 'filter[' + filterProperty + ']';
+            const params = {
+                page_size: limit,
+                sort: sortProperty
+             };
+             params[filterOpt] = filterValue;
+            return Observable.create((observer) => {
+                this.datastore.findAll(modelType, params).subscribe(
+                objects => {
+                    observer.next(objects.getModels());
+                }
+                );
+            });
+    }
+
+    public getSortedObjects(type: string, sortProperty: string, asc: boolean, limit: number): Observable<BaseModel[]> {
+        const modelType = this.resolveType(type);
+            if (!asc) {
+                sortProperty = '-'.concat(sortProperty);
+            }
+            const params = {
+                page_size: limit,
+                sort: sortProperty
+             };
+             return Observable.create((observer) => {
+                this.datastore.findAll(modelType, params).subscribe(
+                objects => {
+                    observer.next(objects.getModels());
+                }
+                );
+            });
     }
 }

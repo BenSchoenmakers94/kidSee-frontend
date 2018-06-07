@@ -28,6 +28,12 @@ export class Location extends BaseModel {
   @Attribute()
   address: string;
 
+  @Attribute()
+  rating: number;
+
+  @Attribute({serializedName: 'rating-count'})
+  ratingCount: number;
+
   @Attribute({serializedName: 'website-link'})
   websiteLink: string;
 

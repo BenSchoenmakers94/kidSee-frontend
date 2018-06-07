@@ -1,0 +1,14 @@
+<mat-card>
+    <mat-card-title>
+      Meest populaire locaties
+    </mat-card-title>
+    <div class="sizing">
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [chartType]="barChartType"></canvas>
+  </div>
+  </mat-card>
+  
