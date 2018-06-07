@@ -26,6 +26,7 @@ const routes: Routes = [
     component: ChartsComponent,
     canActivate: [AuthGuard]
   },
+  {
     path: 'resources',
     component: ResourceManagerComponent,
     canActivate: [AuthGuard]
@@ -185,7 +186,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full'
-  },
+  }
 ];
 
 @NgModule({
