@@ -183,6 +183,18 @@ const routes: Routes = [
     }]
   },
   {
+    path: 'discoveries',
+    canActivate: [AuthGuard],
+    children: [{
+      path: '', component: DataTableComponent
+    }, {
+      path: 'new', component: WizardComponent
+    }, {
+      path: ':id',
+      component: ObjectDetailComponent
+    }]
+  },
+  {
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full'
