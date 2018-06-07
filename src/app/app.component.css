@@ -23,3 +23,7 @@ ul {
     margin-top: 4%;
     margin-bottom: 4%;
 }
+
+.example-container {
+    height: 100vh;
+  }
