@@ -1,5 +1,4 @@
-<mat-card>
-  <mat-card-title>{{objectType}}</mat-card-title>
+<h2>{{objectType}}</h2>
     <p>
       <mat-form-field>
         <mat-select [formControl]="bankMultiCtrl" [multiple]="true">
@@ -16,4 +15,3 @@
     <ul *ngFor="let bank of bankMultiCtrl?.value">
       <li>{{bank.name}}</li>
     </ul>
-</mat-card>
