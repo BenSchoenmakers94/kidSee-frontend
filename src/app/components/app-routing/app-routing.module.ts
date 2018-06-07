@@ -7,11 +7,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { WizardComponent } from '../wizard/wizard.component';
 import { AuthGuard } from './auth.guard';
+import { ResourceManagerComponent } from '../resource-manager/resource-manager.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LoginComponent,
+  },
+  {
+    path: 'resources',
+    component: ResourceManagerComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'locations',

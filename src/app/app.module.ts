@@ -50,7 +50,7 @@ import { LocationComponent } from './components/location/location.component';
 import { AgmCoreModule } from '@agm/core';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { DataTableComponent } from './generics/data-table/data-table.component';
-import { AuthGuard } from "./components/app-routing/auth.guard";
+import { AuthGuard } from './components/app-routing/auth.guard';
 import { RelationshipDialogComponent } from './dialogs/relationship-dialog/relationship-dialog.component';
 import { ObjectDetailComponent } from './components/object-detail/object-detail.component';
 import { MapComponent } from './components/location/map/map.component';
@@ -59,6 +59,7 @@ import { RemoveDialogComponent } from './dialogs/remove-dialog/remove-dialog.com
 import { SimpleTableComponent } from './components/simple-table/simple-table.component';
 import { MatSelectSearchComponent } from './generics/mat-select-wrapper/mat-select-search/mat-select-search.component';
 import { MatSelectWrapperComponent } from './generics/mat-select-wrapper/mat-select-wrapper.component';
+import { ResourceManagerComponent } from './components/resource-manager/resource-manager.component';
 
 @NgModule({
   exports: [
@@ -113,7 +114,8 @@ export class AngularMaterialModule {}
     RemoveDialogComponent,
     SimpleTableComponent,
     MatSelectWrapperComponent,
-    MatSelectSearchComponent
+    MatSelectSearchComponent,
+    ResourceManagerComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +146,8 @@ export class AngularMaterialModule {}
     RemoveDialogComponent,
     SimpleTableComponent,
     MatSelectWrapperComponent,
-    MatSelectSearchComponent
+    MatSelectSearchComponent,
+    ResourceManagerComponent
   ],
   providers: [
     Datastore,
