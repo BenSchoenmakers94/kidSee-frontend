@@ -10,9 +10,9 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Home';
-  user: User;
-  isLoggedIn: Observable<boolean>;
+  protected title = 'Home';
+  protected user: User;
+  protected isLoggedIn: Observable<boolean>;
 
   constructor(private authService: AuthService, private router: Router) {
     this.authService.fetchCurrentUser().then(user => this.user = user);

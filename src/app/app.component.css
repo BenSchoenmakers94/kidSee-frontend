@@ -3,6 +3,27 @@
     flex: 1 1 auto;
 }
 
-.logout{
-    margin-left: 1%;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
+
+.nav-button {
+    width: 100%;
+    margin-bottom: 2%;
+}
+
+.sidenav {
+    background: beige;
+    height: fit-content;
+}
+
+.extra-margin {
+    margin-top: 4%;
+    margin-bottom: 4%;
+}
+
+.example-container {
+    height: 100vh;
+  }
