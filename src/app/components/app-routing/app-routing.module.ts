@@ -9,6 +9,7 @@ import { LoginComponent } from '../login/login.component';
 import { WizardComponent } from '../wizard/wizard.component';
 import { AuthGuard } from './auth.guard';
 import { HomeComponent } from '../home/home.component';
+import { ResourceManagerComponent } from '../resource-manager/resource-manager.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'charts',
     component: ChartsComponent,
+    canActivate: [AuthGuard]
+  },
+    path: 'resources',
+    component: ResourceManagerComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -178,7 +183,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
 ];

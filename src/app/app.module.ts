@@ -50,7 +50,7 @@ import { LocationComponent } from './components/location/location.component';
 import { AgmCoreModule } from '@agm/core';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { DataTableComponent } from './generics/data-table/data-table.component';
-import { AuthGuard } from "./components/app-routing/auth.guard";
+import { AuthGuard } from './components/app-routing/auth.guard';
 import { RelationshipDialogComponent } from './dialogs/relationship-dialog/relationship-dialog.component';
 import { ObjectDetailComponent } from './components/object-detail/object-detail.component';
 import { MapComponent } from './components/location/map/map.component';
@@ -65,6 +65,7 @@ import { ChartsModule } from 'ng2-charts';
 import { UsersPerAgeCategoryChartComponent } from './components/charts/users-per-age-category-chart/users-per-age-category-chart.component';
 import { UsersRegisteredInTimeChartComponent } from './components/charts/users-registered-in-time-chart/users-registered-in-time-chart.component';
 import { RatingsChartComponent } from './components/charts/ratings-chart/ratings-chart.component';
+import { ResourceManagerComponent } from './components/resource-manager/resource-manager.component';
 
 @NgModule({
   exports: [
@@ -124,7 +125,8 @@ export class AngularMaterialModule {}
     ChartsComponent,
     UsersPerAgeCategoryChartComponent,
     UsersRegisteredInTimeChartComponent,
-    RatingsChartComponent
+    RatingsChartComponent,
+    ResourceManagerComponent
   ],
   imports: [
     BrowserModule,
@@ -161,7 +163,8 @@ export class AngularMaterialModule {}
     ChartsComponent,
     UsersPerAgeCategoryChartComponent,
     UsersRegisteredInTimeChartComponent,
-    RatingsChartComponent
+    RatingsChartComponent,
+    ResourceManagerComponent
   ],
   providers: [
     Datastore,
