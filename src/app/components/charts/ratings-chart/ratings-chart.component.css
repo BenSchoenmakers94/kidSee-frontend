@@ -1,16 +1,5 @@
-.left {
-    float: left;
-}
-
-.right {
-   /* max-width: 800px; */
-   margin: auto;
-}
-
-.card {
-    min-height: 430px;
-}
-
-.align-content {
-    display: flex;
+.sizing {
+    max-width: 800px;
+    height: auto;
+    margin: auto;
 }
