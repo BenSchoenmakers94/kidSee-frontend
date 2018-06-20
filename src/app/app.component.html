@@ -2,16 +2,17 @@
         <mat-sidenav #sidenav class="sidenav" mode="side">
         <ul *ngIf="isLoggedIn | async">
             <li><button class="nav-button extra-margin" mat-raised-button color="primary" [routerLink]="['/home']"><span>{{title}}</span></button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/users']">Users</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/users']">Gebruikers</button></li>
             <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/posts']">Posts</button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/themes']">Themes</button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary"[routerLink]="['/assignments']">Assignments</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/themes']">Thema's</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary"[routerLink]="['/assignments']">Opdrachten</button></li>
             <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/comments']">Comments</button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/locations']">Locations</button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/location-types']">Location-types</button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/answers']">Answers</button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/answer-types']">Answer-Types</button></li>
-            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/assignment-types']">Assignment-Types</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/locations']">Locaties</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/location-types']">Locatie-types</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/answers']">Antwoorden</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/answer-types']">Antwoord-types</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/assignment-types']">Opdracht-types</button></li>
+            <li><button class="nav-button" mat-stroked-button color="primary" [routerLink]="['/discoveries']">Ontdektochten</button></li>
             <li><button class="nav-button extra-margin" mat-raised-button color="primary" (click)="logout()">Logout</button></li>
         </ul>
         </mat-sidenav>
