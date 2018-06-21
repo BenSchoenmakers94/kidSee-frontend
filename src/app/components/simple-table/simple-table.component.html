@@ -6,13 +6,10 @@
     <ng-template #dataEmpty>
       No {{dataTypeLowercased}} found!
     </ng-template>
-    <button mat-raised-button color="primary" class="right" (click)="addNewObject()">
-      Add {{dataTypeLowercased}}
-    </button>
   </mat-card-title>
   <table>
     <ng-container *ngFor="let object of parentObject[dataTypeLowercased]">
-      <td class="clickable" (click)="showTypeDetails(object)">{{object.name}}</td>
+      <td class="clickable" (click)="showTypeDetails(object)">{{objectInfo(object)}}</td>
     </ng-container>
   </table>
 </mat-card>

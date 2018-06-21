@@ -21,6 +21,16 @@ export class SimpleTableComponent implements OnInit {
     this.dataTypeLowercased = this.dataType.toLowerCase();
   }
 
+  public objectInfo(object: BaseModel) {
+    if (object['name']) {
+      return object['name'];
+    } else if (object['subject']) {
+      return object['subject'];
+    } else {
+      return object['id'];
+    }
+  }
+
   public addNewObject() {
     const navUrl = this.parentObject.modelConfig.type + '/'
       + this.parentObject.id + '/'

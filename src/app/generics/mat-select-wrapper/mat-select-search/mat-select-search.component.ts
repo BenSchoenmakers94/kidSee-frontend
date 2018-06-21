@@ -101,10 +101,8 @@ export class MatSelectSearchComponent implements OnInit, OnDestroy, AfterViewIni
       .subscribe(() => {
         this._options = this.matSelect.options;
         this._options.forEach(option => {
-          console.log(this.object);
           this.previousSelectedValues.forEach(previousValue => {
             if (option.value['name'] === previousValue['name']) {
-              console.log('SUCCES');
               option.select();
             }
           });
