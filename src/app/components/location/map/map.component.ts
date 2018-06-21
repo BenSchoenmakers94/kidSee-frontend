@@ -17,11 +17,11 @@ declare var google: any;
 })
 export class MapComponent implements OnInit {
   // google maps zoom level
-  zoom = 17;
+  zoom = 15;
 
   // initial center position for the map - Avans
-  lat = 51.689318;
-  lng = 5.286887;
+  lat = 51.7266373;
+  lng = 5.2977024;
 
   markers: Marker[];
   locations: any[];

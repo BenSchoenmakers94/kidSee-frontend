@@ -100,6 +100,13 @@ export class MatSelectSearchComponent implements OnInit, OnDestroy, AfterViewIni
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this._options = this.matSelect.options;
+        this._options.forEach(option => {
+          this.previousSelectedValues.forEach(previousValue => {
+            if (option.value['name'] === previousValue['name']) {
+              option.select();
+            }
+          });
+        });
         this._options.changes
           .pipe(takeUntil(this._onDestroy))
           .subscribe(() => {

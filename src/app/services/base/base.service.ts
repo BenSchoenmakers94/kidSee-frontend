@@ -1,4 +1,5 @@
 import { Rating } from './../../models/rating';
+import { Discovery } from './../../models/discoveries';
 import { Status } from './../../models/postStatus';
 import { ContentType } from './../../models/contentType';
 import { LocationType } from './../../models/locationType';
@@ -6,7 +7,6 @@ import { Location } from './../../models/location';
 import { User } from './../../models/user';
 import { Datastore } from './../datastore';
 import { Observable } from 'rxjs/Observable';
-import { JsonApiModel, JsonApiQueryData, ModelType } from 'angular2-jsonapi';
 import { Injectable } from '@angular/core';
 import { BaseModel } from '../../models/baseModel';
 import { HttpClient } from '@angular/common/http';
@@ -71,6 +71,10 @@ export class BaseService {
           {
             type: 'answer-types',
             modelType: AnswerType
+          },
+          {
+            type: 'discoveries',
+            modelType: Discovery
           }
           ];
 

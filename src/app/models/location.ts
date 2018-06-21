@@ -1,7 +1,6 @@
 import { Theme } from './theme';
 import { LocationType } from './locationType';
-import { JsonApiModelConfig, JsonApiModel, Attribute, BelongsTo, HasMany } from 'angular2-jsonapi';
-import * as _ from 'lodash';
+import { JsonApiModelConfig, Attribute, BelongsTo, HasMany } from 'angular2-jsonapi';
 import { BaseModel } from './baseModel';
 
 @JsonApiModelConfig({

@@ -36,29 +36,45 @@
           </ng-container>
           <ng-template #formBlock>
               <div class="marginTop">
-                  <mat-form-field>
-                      <ng-container *ngIf="objectToCreate.isRequiredAttribute(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else notRequired" >
-                        <ng-container *ngIf="objectToCreate.isBelongsToRelationship(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else normalRequired" >
-                            <mat-select [value]="objectToCreate.resolveBelongsToRelationshipAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (selectionChange)="updateBelongsToState($event.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
-                                <mat-option *ngFor="let type of getIterableTypesOf(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" [value]="type">{{type}}</mat-option>
-                          </mat-select>
+                    <ng-container *ngIf="objectToCreate.isRequiredAttribute(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else notRequired" >
+                        <ng-container *ngIf="objectToCreate.isRelationShipAttribute(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]); else noRelationshipAttributeRequired">
+                            <ng-container *ngIf="objectToCreate.isBelongsToRelationship(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else hasManyRequired" >
+                               <mat-form-field>
+                                <mat-select [value]="objectToCreate.resolveBelongsToRelationshipAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (selectionChange)="updateBelongsToState($event.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
+                                    <mat-option *ngFor="let type of getIterableTypesOf(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" [value]="type">{{type}}</mat-option>
+                                </mat-select>
+                               </mat-form-field>
+                            </ng-container>
+                            <ng-template #hasManyRequired>
+                                <app-mat-select-wrapper [primaryObject]="objectToCreate" [objectType]="objectToCreate.getAttributeNamesForCreation()[stepCounter-1]"></app-mat-select-wrapper>
+                            </ng-template>
                         </ng-container>
-                        <ng-template #normalRequired>
-                            <input matInput [value]="objectToCreate.resolveAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (keyup)="updateSimpleAttributeState($event.target.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
-                        </ng-template>
+                        <ng-template #noRelationshipAttributeRequired>
+                            <mat-form-field>
+                                <input matInput [value]="objectToCreate.resolveAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (keyup)="updateSimpleAttributeState($event.target.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
+                            </mat-form-field>
+                         </ng-template>
                       </ng-container>
                       <ng-template #notRequired>
-                          <ng-container *ngIf="objectToCreate.isBelongsToRelationship(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else normalNotRequired">
-                              <mat-select [value]="objectToCreate.resolveBelongsToRelationshipAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (selectionChange)="updateBelongsToState($event.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}}>
-                                  <mat-option *ngFor="let type of getIterableTypesOf(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" [value]="type">{{type}}</mat-option>
-                            </mat-select>
-                          </ng-container>
-                          <ng-template #normalNotRequired>
-                              <input matInput [value]="objectToCreate.resolveAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (keyup)="updateSimpleAttributeState($event.target.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}}>
-                          </ng-template>
+                        <ng-container *ngIf="objectToCreate.isRelationShipAttribute(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]); else noRelationshipAttributeNotRequired">
+                            <ng-container *ngIf="objectToCreate.isBelongsToRelationship(objectToCreate.getAttributeNamesForCreation()[stepCounter-1]);else hasManyNotRequired" >
+                                <mat-form-field>
+                                    <mat-select [value]="objectToCreate.resolveBelongsToRelationshipAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (selectionChange)="updateBelongsToState($event.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
+                                        <mat-option *ngFor="let type of getIterableTypesOf(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" [value]="type">{{type}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                            <ng-template #hasManyNotRequired>
+                                <app-mat-select-wrapper [primaryObject]="objectToCreate" [objectType]="objectToCreate.getAttributeNamesForCreation()[stepCounter-1]"></app-mat-select-wrapper>
+                            </ng-template>
+                        </ng-container>
+                        <ng-template #noRelationshipAttributeNotRequired>
+                            <mat-form-field>
+                                <input matInput [value]="objectToCreate.resolveAttributeName(objectToCreate.getAttributeNamesForCreation()[stepCounter-1])" (keyup)="updateSimpleAttributeState($event.target.value)" placeholder={{objectToCreate.getAttributeNamesForCreation()[stepCounter-1]}} required>
+                            </mat-form-field>
+                         </ng-template>
                       </ng-template>
-                  </mat-form-field>
-              </div>
+                </div>
               </ng-template>
         </ng-template>
           <div class="marginTop">
